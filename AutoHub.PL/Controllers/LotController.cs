@@ -2,8 +2,8 @@
 
 namespace AutoHub.PL.Controllers
 {
-    public class CarController : Controller
+    public class LotController : Controller
     {
-        
+
     }
 }

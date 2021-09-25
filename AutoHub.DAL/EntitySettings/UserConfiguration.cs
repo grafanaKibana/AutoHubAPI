@@ -1,4 +1,5 @@
-﻿using AutoHub.DAL.Entities;
+﻿using System;
+using AutoHub.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +15,7 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(user => user.Email).IsRequired().HasMaxLength(60);
             entity.Property(user => user.Phone).IsRequired().HasMaxLength(24);
             entity.Property(user => user.Password).IsRequired().HasMaxLength(2000);
+            entity.Property(user => user.RegistrationTime).IsRequired().HasDefaultValue(DateTime.UtcNow);
             entity.HasIndex(user => user.Email).IsUnique();
         }
     }

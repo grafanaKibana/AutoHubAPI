@@ -1,6 +1,8 @@
-﻿namespace AutoHub.DAL.Entities
+﻿using AutoHub.DAL.Interfaces;
+
+namespace AutoHub.DAL.Entities
 {
-    public class Car
+    public class Car : IEntity
     {
         public int CarId { get; set; }
         public string ImgUrl { get; set; }

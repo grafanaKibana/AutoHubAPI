@@ -1,8 +1,9 @@
 ﻿using System;
+using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
-    public class Lot
+    public class Lot : IEntity
     {
         public int LotId { get; set; }
         public User User { get; set; }
