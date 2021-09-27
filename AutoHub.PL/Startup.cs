@@ -1,3 +1,5 @@
+using AutoHub.BLL.Interfaces;
+using AutoHub.BLL.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +22,10 @@ namespace AutoHub.PL
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+
+            services.AddRouting();
+
+            services.AddScoped<ICarService, CarService>();
             
             services.AddSwaggerGen(c =>
             {

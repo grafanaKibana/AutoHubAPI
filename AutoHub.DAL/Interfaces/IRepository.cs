@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using AutoHub.DAL.Interfaces;
 
-namespace AutoHub.DAL
+namespace AutoHub.DAL.Interfaces
 {
     public interface IRepository<T> where T : IEntity
     {
