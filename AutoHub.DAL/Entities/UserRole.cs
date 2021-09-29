@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using AutoHub.DAL.Enums;
+using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
-    public class UserRole
+    public class UserRole : IEntity
     {
         public UserRole()
         {
