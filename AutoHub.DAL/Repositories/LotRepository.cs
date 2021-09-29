@@ -55,10 +55,8 @@ namespace AutoHub.DAL.Repositories
         public void Delete(int id)
         {
             var lot = _db.Lot.Find(id);
-            if (lot != null)
-            {
+            if (lot != null) 
                 _db.Lot.Remove(lot);
-            }
         }
     }
 }

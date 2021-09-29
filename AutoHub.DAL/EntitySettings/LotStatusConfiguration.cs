@@ -23,5 +23,4 @@ namespace AutoHub.DAL.EntitySettings
                     }));
         }
     }
-    
 }

@@ -27,7 +27,7 @@ namespace AutoHub.PL
 
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutoHub.PL", Version = "v1" });
@@ -47,7 +47,7 @@ namespace AutoHub.PL
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

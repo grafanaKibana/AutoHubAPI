@@ -36,12 +36,12 @@ namespace AutoHub.DAL.Repositories
         {
             return _db.Car.Where(predicate);
         }
-        
+
         public void Add(Car newItem)
         {
             _db.Car.Add(newItem);
         }
-        
+
         public void AddRange(IEnumerable<Car> newItems)
         {
             _db.Car.AddRange(newItems);
@@ -55,10 +55,8 @@ namespace AutoHub.DAL.Repositories
         public void Delete(int id)
         {
             var car = _db.Car.Find(id);
-            if (car != null)
-            {
+            if (car != null) 
                 _db.Car.Remove(car);
-            }
         }
     }
 }

@@ -12,13 +12,13 @@ namespace AutoHub.DAL.EntitySettings
         {
             entity.Property(role => role.UserRoleId).HasConversion<int>();
             entity.Property(role => role.UserRoleName).HasConversion<string>();
-            
+
             entity.HasData(
                 Enum.GetValues(typeof(UserRoleId))
                     .Cast<UserRoleId>()
                     .Select(u => new UserRole
                     {
-                        UserRoleId = u, 
+                        UserRoleId = u,
                         UserRoleName = u.ToString()
                     }));
         }

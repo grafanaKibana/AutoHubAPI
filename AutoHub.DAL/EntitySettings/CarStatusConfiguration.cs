@@ -15,12 +15,12 @@ namespace AutoHub.DAL.EntitySettings
 
             entity.HasData(
                 Enum.GetValues(typeof(CarStatusId))
-                .Cast<CarStatusId>()
-                .Select(s => new CarStatus
-                {
-                    CarStatusId = s, 
-                    CarStatusName = s.ToString()
-                }));
+                    .Cast<CarStatusId>()
+                    .Select(s => new CarStatus
+                    {
+                        CarStatusId = s,
+                        CarStatusName = s.ToString()
+                    }));
         }
     }
 }

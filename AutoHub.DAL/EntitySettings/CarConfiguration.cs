@@ -20,7 +20,7 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(car => car.CostPrice).IsRequired();
             entity.Property(car => car.SellingPrice).IsRequired();
             entity.Property(car => car.CarStatusId).HasConversion<int>();
-            
+
             entity.HasData(
                 new Car
                 {

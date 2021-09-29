@@ -2,7 +2,6 @@
 using System.Linq;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models;
-using AutoHub.DAL;
 
 namespace AutoHub.BLL.Services
 {
@@ -32,16 +31,14 @@ namespace AutoHub.BLL.Services
                     SellingPrice = car.SellingPrice
                 });
         }
-        
+
         public CarModel GetById(int id)
         {
             var car = _unitOfWork.Cars.Find(id);
-            
-            if (car == null)
-            {
+
+            if (car == null) 
                 return null;
-            }
-            
+
             return new CarModel
             {
                 CarId = car.CarId,

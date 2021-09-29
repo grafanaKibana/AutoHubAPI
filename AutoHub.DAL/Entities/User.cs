@@ -11,7 +11,7 @@ namespace AutoHub.DAL.Entities
         {
             UserLots = new HashSet<Lot>();
         }
-        
+
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -19,7 +19,7 @@ namespace AutoHub.DAL.Entities
         public string Phone { get; set; }
         public string Password { get; set; }
         public DateTime RegistrationTime { get; set; }
-        
+
         public UserRoleId UserRoleId { get; set; }
         public UserRole UserRole { get; set; }
 

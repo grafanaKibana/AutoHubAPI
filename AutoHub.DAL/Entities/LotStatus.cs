@@ -14,6 +14,6 @@ namespace AutoHub.DAL.Entities
         public LotStatusId LotStatusId { get; set; }
         public string LotStatusName { get; set; }
 
-        private IEnumerable<Lot> Lots { get; set; }
+        private IEnumerable<Lot> Lots { get; }
     }
 }

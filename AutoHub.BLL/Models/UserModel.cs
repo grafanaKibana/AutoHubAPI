@@ -13,7 +13,7 @@ namespace AutoHub.BLL.Models
         public string Phone { get; set; }
         public string Password { get; set; }
         public DateTime RegistrationTime { get; set; }
-        
+
         public IEnumerable<Lot> UserLots { get; set; }
     }
 }

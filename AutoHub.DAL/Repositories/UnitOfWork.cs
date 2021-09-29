@@ -13,7 +13,7 @@ namespace AutoHub.BLL.Services
         private CarRepository _carRepository;
         private LotRepository _lotRepository;
         private UserRepository _userRepository;
-        
+
         public UnitOfWork(AutoHubContext context)
         {
             _context = context;
@@ -22,7 +22,7 @@ namespace AutoHub.BLL.Services
         public IRepository<Car> Cars => _carRepository ??= new CarRepository(_context);
         public IRepository<Lot> Lots => _lotRepository ??= new LotRepository(_context);
         public IRepository<User> Users => _userRepository ??= new UserRepository(_context);
-        
+
         public void Dispose()
         {
             _context.Dispose();
