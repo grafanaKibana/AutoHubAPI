@@ -1,6 +1,6 @@
 ﻿namespace AutoHub.DAL.Enums
 {
-    public enum EUserRole
+    public enum UserRoleId
     {
         Guest = 1,
         Regular = 2,

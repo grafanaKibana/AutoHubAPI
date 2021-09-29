@@ -14,14 +14,13 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(status => status.CarStatusName).HasConversion<string>();
 
             entity.HasData(
-                Enum.GetValues(typeof(ECarStatus))
-                    .Cast<ECarStatus>()
-                    .Select(status => new CarStatus()
-                    {
-                        CarStatusId = status,
-                        CarStatusName = status.ToString()
-                    })
-                );
+                Enum.GetValues(typeof(CarStatusId))
+                .Cast<CarStatusId>()
+                .Select(s => new CarStatus
+                {
+                    CarStatusId = s, 
+                    CarStatusName = s.ToString()
+                }));
         }
     }
 }

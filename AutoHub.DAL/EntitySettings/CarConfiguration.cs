@@ -1,4 +1,5 @@
 ﻿using AutoHub.DAL.Entities;
+using AutoHub.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +19,7 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(car => car.Mileage).IsRequired();
             entity.Property(car => car.CostPrice).IsRequired();
             entity.Property(car => car.SellingPrice).IsRequired();
+            entity.Property(car => car.CarStatusId).HasConversion<int>();
             
             entity.HasData(
                 new Car
@@ -35,6 +37,7 @@ namespace AutoHub.DAL.EntitySettings
                     CostPrice = 92000,
                     SellingPrice = 138000,
                     Mileage = 12302,
+                    CarStatusId = CarStatusId.OnHold
                 },
                 new Car
                 {
@@ -51,6 +54,7 @@ namespace AutoHub.DAL.EntitySettings
                     CostPrice = 68500,
                     SellingPrice = 88300,
                     Mileage = 32161,
+                    CarStatusId = CarStatusId.OnHold
                 });
         }
     }

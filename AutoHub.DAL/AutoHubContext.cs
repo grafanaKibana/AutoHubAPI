@@ -23,7 +23,7 @@ namespace AutoHub.DAL
             new UserConfiguration(modelBuilder.Entity<User>());
             new CarConfiguration(modelBuilder.Entity<Car>());
             new LotConfiguration(modelBuilder.Entity<Lot>());
-            
+            new CarStatusConfiguration(modelBuilder.Entity<CarStatus>());
         }
     }
 }

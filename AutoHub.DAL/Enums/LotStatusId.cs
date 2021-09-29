@@ -1,6 +1,6 @@
 ﻿namespace AutoHub.DAL.Enums
 {
-    public enum ELotStatus
+    public enum LotStatusId
     {
         NotStarted = 1,
         InProgress = 2,

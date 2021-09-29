@@ -10,7 +10,7 @@ namespace AutoHub.DAL.Entities
             Cars = new List<Car>();
         }
         
-        public ECarStatus CarStatusId { get; set; }
+        public CarStatusId CarStatusId { get; set; }
         public string CarStatusName { get; set; }
 
         private IEnumerable<Car> Cars { get; set; }
