@@ -17,7 +17,7 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(lot => lot.StartPrice).IsRequired()/*.HasDefaultValue(entity.Property(lot => lot.Car.SellingPrice))*/;
             
             //Relations
-            entity.HasOne(lot => lot.User)
+            entity.HasOne(lot => lot.Creator)
                 .WithMany(user => user.UserLots);
             
             //Data seed

@@ -54,7 +54,7 @@ namespace AutoHub.DAL.EntitySettings
                     CostPrice = 68500,
                     SellingPrice = 88300,
                     Mileage = 32161,
-                    CarStatusId = CarStatusId.OnHold
+                    CarStatusId = CarStatusId.Sold
                 });
         }
     }

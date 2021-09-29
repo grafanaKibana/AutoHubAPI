@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoHub.DAL.Enums;
 using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
@@ -18,6 +19,9 @@ namespace AutoHub.DAL.Entities
         public string Phone { get; set; }
         public string Password { get; set; }
         public DateTime RegistrationTime { get; set; }
+        
+        public UserRoleId UserRoleId { get; set; }
+        public UserRole UserRole { get; set; }
 
         public IEnumerable<Lot> UserLots { get; set; }
     }
