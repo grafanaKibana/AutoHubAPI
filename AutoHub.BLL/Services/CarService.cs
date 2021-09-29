@@ -8,11 +8,16 @@ namespace AutoHub.BLL.Services
 {
     public class CarService : ICarService
     {
-        private readonly AutoHubContext _dbContext = new();
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CarService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
         public IEnumerable<CarModel> GetAll()
         {
-            return _dbContext.Car.Select(car =>
+            return _unitOfWork.Cars.GetAll().Select(car =>
                 new CarModel
                 {
                     CarId = car.CarId,
@@ -30,7 +35,7 @@ namespace AutoHub.BLL.Services
         
         public CarModel GetById(int id)
         {
-            var car = _dbContext.Car.Find(id);
+            var car = _unitOfWork.Cars.Find(id);
             
             if (car == null)
             {

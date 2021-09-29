@@ -27,6 +27,11 @@ namespace AutoHub.DAL.Repositories
             return _db.User.Find(id);
         }
 
+        public User Find(int id)
+        {
+            return _db.User.Find(id);
+        }
+
         public IEnumerable<User> Find(Expression<Func<User, bool>> predicate)
         {
             return _db.User.Where(predicate);
