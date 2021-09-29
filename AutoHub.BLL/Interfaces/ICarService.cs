@@ -6,5 +6,6 @@ namespace AutoHub.BLL.Interfaces
     public interface ICarService
     {
         IEnumerable<CarModel> GetAll();
+        CarModel GetById(int id);
     }
 }

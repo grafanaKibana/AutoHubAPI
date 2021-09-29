@@ -10,12 +10,8 @@ namespace AutoHub.DAL
         public DbSet<Car> Car { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Lot> Lot { get; set; }
-
-        // public AutoHubContext(DbContextOptions<AutoHubContext> options)
-        //     : base(options)
-        // {
-        // }
-        //
+        public DbSet<CarStatus> CarStatus { get; set; }
+       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(

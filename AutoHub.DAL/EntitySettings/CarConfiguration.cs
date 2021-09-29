@@ -18,7 +18,7 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(car => car.Mileage).IsRequired();
             entity.Property(car => car.CostPrice).IsRequired();
             entity.Property(car => car.SellingPrice).IsRequired();
-
+            
             entity.HasData(
                 new Car
                 {
@@ -34,7 +34,7 @@ namespace AutoHub.DAL.EntitySettings
                     Year = 2021,
                     CostPrice = 92000,
                     SellingPrice = 138000,
-                    Mileage = 12302
+                    Mileage = 12302,
                 },
                 new Car
                 {
@@ -50,7 +50,7 @@ namespace AutoHub.DAL.EntitySettings
                     Year = 2020,
                     CostPrice = 68500,
                     SellingPrice = 88300,
-                    Mileage = 32161
+                    Mileage = 32161,
                 });
         }
     }

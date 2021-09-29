@@ -21,7 +21,6 @@ namespace AutoHub.DAL.EntitySettings
                 .WithMany(user => user.UserLots);
             
             //Data seed
-            
         }
     }
 }

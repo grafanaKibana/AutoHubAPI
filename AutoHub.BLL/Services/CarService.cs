@@ -27,5 +27,29 @@ namespace AutoHub.BLL.Services
                     SellingPrice = car.SellingPrice
                 });
         }
+        
+        public CarModel GetById(int id)
+        {
+            var car = _dbContext.Car.Find(id);
+            
+            if (car == null)
+            {
+                return null;
+            }
+            
+            return new CarModel
+            {
+                CarId = car.CarId,
+                ImgUrl = car.ImgUrl,
+                Brand = car.Brand,
+                Model = car.Model,
+                Description = car.Description,
+                Color = car.Color,
+                Year = car.Year,
+                VIN = car.VIN,
+                Mileage = car.Mileage,
+                SellingPrice = car.SellingPrice
+            };
+        }
     }
 }
