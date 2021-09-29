@@ -26,6 +26,7 @@ namespace AutoHub.PL
             services.AddRouting();
 
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             services.AddSwaggerGen(c =>
             {
