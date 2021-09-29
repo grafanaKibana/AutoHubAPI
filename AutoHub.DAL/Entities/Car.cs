@@ -1,4 +1,5 @@
-﻿using AutoHub.DAL.Interfaces;
+﻿using AutoHub.DAL.Enums;
+using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
@@ -15,5 +16,6 @@ namespace AutoHub.DAL.Entities
         public int Mileage { get; set; }
         public decimal CostPrice { get; set; }
         public decimal SellingPrice { get; set; }
+        public ECarStatus CarStatusId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AutoHub.DAL.Entities;
+using AutoHub.DAL.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
@@ -13,8 +14,8 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(status => status.CarStatusName).HasConversion<string>();
 
             entity.HasData(
-                Enum.GetValues(typeof(CarStatus.Status))
-                    .Cast<CarStatus.Status>()
+                Enum.GetValues(typeof(ECarStatus))
+                    .Cast<ECarStatus>()
                     .Select(status => new CarStatus()
                     {
                         CarStatusId = status,
