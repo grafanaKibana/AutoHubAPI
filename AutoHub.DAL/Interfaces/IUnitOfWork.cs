@@ -1,8 +1,7 @@
 ﻿using System;
 using AutoHub.DAL.Entities;
-using AutoHub.DAL.Interfaces;
 
-namespace AutoHub.BLL.Interfaces
+namespace AutoHub.DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

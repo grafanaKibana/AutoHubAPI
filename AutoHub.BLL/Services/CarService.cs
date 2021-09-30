@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models;
+using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.BLL.Services
 {

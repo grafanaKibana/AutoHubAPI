@@ -1,5 +1,7 @@
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Services;
+using AutoHub.DAL.Interfaces;
+using AutoHub.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

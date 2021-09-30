@@ -1,10 +1,7 @@
-﻿using AutoHub.BLL.Interfaces;
-using AutoHub.DAL;
-using AutoHub.DAL.Entities;
+﻿using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
-using AutoHub.DAL.Repositories;
 
-namespace AutoHub.BLL.Services
+namespace AutoHub.DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
