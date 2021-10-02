@@ -29,6 +29,7 @@ namespace AutoHub.PL
             services.AddRouting();
 
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<ILotService, LotService>();
             
             // Fix of error with DI and UoW, but dont understand how it works;)
             services.AddSingleton<AutoHubContext>();
