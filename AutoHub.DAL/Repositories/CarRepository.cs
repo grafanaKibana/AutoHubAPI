@@ -26,12 +26,7 @@ namespace AutoHub.DAL.Repositories
         {
             return _db.Car.Find(id);
         }
-
-        public Car Find(int id)
-        {
-            return _db.Car.Find(id);
-        }
-
+        
         public IEnumerable<Car> Find(Expression<Func<Car, bool>> predicate)
         {
             return _db.Car.Where(predicate);

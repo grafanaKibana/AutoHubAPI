@@ -7,5 +7,9 @@ namespace AutoHub.BLL.Interfaces
     {
         IEnumerable<UserModel> GetAll();
         UserModel GetById(int id);
+        bool Register();
+        bool Login();
+        bool IsEmailUnique(string email);
+        bool IsPasswordMatchRules(string password);
     }
 }

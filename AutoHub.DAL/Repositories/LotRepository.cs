@@ -26,12 +26,7 @@ namespace AutoHub.DAL.Repositories
         {
             return _db.Lot.Find(id);
         }
-
-        public Lot Find(int id)
-        {
-            return _db.Lot.Find(id);
-        }
-
+        
         public IEnumerable<Lot> Find(Expression<Func<Lot, bool>> predicate)
         {
             return _db.Lot.Where(predicate);
