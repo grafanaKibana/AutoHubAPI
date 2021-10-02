@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoHub.DAL.Repositories
 {
-    //Generic variant of repository (Currently using non-generic repos)
+    // Generic variant of repository (Currently using non-generic repos)
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly DbSet<T> _entities;

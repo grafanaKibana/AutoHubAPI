@@ -30,6 +30,10 @@ namespace AutoHub.PL
 
             services.AddScoped<ICarService, CarService>();
             
+            // Fix of error with DI and UoW, but dont understand how it works;)
+            services.AddSingleton<AutoHubContext>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutoHub.PL", Version = "v1" });
