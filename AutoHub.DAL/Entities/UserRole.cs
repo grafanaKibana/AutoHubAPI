@@ -10,7 +10,7 @@ namespace AutoHub.DAL.Entities
         {
             Users = new List<User>();
         }
-
+        
         public UserRoleId UserRoleId { get; set; }
         public string UserRoleName { get; set; }
 
