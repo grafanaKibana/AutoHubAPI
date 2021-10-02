@@ -35,7 +35,7 @@ namespace AutoHub.BLL.Services
 
         public CarModel GetById(int id)
         {
-            var car = _unitOfWork.Cars.Find(id);
+            var car = _unitOfWork.Cars.GetById(id);
 
             if (car == null) 
                 return null;
