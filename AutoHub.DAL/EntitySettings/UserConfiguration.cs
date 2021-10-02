@@ -29,7 +29,8 @@ namespace AutoHub.DAL.EntitySettings
                     LastName = "Reshetnik",
                     Email = "reshetnik.nikita@gmail.com",
                     Phone = "+380698632559",
-                    Password = Convert.ToBase64String(HashAlgorithm.Create("sha256").ComputeHash(Encoding.UTF8.GetBytes("password123"))),
+                    Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
+                        .ComputeHash(Encoding.UTF8.GetBytes("password123"))),
                     RegistrationTime = DateTime.UtcNow,
                     UserRoleId = UserRoleId.Administrator,
                 },
@@ -40,7 +41,8 @@ namespace AutoHub.DAL.EntitySettings
                     LastName = "Clifford",
                     Email = "julia.clifford@hotmail.com",
                     Phone = "+380501449999",
-                    Password = Convert.ToBase64String(HashAlgorithm.Create("sha256").ComputeHash(Encoding.UTF8.GetBytes("junkyardistolow"))),
+                    Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
+                        .ComputeHash(Encoding.UTF8.GetBytes("junkyardistolow"))),
                     RegistrationTime = DateTime.UtcNow,
                     UserRoleId = UserRoleId.Regular
                 },
@@ -51,7 +53,8 @@ namespace AutoHub.DAL.EntitySettings
                     LastName = "Musk",
                     Email = "emusk@paypal.com",
                     Phone = "+380991449999",
-                    Password = Convert.ToBase64String(HashAlgorithm.Create("sha256").ComputeHash(Encoding.UTF8.GetBytes("gogotothemars"))),
+                    Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
+                        .ComputeHash(Encoding.UTF8.GetBytes("gogotothemars"))),
                     RegistrationTime = DateTime.UtcNow,
                     UserRoleId = UserRoleId.Regular
                 });

@@ -1,5 +1,6 @@
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Services;
+using AutoHub.DAL;
 using AutoHub.DAL.Interfaces;
 using AutoHub.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -28,8 +29,7 @@ namespace AutoHub.PL
             services.AddRouting();
 
             services.AddScoped<ICarService, CarService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutoHub.PL", Version = "v1" });
