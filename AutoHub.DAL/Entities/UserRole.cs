@@ -4,7 +4,7 @@ using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
-    public class UserRole : IEntity
+    public class UserRole
     {
         public UserRole()
         {

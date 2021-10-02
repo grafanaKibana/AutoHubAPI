@@ -24,21 +24,6 @@ namespace AutoHub.BLL.Services
         public IEnumerable<CarModel> GetAll()
         {
             return _mapper.Map<IEnumerable<CarModel>>(_unitOfWork.Cars.GetAll());
-
-            /*return unitOfWork.Cars.GetAll().Select(car =>
-                new CarModel
-                {
-                    CarId = car.CarId,
-                    ImgUrl = car.ImgUrl,
-                    Brand = car.Brand,
-                    Model = car.Model,
-                    Description = car.Description,
-                    Color = car.Color,
-                    Year = car.Year,
-                    VIN = car.VIN,
-                    Mileage = car.Mileage,
-                    SellingPrice = car.SellingPrice
-                });*/
         }
 
         public CarModel GetById(int id)
@@ -49,20 +34,6 @@ namespace AutoHub.BLL.Services
                 return null;
 
             return _mapper.Map<CarModel>(car);
-
-            /*return new CarModel
-            {
-                CarId = car.CarId,
-                ImgUrl = car.ImgUrl,
-                Brand = car.Brand,
-                Model = car.Model,
-                Description = car.Description,
-                Color = car.Color,
-                Year = car.Year,
-                VIN = car.VIN,
-                Mileage = car.Mileage,
-                SellingPrice = car.SellingPrice
-            };*/
         }
     }
 }

@@ -5,7 +5,7 @@ using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
-    public class User : IEntity
+    public class User
     {
         public User()
         {

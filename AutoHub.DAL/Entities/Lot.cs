@@ -4,7 +4,7 @@ using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
-    public class Lot : IEntity
+    public class Lot
     {
         public int LotId { get; set; }
         public User Creator { get; set; }

@@ -3,7 +3,7 @@ using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
-    public class Car : IEntity
+    public class Car
     {
         public int CarId { get; set; }
         public string ImgUrl { get; set; }

@@ -4,7 +4,7 @@ using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
-    public class LotStatus : IEntity
+    public class LotStatus
     {
         public LotStatus()
         {
