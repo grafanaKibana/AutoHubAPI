@@ -21,8 +21,7 @@ namespace AutoHub.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                "Data Source=DESKTOP-CUS63EG\\SQLMACHINE; Initial Catalog=AutoHubDb; Integrated Security=True");
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
