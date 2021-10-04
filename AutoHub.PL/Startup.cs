@@ -30,7 +30,7 @@ namespace AutoHub.PL
             services.AddRouting();
 
             services.AddDbContext<AutoHubContext>(
-               options => options.UseSqlServer("Data Source=DESKTOP-CUS63EG\\SQLMACHINE; Initial Catalog=AutoHubDb; Integrated Security=True"));
+               options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnectionString")));
 
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ILotService, LotService>();
