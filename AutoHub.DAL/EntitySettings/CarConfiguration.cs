@@ -17,8 +17,8 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(car => car.Year).IsRequired().HasMaxLength(4);
             entity.Property(car => car.VIN).IsRequired().HasMaxLength(17);
             entity.Property(car => car.Mileage).IsRequired();
-            entity.Property(car => car.CostPrice).IsRequired();
-            entity.Property(car => car.SellingPrice).IsRequired();
+            entity.Property(car => car.CostPrice).IsRequired()/*.HasPrecision(2)*/;
+            entity.Property(car => car.SellingPrice).IsRequired()/*.HasPrecision(2)*/;
             entity.Property(car => car.CarStatusId).HasConversion<int>();
 
             entity.HasData(

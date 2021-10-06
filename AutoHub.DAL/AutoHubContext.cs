@@ -14,14 +14,21 @@ namespace AutoHub.DAL
         public DbSet<LotStatus> LotStatus { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
 
+        public AutoHubContext()
+        {
+            
+        }
+        
         public AutoHubContext(DbContextOptions<AutoHubContext> options)
            : base(options)
         {
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+            optionsBuilder.UseSqlServer(
+                "Data Source=DESKTOP-CUS63EG\\SQLMACHINE; Initial Catalog=AutoHubDb; Integrated Security=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

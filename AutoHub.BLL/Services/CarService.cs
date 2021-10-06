@@ -11,7 +11,7 @@ namespace AutoHub.BLL.Services
     public class CarService : ICarService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
         public CarService(IUnitOfWork unitOfWork)
         {

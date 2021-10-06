@@ -34,7 +34,7 @@ namespace AutoHub.PL
 
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ILotService, LotService>();
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
             {

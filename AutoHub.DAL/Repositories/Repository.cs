@@ -12,7 +12,7 @@ namespace AutoHub.DAL.Repositories
     {
         private readonly DbSet<T> _entities;
 
-        public Repository(AutoHubContext context)
+        public Repository(DbContext context)
         {
             _entities = context.Set<T>();
         }

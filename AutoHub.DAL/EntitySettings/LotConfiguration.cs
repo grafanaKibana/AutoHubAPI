@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
+using AutoHub.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,21 +19,6 @@ namespace AutoHub.DAL.EntitySettings
 
             entity.HasOne(lot => lot.Creator)
                 .WithMany(user => user.UserLots);
-
-            /*entity.HasData(
-                new Lot
-                {
-                    LotId = 1,
-                    Creator = new AutoHubContext().User.Find(1),
-                    Car = new AutoHubContext().Car.Find(1),
-                    Winner = null,
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow.AddDays(7),
-                    StartPrice = new AutoHubContext().Car.Find(1).SellingPrice,
-                    LastBid = new AutoHubContext().Car.Find(1).SellingPrice * 1.2m,
-                    LotStatusId = LotStatusId.InProgress
-                }
-            );*/
         }
     }
 }
