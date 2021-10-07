@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoHub.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoHub.DAL.Repositories
 {
@@ -50,7 +51,7 @@ namespace AutoHub.DAL.Repositories
                 return false;
             }
 
-            _context.Update(item);
+            _context.Entry(item).State = EntityState.Modified;
             return true;
         }
 

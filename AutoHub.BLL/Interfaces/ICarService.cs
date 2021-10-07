@@ -8,6 +8,6 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<CarViewModel> GetAll();
         CarViewModel GetById(int id);
         CarCreateApiModel CreateCar(CarCreateApiModel carModel);
-        CarUpdateApiModel UpdateCar(CarUpdateApiModel carModel);
+        CarUpdateApiModel UpdateCar(int id, CarUpdateApiModel carModel);
     }
 }

@@ -59,9 +59,9 @@ namespace AutoHub.BLL.Services
             return carModel;
         }
 
-        public CarUpdateApiModel UpdateCar(CarUpdateApiModel carModel)
+        public CarUpdateApiModel UpdateCar(int id, CarUpdateApiModel carModel)
         {
-            _unitOfWork.Cars.Update(carModel.CarId, new Car
+            _unitOfWork.Cars.Update(id, new Car
             {
                 CarId = carModel.CarId,
                 ImgUrl = carModel.ImgUrl,
