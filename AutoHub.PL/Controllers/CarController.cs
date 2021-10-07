@@ -1,11 +1,11 @@
 ﻿using System;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models;
+using AutoHub.BLL.Models.CarModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.PL.Controllers
 {
-    [Route("api/[controller]s")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CarController : Controller
     {
@@ -36,7 +36,7 @@ namespace AutoHub.PL.Controllers
             try
             {
                 var car = _carService.GetById(id);
-                if (car == null) 
+                if (car == null)
                     return NotFound();
                 return Ok(car);
             }
@@ -45,22 +45,23 @@ namespace AutoHub.PL.Controllers
                 return StatusCode(500, ex);
             }
         }
-        
+
         [HttpPost]
-        public IActionResult AddCar([FromBody]CarModel carModel)
+        public ActionResult<CarCreateApiModel> AddCar([FromBody] CarCreateApiModel carModel)
         {
             try
             {
                 if (carModel == null)
                     return BadRequest();
-                
-                return StatusCode(201, _carService.CreateCar(carModel));
+
+                _carService.CreateCar(carModel);
+
+                return CreatedAtAction(nameof(GetCarById), new { id = carModel.CarId }, carModel);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex);
             }
         }
-
     }
 }

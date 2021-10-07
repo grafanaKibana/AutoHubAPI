@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.PL.Controllers
 {
-    [Route("api/[controller]s")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LotController : Controller
     {

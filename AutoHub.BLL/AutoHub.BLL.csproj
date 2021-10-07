@@ -5,11 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AutoHub.DAL\AutoHub.DAL.csproj" />
+        <ProjectReference Include="..\AutoHub.DAL\AutoHub.DAL.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="10.1.1" />
+        <PackageReference Include="AutoMapper" Version="10.1.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Models\LotModels"/>
+        <Folder Include="Models\UserModels"/>
     </ItemGroup>
 
 </Project>

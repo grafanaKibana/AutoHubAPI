@@ -2,10 +2,11 @@
 {
     public enum CarStatusId
     {
-        OnHold = 1,
-        ReadyForSale = 2,
-        UnderRepair = 3,
-        OnSale = 4,
-        Sold = 5
+        New = 1,
+        OnHold = 2,
+        ReadyForSale = 3,
+        UnderRepair = 4,
+        OnSale = 5,
+        Sold = 6
     }
 }

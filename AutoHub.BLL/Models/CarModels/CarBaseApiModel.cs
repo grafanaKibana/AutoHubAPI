@@ -1,6 +1,6 @@
-﻿namespace AutoHub.BLL.Models
+namespace AutoHub.BLL.Models.CarModels
 {
-    public class CarModel
+    public class CarBaseApiModel
     {
         public int CarId { get; set; }
         public string ImgUrl { get; set; }

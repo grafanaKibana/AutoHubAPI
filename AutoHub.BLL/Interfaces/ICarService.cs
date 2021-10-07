@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using AutoHub.BLL.Models;
-using AutoHub.DAL.Entities;
+using AutoHub.BLL.Models.CarModels;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface ICarService
     {
-        IEnumerable<CarModel> GetAll();
-        CarModel GetById(int id);
-        CarModel CreateCar(CarModel carModel);
-        CarModel UpdateCar(CarModel carModel);
+        IEnumerable<CarViewModel> GetAll();
+        CarViewModel GetById(int id);
+        CarCreateApiModel CreateCar(CarCreateApiModel carModel);
+        CarUpdateApiModel UpdateCar(CarUpdateApiModel carModel);
     }
 }

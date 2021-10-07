@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoHub.DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace AutoHub.DAL.Repositories
 {
@@ -35,14 +34,12 @@ namespace AutoHub.DAL.Repositories
         public T Add(T newItem)
         {
             _context.Add(newItem);
-            _context.SaveChanges();
             return newItem;
         }
 
         public IEnumerable<T> AddRange(IEnumerable<T> newItems)
         {
             _context.AddRange(newItems);
-            _context.SaveChanges();
             return newItems;
         }
 
@@ -52,8 +49,8 @@ namespace AutoHub.DAL.Repositories
             {
                 return false;
             }
+
             _context.Update(item);
-            _context.SaveChanges();
             return true;
         }
 
@@ -64,7 +61,6 @@ namespace AutoHub.DAL.Repositories
             if (toRemove == null)
                 return false;
             _context.Remove(toRemove);
-            _context.SaveChanges();
             return true;
         }
     };
