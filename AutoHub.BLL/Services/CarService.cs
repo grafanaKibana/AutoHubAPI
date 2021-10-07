@@ -35,5 +35,20 @@ namespace AutoHub.BLL.Services
 
             return _mapper.Map<CarModel>(car);
         }
+        
+        public CarModel CreateCar(CarModel carModel)
+        {
+            _unitOfWork.Cars.Add(_mapper.Map<Car>(carModel));
+            _unitOfWork.Commit();
+            return carModel;
+        }
+
+        public CarModel UpdateCar(CarModel carModel)
+        {
+            _unitOfWork.Cars.Update(carModel.CarId, _mapper.Map<Car>(carModel));
+            _unitOfWork.Commit();
+            return carModel;
+        }
+
     }
 }

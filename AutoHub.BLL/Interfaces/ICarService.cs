@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoHub.BLL.Models;
+using AutoHub.DAL.Entities;
 
 namespace AutoHub.BLL.Interfaces
 {
@@ -7,5 +8,7 @@ namespace AutoHub.BLL.Interfaces
     {
         IEnumerable<CarModel> GetAll();
         CarModel GetById(int id);
+        CarModel CreateCar(CarModel carModel);
+        CarModel UpdateCar(CarModel carModel);
     }
 }

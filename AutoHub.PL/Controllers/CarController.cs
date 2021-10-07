@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoHub.BLL.Interfaces;
+using AutoHub.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.PL.Controllers
@@ -44,5 +45,22 @@ namespace AutoHub.PL.Controllers
                 return StatusCode(500, ex);
             }
         }
+        
+        [HttpPost]
+        public IActionResult AddCar([FromBody]CarModel carModel)
+        {
+            try
+            {
+                if (carModel == null)
+                    return BadRequest();
+                
+                return StatusCode(201, _carService.CreateCar(carModel));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
     }
 }
