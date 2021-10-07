@@ -8,7 +8,6 @@ namespace AutoHub.DAL
 {
     public class AutoHubContext : DbContext
     {
-        private readonly IConfigurationRoot _configuration;
         //DbSets [Entities]
         public DbSet<Car> Car { get; set; }
         public DbSet<User> User { get; set; }
