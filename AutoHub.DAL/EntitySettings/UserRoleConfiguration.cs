@@ -11,9 +11,7 @@ namespace AutoHub.DAL.EntitySettings
     {
         public UserRoleConfiguration(EntityTypeBuilder<UserRole> entity)
         {
-            entity.ToTable("CarStatus").HasKey(role => role.UserRoleId);
-            entity.Property(role => role.UserRoleId).HasConversion<int>();
-            entity.Property(role => role.UserRoleName).HasConversion<string>();
+            entity.ToTable("UserRole").HasKey(role => role.UserRoleId);
 
             entity.HasData(
                 Enum.GetValues(typeof(UserRoleId))

@@ -1,5 +1,4 @@
-﻿using System;
-using AutoHub.DAL.Entities;
+﻿using AutoHub.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +10,7 @@ namespace AutoHub.DAL.EntitySettings
         {
             entity.ToTable("Lot").HasKey(lot => lot.LotId);
 
-            entity.Property(lot => lot.StartTime).IsRequired().HasDefaultValue(DateTime.UtcNow);
+            entity.Property(lot => lot.StartTime).IsRequired();
 
             entity.HasOne(lot => lot.Creator)
                 .WithMany(user => user.UserLots)

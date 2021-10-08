@@ -12,8 +12,6 @@ namespace AutoHub.DAL.EntitySettings
         public CarStatusConfiguration(EntityTypeBuilder<CarStatus> entity)
         {
             entity.ToTable("CarStatus").HasKey(status => status.CarStatusId);
-            entity.Property(status => status.CarStatusId).HasConversion<int>();
-            entity.Property(status => status.CarStatusName).HasConversion<string>();
 
             entity.HasData(
                 Enum.GetValues(typeof(CarStatusId))

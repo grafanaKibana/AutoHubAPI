@@ -12,8 +12,6 @@ namespace AutoHub.DAL.EntitySettings
         public LotStatusConfiguration(EntityTypeBuilder<LotStatus> entity)
         {
             entity.ToTable("LotStatus").HasKey(status => status.LotStatusId);
-            entity.Property(status => status.LotStatusId).HasConversion<int>();
-            entity.Property(status => status.LotStatusName).HasConversion<string>();
 
             entity.HasData(
                 Enum.GetValues(typeof(LotStatusId))
