@@ -1,5 +1,4 @@
 ﻿using AutoHub.DAL.Entities;
-using AutoHub.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,17 +9,24 @@ namespace AutoHub.DAL.EntitySettings
         public CarConfiguration(EntityTypeBuilder<Car> entity)
         {
             entity.ToTable("Car").HasKey(car => car.CarId);
-            entity.Property(car => car.Brand).IsRequired().HasMaxLength(20);
-            entity.Property(car => car.Model).IsRequired().HasMaxLength(20);
             entity.Property(car => car.Description).IsRequired();
-            entity.Property(car => car.Color).IsRequired();
             entity.Property(car => car.Year).IsRequired().HasMaxLength(4);
             entity.Property(car => car.VIN).IsRequired().HasMaxLength(17);
             entity.Property(car => car.Mileage).IsRequired();
             entity.Property(car => car.CostPrice).IsRequired();
             entity.Property(car => car.SellingPrice).IsRequired();
 
-            entity.HasData(
+            entity.HasOne(car => car.CarBrand)
+                .WithOne()
+                .IsRequired();
+            entity.HasOne(car => car.CarModel)
+                .WithOne()
+                .IsRequired();
+            entity.HasOne(car => car.CarBrand)
+                .WithOne()
+                .IsRequired();
+
+            /*entity.HasData(
                 new Car
                 {
                     CarId = 1,
@@ -54,7 +60,7 @@ namespace AutoHub.DAL.EntitySettings
                     SellingPrice = 88300,
                     Mileage = 32161,
                     CarStatusId = CarStatusId.Sold
-                });
+                });*/
         }
     }
 }

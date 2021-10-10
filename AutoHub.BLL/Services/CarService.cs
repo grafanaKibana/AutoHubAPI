@@ -42,11 +42,11 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Cars.Add(new Car
             {
                 CarId = carModel.CarId,
+                CarBrandId = carModel.CarBrandId,
+                CarModelId = carModel.CarModelId,
+                CarColorId = carModel.CarColorId,
                 ImgUrl = carModel.ImgUrl,
-                Brand = carModel.Brand,
-                Model = carModel.Model,
                 Description = carModel.Description,
-                Color = carModel.Color,
                 Year = carModel.Year,
                 VIN = carModel.VIN,
                 Mileage = carModel.Mileage,
@@ -64,11 +64,11 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Cars.Update(id, new Car
             {
                 CarId = carModel.CarId,
+                CarBrandId = carModel.CarBrandId,
+                CarModelId = carModel.CarModelId,
+                CarColorId = carModel.CarColorId,
                 ImgUrl = carModel.ImgUrl,
-                Brand = carModel.Brand,
-                Model = carModel.Model,
                 Description = carModel.Description,
-                Color = carModel.Color,
                 Year = carModel.Year,
                 VIN = carModel.VIN,
                 Mileage = carModel.Mileage,
