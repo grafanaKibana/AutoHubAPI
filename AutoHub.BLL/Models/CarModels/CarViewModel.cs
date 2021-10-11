@@ -3,9 +3,9 @@ namespace AutoHub.BLL.Models.CarModels
     public class CarViewModel
     {
         public int CarId { get; set; }
-        public int BrandId { get; set; }
-        public int ModelId { get; set; }
-        public int ColorId { get; set; }
+        public int CarBrandId { get; set; }
+        public int CarModelId { get; set; }
+        public int CarColorId { get; set; }
         public string ImgUrl { get; set; }
         public string Description { get; set; }
         public int Year { get; set; }

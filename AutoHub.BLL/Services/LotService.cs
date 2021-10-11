@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models;
+using AutoHub.BLL.Models.LotModels;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoHub.DAL.Interfaces;
@@ -10,8 +10,8 @@ namespace AutoHub.BLL.Services
 {
     public class LotService : ILotService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public LotService(IUnitOfWork unitOfWork)
         {

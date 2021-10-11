@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AutoHub.BLL.Models;
+using AutoHub.BLL.Models.UserModels;
 
 namespace AutoHub.BLL.Interfaces
 {

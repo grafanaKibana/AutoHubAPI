@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AutoHub.DAL.Entities;
 
-namespace AutoHub.BLL.Models
+namespace AutoHub.BLL.Models.UserModels
 {
     public class UserModel
     {
