@@ -1,4 +1,4 @@
-namespace AutoHub.BLL.Interfaces
+namespace AutoHub.BLL.Models.CarModelModels
 {
     public class CarModelCreateApiModel
     {

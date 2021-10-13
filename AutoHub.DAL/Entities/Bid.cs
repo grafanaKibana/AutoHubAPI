@@ -7,10 +7,10 @@ namespace AutoHub.DAL.Entities
         public int BidId { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public int LotId { get; set; }
-        public Lot Lot { get; set; }
+        public virtual Lot Lot { get; set; }
 
         public decimal BidValue { get; set; }
 

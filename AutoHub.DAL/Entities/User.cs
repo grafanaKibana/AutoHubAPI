@@ -14,7 +14,7 @@ namespace AutoHub.DAL.Entities
         public int UserId { get; set; }
 
         public UserRoleId UserRoleId { get; set; }
-        public UserRole UserRole { get; set; }
+        public virtual UserRole UserRole { get; set; }
 
         public string FirstName { get; set; }
 
@@ -28,8 +28,8 @@ namespace AutoHub.DAL.Entities
 
         public DateTime RegistrationTime { get; set; }
 
-        public IEnumerable<Bid> UserBids { get; set; }
+        public virtual IEnumerable<Bid> UserBids { get; set; }
 
-        public IEnumerable<Lot> UserLots { get; set; }
+        public virtual IEnumerable<Lot> UserLots { get; set; }
     }
 }

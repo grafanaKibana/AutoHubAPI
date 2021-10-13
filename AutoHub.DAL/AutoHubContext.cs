@@ -17,6 +17,9 @@ namespace AutoHub.DAL
 
         //DbSets [Entities]
         public DbSet<Car> Cars { get; set; }
+        public DbSet<CarBrand> CarBrands { get; set; }
+        public DbSet<CarModel> CarModels { get; set; }
+        public DbSet<CarColor> CarColors { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Lot> Lots { get; set; }
         public DbSet<Bid> Bids { get; set; }

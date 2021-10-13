@@ -20,7 +20,7 @@ namespace AutoHub.DAL.Entities
         public int WinnerId { get; set; }
         public virtual User Winner { get; set; }
 
-        public IEnumerable<Bid> Bids { get; set; }
+        public virtual IEnumerable<Bid> Bids { get; set; }
 
         public DateTime StartTime { get; set; }
 
