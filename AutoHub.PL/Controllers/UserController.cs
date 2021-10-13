@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using AutoHub.BLL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.PL.Controllers
 {
@@ -6,5 +8,24 @@ namespace AutoHub.PL.Controllers
     [ApiController]
     public class UserController : Controller
     {
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            try
+            {
+                return Ok(_userService.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

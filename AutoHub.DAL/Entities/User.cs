@@ -8,6 +8,7 @@ namespace AutoHub.DAL.Entities
     {
         public User()
         {
+            UserBids = new HashSet<Bid>();
             UserLots = new HashSet<Lot>();
         }
 
