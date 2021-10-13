@@ -51,7 +51,8 @@ namespace AutoHub.DAL.Repositories
 
         public bool Update(int id, T item)
         {
-            if (_context.Set<T>().Find(id) == null)
+            var toUpdate = _context.Set<T>().Find(id);
+            if (toUpdate == null)
             {
                 return false;
             }
@@ -63,9 +64,8 @@ namespace AutoHub.DAL.Repositories
         public bool Delete(int id)
         {
             var toRemove = _context.Set<T>().Find(id);
+            if (toRemove == null) return false;
 
-            if (toRemove == null)
-                return false;
             _context.Remove(toRemove);
             return true;
         }

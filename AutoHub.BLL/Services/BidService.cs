@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoHub.BLL.Interfaces;
@@ -49,11 +50,10 @@ namespace AutoHub.BLL.Services
         {
             _unitOfWork.Bids.Add(new Bid
             {
-                BidId = bidModel.BidId,
                 UserId = bidModel.UserId,
                 LotId = bidModel.UserId,
                 BidValue = bidModel.BidValue,
-                BidTime = bidModel.BidTime
+                BidTime = DateTime.UtcNow
             });
 
             _unitOfWork.Commit();

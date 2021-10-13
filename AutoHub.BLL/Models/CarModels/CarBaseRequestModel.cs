@@ -2,10 +2,9 @@ namespace AutoHub.BLL.Models.CarModels
 {
     public class CarBaseRequestModel
     {
-        public int CarId { get; set; }
-        public int CarBrandId { get; set; }
-        public int CarModelId { get; set; }
-        public int CarColorId { get; set; }
+        public string CarBrand { get; set; }
+        public string CarModel { get; set; }
+        public string CarColor { get; set; }
         public string ImgUrl { get; set; }
         public string Description { get; set; }
         public int Year { get; set; }

@@ -73,8 +73,7 @@ namespace AutoHub.PL.Controllers
                     return BadRequest();
 
                 _bidService.CreateBid(bidCreateRequestModel);
-                return CreatedAtAction(nameof(GetBidById), new { id = bidCreateRequestModel.BidId },
-                    bidCreateRequestModel);
+                return Ok(bidCreateRequestModel);
             }
             catch (Exception ex)
             {

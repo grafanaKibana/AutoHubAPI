@@ -41,7 +41,6 @@ namespace AutoHub.BLL.Services
         {
             _unitOfWork.CarBrands.Add(new CarBrand
             {
-                CarBrandId = carBrandModel.CarBrandId,
                 CarBrandName = carBrandModel.CarBrandName
             });
             _unitOfWork.Commit();

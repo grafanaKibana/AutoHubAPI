@@ -40,7 +40,6 @@ namespace AutoHub.BLL.Services
         {
             _unitOfWork.CarModels.Add(new CarModel
             {
-                CarModelId = carModelModel.CarModelId,
                 CarModelName = carModelModel.CarModelName
             });
             _unitOfWork.Commit();

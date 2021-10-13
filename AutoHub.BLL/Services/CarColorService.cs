@@ -40,7 +40,6 @@ namespace AutoHub.BLL.Services
         {
             _unitOfWork.CarColors.Add(new CarColor
             {
-                CarColorId = carColorModel.CarColorId,
                 CarColorName = carColorModel.CarColorName
             });
             _unitOfWork.Commit();

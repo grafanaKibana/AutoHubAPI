@@ -15,16 +15,6 @@ namespace AutoHub.DAL.EntitySettings
             entity.Property(car => car.Mileage).IsRequired();
             entity.Property(car => car.CostPrice).IsRequired();
             entity.Property(car => car.SellingPrice).IsRequired();
-
-            entity.HasOne(car => car.CarBrand)
-                .WithOne()
-                .IsRequired();
-            entity.HasOne(car => car.CarModel)
-                .WithOne()
-                .IsRequired();
-            entity.HasOne(car => car.CarBrand)
-                .WithOne()
-                .IsRequired();
         }
     }
 }
