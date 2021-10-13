@@ -37,7 +37,7 @@ namespace AutoHub.BLL.Services
         }
 
 
-        public bool Register(UserCreateRequestModel userModel)
+        public bool Register(UserRegisterRequestModel userModel)
         {
             if (IsPasswordMatchRules(userModel.Password) && IsEmailUnique(userModel.Email))
             {

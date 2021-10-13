@@ -3,10 +3,8 @@ using AutoHub.DAL.Enums;
 
 namespace AutoHub.BLL.Models.UserModels
 {
-    public class UserCreateRequestModel
+    public class UserRegisterRequestModel
     {
-        public int UserId { get; set; }
-
         public UserRoleId UserRoleId { get; set; }
 
         public string FirstName { get; set; }
