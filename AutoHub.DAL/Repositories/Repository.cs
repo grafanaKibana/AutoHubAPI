@@ -32,6 +32,11 @@ namespace AutoHub.DAL.Repositories
             return _context.Set<T>().Where(predicate);
         }
 
+        public bool Any(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Any(predicate);
+        }
+
         public T Add(T newItem)
         {
             _context.Add(newItem);

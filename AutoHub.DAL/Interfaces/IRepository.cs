@@ -9,6 +9,7 @@ namespace AutoHub.DAL.Interfaces
         IEnumerable<T> GetAll();
         T GetById(int id);
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        bool Any(Expression<Func<T, bool>> predicate);
         T Add(T newItem);
         IEnumerable<T> AddRange(IEnumerable<T> newItems);
         bool Update(int id, T item);
