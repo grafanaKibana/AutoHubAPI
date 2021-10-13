@@ -1,6 +1,6 @@
 namespace AutoHub.BLL.Models.CarModelModels
 {
-    public class CarModelViewModel
+    public class CarModelResponseModel
     {
         public int CarModelId { get; set; }
 

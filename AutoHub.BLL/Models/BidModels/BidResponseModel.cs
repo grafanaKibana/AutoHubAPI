@@ -2,7 +2,7 @@ using System;
 
 namespace AutoHub.BLL.Models.BidModels
 {
-    public class BidViewModel
+    public class BidResponseModel
     {
         public int BidId { get; set; }
 

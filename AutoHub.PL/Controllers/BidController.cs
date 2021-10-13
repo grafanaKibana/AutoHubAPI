@@ -65,15 +65,16 @@ namespace AutoHub.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBid([FromBody] BidCreateApiModel bidCreateApiModel)
+        public IActionResult AddBid([FromBody] BidCreateRequestModel bidCreateRequestModel)
         {
             try
             {
-                if (bidCreateApiModel == null)
+                if (bidCreateRequestModel == null)
                     return BadRequest();
 
-                _bidService.CreateBid(bidCreateApiModel);
-                return CreatedAtAction(nameof(GetBidById), new { id = bidCreateApiModel.BidId }, bidCreateApiModel);
+                _bidService.CreateBid(bidCreateRequestModel);
+                return CreatedAtAction(nameof(GetBidById), new { id = bidCreateRequestModel.BidId },
+                    bidCreateRequestModel);
             }
             catch (Exception ex)
             {

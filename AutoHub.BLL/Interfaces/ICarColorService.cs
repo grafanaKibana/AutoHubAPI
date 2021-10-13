@@ -5,9 +5,9 @@ namespace AutoHub.BLL.Interfaces
 {
     public interface ICarColorService
     {
-        IEnumerable<CarColorViewModel> GetAll();
-        CarColorViewModel GetById(int id);
-        CarColorCreateApiModel CreateCarColor(CarColorCreateApiModel carColorModel);
+        IEnumerable<CarColorResponseModel> GetAll();
+        CarColorResponseModel GetById(int id);
+        CarColorCreateRequestModel CreateCarColor(CarColorCreateRequestModel carColorModel);
         bool Exist(string carColorName);
     }
 }

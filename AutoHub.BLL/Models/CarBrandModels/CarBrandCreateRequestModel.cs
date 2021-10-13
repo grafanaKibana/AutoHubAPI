@@ -1,6 +1,6 @@
 namespace AutoHub.BLL.Models.CarBrandModels
 {
-    public class CarBrandCreateApiModel
+    public class CarBrandCreateRequestModel
     {
         public int CarBrandId { get; set; }
 

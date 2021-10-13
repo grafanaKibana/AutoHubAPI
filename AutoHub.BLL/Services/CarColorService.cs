@@ -17,26 +17,26 @@ namespace AutoHub.BLL.Services
             _unitOfWork = unitOfWork;
 
             var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<CarColor, CarColorViewModel>());
+                .CreateMap<CarColor, CarColorResponseModel>());
             _mapper = new Mapper(mapperConfig);
         }
 
-        public IEnumerable<CarColorViewModel> GetAll()
+        public IEnumerable<CarColorResponseModel> GetAll()
         {
-            return _mapper.Map<IEnumerable<CarColorViewModel>>(_unitOfWork.CarColors.GetAll());
+            return _mapper.Map<IEnumerable<CarColorResponseModel>>(_unitOfWork.CarColors.GetAll());
         }
 
-        public CarColorViewModel GetById(int id)
+        public CarColorResponseModel GetById(int id)
         {
             var carColor = _unitOfWork.CarColors.GetById(id);
 
             if (carColor == null)
                 return null;
 
-            return _mapper.Map<CarColorViewModel>(carColor);
+            return _mapper.Map<CarColorResponseModel>(carColor);
         }
 
-        public CarColorCreateApiModel CreateCarColor(CarColorCreateApiModel carColorModel)
+        public CarColorCreateRequestModel CreateCarColor(CarColorCreateRequestModel carColorModel)
         {
             _unitOfWork.CarColors.Add(new CarColor
             {

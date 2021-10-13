@@ -14,7 +14,7 @@ namespace AutoHub.DAL.EntitySettings
 
             entity.HasOne(lot => lot.Creator)
                 .WithMany(user => user.UserLots)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             entity.HasOne(lot => lot.Winner)
                 .WithOne()

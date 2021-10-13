@@ -5,9 +5,9 @@ namespace AutoHub.BLL.Interfaces
 {
     public interface ICarModelService
     {
-        IEnumerable<CarModelViewModel> GetAll();
-        CarModelViewModel GetById(int id);
-        CarModelCreateApiModel CreateCarModel(CarModelCreateApiModel carModelModel);
+        IEnumerable<CarModelResponseModel> GetAll();
+        CarModelResponseModel GetById(int id);
+        CarModelCreateRequestModel CreateCarModel(CarModelCreateRequestModel carModelModel);
         bool Exist(string carModelName);
     }
 }

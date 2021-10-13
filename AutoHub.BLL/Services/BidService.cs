@@ -17,35 +17,35 @@ namespace AutoHub.BLL.Services
         {
             _unitOfWork = unitOfWork;
 
-            var mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<Bid, BidViewModel>());
+            var mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<Bid, BidResponseModel>());
             _mapper = new Mapper(mapperConfig);
         }
 
-        public IEnumerable<BidViewModel> GetAllUserBids(int userId)
+        public IEnumerable<BidResponseModel> GetAllUserBids(int userId)
         {
-            return _mapper.Map<IEnumerable<BidViewModel>>(_unitOfWork.Bids
+            return _mapper.Map<IEnumerable<BidResponseModel>>(_unitOfWork.Bids
                 .GetAll()
                 .Where(bid => bid.UserId == userId));
         }
 
-        public IEnumerable<BidViewModel> GetAllLotBids(int lotId)
+        public IEnumerable<BidResponseModel> GetAllLotBids(int lotId)
         {
-            return _mapper.Map<IEnumerable<BidViewModel>>(_unitOfWork.Bids
+            return _mapper.Map<IEnumerable<BidResponseModel>>(_unitOfWork.Bids
                 .GetAll()
                 .Where(bid => bid.LotId == lotId));
         }
 
-        public BidViewModel GetById(int id)
+        public BidResponseModel GetById(int id)
         {
             var bid = _unitOfWork.Bids.GetById(id);
 
             if (bid == null)
                 return null;
 
-            return _mapper.Map<BidViewModel>(bid);
+            return _mapper.Map<BidResponseModel>(bid);
         }
 
-        public BidCreateApiModel CreateBid(BidCreateApiModel bidModel)
+        public BidCreateRequestModel CreateBid(BidCreateRequestModel bidModel)
         {
             _unitOfWork.Bids.Add(new Bid
             {

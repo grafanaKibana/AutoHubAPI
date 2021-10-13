@@ -1,9 +1,8 @@
-﻿using System;
 using AutoHub.DAL.Enums;
 
 namespace AutoHub.BLL.Models.UserModels
 {
-    public class UserViewModel
+    public class UserUpdateRequestModel
     {
         public int UserId { get; set; }
 
@@ -17,6 +16,6 @@ namespace AutoHub.BLL.Models.UserModels
 
         public string Phone { get; set; }
 
-        public DateTime RegistrationTime { get; set; }
+        public string Password { get; set; }
     }
 }

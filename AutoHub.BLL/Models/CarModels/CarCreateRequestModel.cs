@@ -1,6 +1,6 @@
 namespace AutoHub.BLL.Models.CarModels
 {
-    public class CarCreateApiModel : CarBaseApiModel
+    public class CarCreateRequestModel : CarBaseRequestModel
     {
         public decimal CostPrice { get; set; }
     }

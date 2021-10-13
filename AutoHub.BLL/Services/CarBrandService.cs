@@ -17,27 +17,27 @@ namespace AutoHub.BLL.Services
             _unitOfWork = unitOfWork;
 
             var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<CarBrand, CarBrandViewModel>());
+                .CreateMap<CarBrand, CarBrandResponseModel>());
             _mapper = new Mapper(mapperConfig);
         }
 
 
-        public IEnumerable<CarBrandViewModel> GetAll()
+        public IEnumerable<CarBrandResponseModel> GetAll()
         {
-            return _mapper.Map<IEnumerable<CarBrandViewModel>>(_unitOfWork.CarBrands.GetAll());
+            return _mapper.Map<IEnumerable<CarBrandResponseModel>>(_unitOfWork.CarBrands.GetAll());
         }
 
-        public CarBrandViewModel GetById(int id)
+        public CarBrandResponseModel GetById(int id)
         {
             var carBrand = _unitOfWork.CarBrands.GetById(id);
 
             if (carBrand == null)
                 return null;
 
-            return _mapper.Map<CarBrandViewModel>(carBrand);
+            return _mapper.Map<CarBrandResponseModel>(carBrand);
         }
 
-        public CarBrandCreateApiModel CreateCarBrand(CarBrandCreateApiModel carBrandModel)
+        public CarBrandCreateRequestModel CreateCarBrand(CarBrandCreateRequestModel carBrandModel)
         {
             _unitOfWork.CarBrands.Add(new CarBrand
             {

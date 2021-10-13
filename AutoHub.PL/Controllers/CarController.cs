@@ -47,16 +47,17 @@ namespace AutoHub.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddCar([FromBody] CarCreateApiModel carCreateApiModel)
+        public IActionResult AddCar([FromBody] CarCreateRequestModel carCreateRequestModel)
         {
             try
             {
-                if (carCreateApiModel == null)
+                if (carCreateRequestModel == null)
                     return BadRequest();
 
-                _carService.CreateCar(carCreateApiModel);
+                _carService.CreateCar(carCreateRequestModel);
 
-                return CreatedAtAction(nameof(GetCarById), new { id = carCreateApiModel.CarId }, carCreateApiModel);
+                return CreatedAtAction(nameof(GetCarById), new { id = carCreateRequestModel.CarId },
+                    carCreateRequestModel);
             }
             catch (Exception ex)
             {
@@ -65,7 +66,7 @@ namespace AutoHub.PL.Controllers
         }
 
         /*[HttpPut("{id}")]
-        public IActionResult UpdateCar(int id, [FromBody] CarUpdateApiModel carUpdateApiModel)
+        public IActionResult UpdateCar(int id, [FromBody] CarUpdateRequestModel carUpdateApiModel)
         {
             try
             {

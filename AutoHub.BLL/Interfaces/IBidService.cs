@@ -5,9 +5,9 @@ namespace AutoHub.BLL.Interfaces
 {
     public interface IBidService
     {
-        IEnumerable<BidViewModel> GetAllUserBids(int userId);
-        IEnumerable<BidViewModel> GetAllLotBids(int lotId);
-        BidViewModel GetById(int id);
-        BidCreateApiModel CreateBid(BidCreateApiModel bidModel);
+        IEnumerable<BidResponseModel> GetAllUserBids(int userId);
+        IEnumerable<BidResponseModel> GetAllLotBids(int lotId);
+        BidResponseModel GetById(int id);
+        BidCreateRequestModel CreateBid(BidCreateRequestModel bidModel);
     }
 }

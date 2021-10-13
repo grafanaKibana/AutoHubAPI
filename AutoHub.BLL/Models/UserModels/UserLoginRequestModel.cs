@@ -1,6 +1,6 @@
 namespace AutoHub.BLL.Models.UserModels
 {
-    public class UserLoginApiModel
+    public class UserLoginRequestModel
     {
         public int UserId { get; set; }
 

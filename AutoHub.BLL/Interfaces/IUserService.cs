@@ -5,9 +5,9 @@ namespace AutoHub.BLL.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<UserViewModel> GetAll();
-        UserViewModel GetById(int id);
-        bool Register(UserCreateApiModel userModel);
+        IEnumerable<UserResponseModel> GetAll();
+        UserResponseModel GetById(int id);
+        bool Register(UserCreateRequestModel userModel);
         bool Login();
         bool IsEmailUnique(string email);
         bool IsPasswordMatchRules(string password);

@@ -1,6 +1,6 @@
 namespace AutoHub.BLL.Models.CarColorModels
 {
-    public class CarColorCreateApiModel
+    public class CarColorCreateRequestModel
     {
         public int CarColorId { get; set; }
 

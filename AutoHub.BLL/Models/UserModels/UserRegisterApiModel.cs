@@ -3,7 +3,7 @@ using AutoHub.DAL.Enums;
 
 namespace AutoHub.BLL.Models.UserModels
 {
-    public class UserCreateApiModel
+    public class UserCreateRequestModel
     {
         public int UserId { get; set; }
 

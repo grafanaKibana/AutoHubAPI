@@ -18,26 +18,26 @@ namespace AutoHub.BLL.Services
             _unitOfWork = unitOfWork;
 
             var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<Car, CarViewModel>());
+                .CreateMap<Car, CarResponseModel>());
             _mapper = new Mapper(mapperConfig);
         }
 
-        public IEnumerable<CarViewModel> GetAll()
+        public IEnumerable<CarResponseModel> GetAll()
         {
-            return _mapper.Map<IEnumerable<CarViewModel>>(_unitOfWork.Cars.GetAll());
+            return _mapper.Map<IEnumerable<CarResponseModel>>(_unitOfWork.Cars.GetAll());
         }
 
-        public CarViewModel GetById(int id)
+        public CarResponseModel GetById(int id)
         {
             var car = _unitOfWork.Cars.GetById(id);
 
             if (car == null)
                 return null;
 
-            return _mapper.Map<CarViewModel>(car);
+            return _mapper.Map<CarResponseModel>(car);
         }
 
-        public CarCreateApiModel CreateCar(CarCreateApiModel carModel)
+        public CarCreateRequestModel CreateCar(CarCreateRequestModel carModel)
         {
             _unitOfWork.Cars.Add(new Car
             {
@@ -59,7 +59,7 @@ namespace AutoHub.BLL.Services
             return carModel;
         }
 
-        public CarUpdateApiModel UpdateCar(int id, CarUpdateApiModel carModel)
+        public CarUpdateRequestModel UpdateCar(int id, CarUpdateRequestModel carModel)
         {
             _unitOfWork.Cars.Update(id, new Car
             {
