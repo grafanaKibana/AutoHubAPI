@@ -26,6 +26,6 @@ namespace AutoHub.DAL.Entities
 
         public DateTime EndTime { get; set; }
 
-        public decimal LastBid { get; set; }
+        public decimal? LastBid { get; set; }
     }
 }
