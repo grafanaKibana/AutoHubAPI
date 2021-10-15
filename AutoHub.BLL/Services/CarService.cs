@@ -19,7 +19,10 @@ namespace AutoHub.BLL.Services
             _unitOfWork = unitOfWork;
 
             var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<Car, CarResponseModel>());
+                .CreateMap<Car, CarResponseModel>()
+                .ForMember(model => model.CarBrand, entity => entity.MapFrom(car => car.CarBrand.CarBrandName))
+                .ForMember(model => model.CarModel, entity => entity.MapFrom(car => car.CarModel.CarModelName))
+                .ForMember(model => model.CarColor, entity => entity.MapFrom(car => car.CarColor.CarColorName)));
             _mapper = new Mapper(mapperConfig);
         }
 

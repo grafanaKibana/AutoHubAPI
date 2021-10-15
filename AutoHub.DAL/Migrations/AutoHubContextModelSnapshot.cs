@@ -219,7 +219,7 @@ namespace AutoHub.DAL.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("WinnerId")
+                    b.Property<int?>("WinnerId")
                         .HasColumnType("int");
 
                     b.HasKey("LotId");
@@ -231,7 +231,8 @@ namespace AutoHub.DAL.Migrations
                     b.HasIndex("LotStatusId");
 
                     b.HasIndex("WinnerId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[WinnerId] IS NOT NULL");
 
                     b.ToTable("Lot");
                 });
@@ -322,7 +323,7 @@ namespace AutoHub.DAL.Migrations
                             LastName = "Reshetnik",
                             Password = "75K3eLr+dx6JJFuJ7LwIpEpOFmwGZZkRiB84PURz6U8=",
                             Phone = "+380698632559",
-                            RegistrationTime = new DateTime(2021, 10, 13, 20, 33, 32, 7, DateTimeKind.Utc).AddTicks(6162),
+                            RegistrationTime = new DateTime(2021, 10, 15, 12, 45, 48, 565, DateTimeKind.Utc).AddTicks(7744),
                             UserRoleId = 3
                         },
                         new
@@ -333,7 +334,7 @@ namespace AutoHub.DAL.Migrations
                             LastName = "Clifford",
                             Password = "gGm/YLoNuYebABCXGzuvBeXKptnMGFfobCfPXBgsTRU=",
                             Phone = "+380501449999",
-                            RegistrationTime = new DateTime(2021, 10, 13, 20, 33, 32, 7, DateTimeKind.Utc).AddTicks(9940),
+                            RegistrationTime = new DateTime(2021, 10, 15, 12, 45, 48, 565, DateTimeKind.Utc).AddTicks(9551),
                             UserRoleId = 2
                         },
                         new
@@ -344,7 +345,7 @@ namespace AutoHub.DAL.Migrations
                             LastName = "Musk",
                             Password = "ZwSQald1A8FIwjNFQ8xhsITfYxHkPomsLFKFa448oWI=",
                             Phone = "+380991449999",
-                            RegistrationTime = new DateTime(2021, 10, 13, 20, 33, 32, 8, DateTimeKind.Utc).AddTicks(132),
+                            RegistrationTime = new DateTime(2021, 10, 15, 12, 45, 48, 565, DateTimeKind.Utc).AddTicks(9617),
                             UserRoleId = 2
                         });
                 });
@@ -456,8 +457,7 @@ namespace AutoHub.DAL.Migrations
                     b.HasOne("AutoHub.DAL.Entities.User", "Winner")
                         .WithOne()
                         .HasForeignKey("AutoHub.DAL.Entities.Lot", "WinnerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Car");
 
