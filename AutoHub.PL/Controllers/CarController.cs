@@ -47,42 +47,21 @@ namespace AutoHub.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddCar([FromBody] CarCreateApiModel carCreateApiModel)
+        public IActionResult AddCar([FromBody] CarCreateRequestModel carCreateRequestModel)
         {
             try
             {
-                if (carCreateApiModel == null)
+                if (carCreateRequestModel == null)
                     return BadRequest();
 
-                _carService.CreateCar(carCreateApiModel);
+                _carService.CreateCar(carCreateRequestModel);
 
-                return CreatedAtAction(nameof(GetCarById), new { id = carCreateApiModel.CarId }, carCreateApiModel);
+                return Ok(carCreateRequestModel);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex);
             }
         }
-
-        /*[HttpPut("{id}")]
-        public IActionResult UpdateCar(int id, [FromBody] CarUpdateApiModel carUpdateApiModel)
-        {
-            try
-            {
-                if (_carService.GetById(id) == null)
-                    return NotFound();
-                
-                if (carUpdateApiModel == null || id != carUpdateApiModel.CarId)
-                    return BadRequest();
-
-                _carService.UpdateCar(id, carUpdateApiModel);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }*/
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoHub.DAL.Enums;
 
 namespace AutoHub.DAL.Entities
@@ -6,6 +7,9 @@ namespace AutoHub.DAL.Entities
     public class Lot
     {
         public int LotId { get; set; }
+
+        public LotStatusId LotStatusId { get; set; }
+        public virtual LotStatus LotStatus { get; set; }
 
         public int CreatorId { get; set; }
         public virtual User Creator { get; set; }
@@ -16,12 +20,12 @@ namespace AutoHub.DAL.Entities
         public int WinnerId { get; set; }
         public virtual User Winner { get; set; }
 
+        public virtual IEnumerable<Bid> Bids { get; set; }
+
         public DateTime StartTime { get; set; }
+
         public DateTime EndTime { get; set; }
 
         public decimal LastBid { get; set; }
-
-        public LotStatusId LotStatusId { get; set; }
-        public virtual LotStatus LotStatus { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoHub.DAL.Entities;
 
-namespace AutoHub.BLL.Models
+namespace AutoHub.BLL.Models.LotModels
 {
     public class LotModel
     {

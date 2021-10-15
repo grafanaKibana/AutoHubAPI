@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.CarModels;
 using AutoHub.DAL.Entities;
@@ -18,35 +19,47 @@ namespace AutoHub.BLL.Services
             _unitOfWork = unitOfWork;
 
             var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<Car, CarViewModel>());
+                .CreateMap<Car, CarResponseModel>());
             _mapper = new Mapper(mapperConfig);
         }
 
-        public IEnumerable<CarViewModel> GetAll()
+        public IEnumerable<CarResponseModel> GetAll()
         {
-            return _mapper.Map<IEnumerable<CarViewModel>>(_unitOfWork.Cars.GetAll());
+            return _mapper.Map<IEnumerable<CarResponseModel>>(_unitOfWork.Cars.GetAll());
         }
 
-        public CarViewModel GetById(int id)
+        public CarResponseModel GetById(int id)
         {
             var car = _unitOfWork.Cars.GetById(id);
 
             if (car == null)
                 return null;
 
-            return _mapper.Map<CarViewModel>(car);
+            return _mapper.Map<CarResponseModel>(car);
         }
 
-        public CarCreateApiModel CreateCar(CarCreateApiModel carModel)
+        public CarCreateRequestModel CreateCar(CarCreateRequestModel carModel)
         {
+            if (!_unitOfWork.CarBrands.Any(brand => brand.CarBrandName == carModel.CarBrand))
+                _unitOfWork.CarBrands.Add(new CarBrand { CarBrandName = carModel.CarBrand });
+
+            if (!_unitOfWork.CarModels.Any(model => model.CarModelName == carModel.CarModel))
+                _unitOfWork.CarModels.Add(new CarModel { CarModelName = carModel.CarModel });
+
+            if (!_unitOfWork.CarColors.Any(color => color.CarColorName == carModel.CarColor))
+                _unitOfWork.CarColors.Add(new CarColor { CarColorName = carModel.CarColor });
+            _unitOfWork.Commit();
+
             _unitOfWork.Cars.Add(new Car
             {
-                CarId = carModel.CarId,
+                CarBrand =
+                    _unitOfWork.CarBrands.Find(brand => brand.CarBrandName == carModel.CarBrand).FirstOrDefault(),
+                CarModel =
+                    _unitOfWork.CarModels.Find(model => model.CarModelName == carModel.CarModel).FirstOrDefault(),
+                CarColor =
+                    _unitOfWork.CarColors.Find(color => color.CarColorName == carModel.CarColor).FirstOrDefault(),
                 ImgUrl = carModel.ImgUrl,
-                Brand = carModel.Brand,
-                Model = carModel.Model,
                 Description = carModel.Description,
-                Color = carModel.Color,
                 Year = carModel.Year,
                 VIN = carModel.VIN,
                 Mileage = carModel.Mileage,
@@ -59,16 +72,28 @@ namespace AutoHub.BLL.Services
             return carModel;
         }
 
-        public CarUpdateApiModel UpdateCar(int id, CarUpdateApiModel carModel)
+        public CarUpdateRequestModel UpdateCar(int id, CarUpdateRequestModel carModel)
         {
+            if (!_unitOfWork.CarBrands.Any(brand => brand.CarBrandName == carModel.CarBrand))
+                _unitOfWork.CarBrands.Add(new CarBrand { CarBrandName = carModel.CarBrand });
+
+            if (!_unitOfWork.CarModels.Any(model => model.CarModelName == carModel.CarModel))
+                _unitOfWork.CarModels.Add(new CarModel { CarModelName = carModel.CarModel });
+
+            if (!_unitOfWork.CarColors.Any(color => color.CarColorName == carModel.CarColor))
+                _unitOfWork.CarColors.Add(new CarColor { CarColorName = carModel.CarColor });
+            _unitOfWork.Commit();
             _unitOfWork.Cars.Update(id, new Car
             {
                 CarId = carModel.CarId,
+                CarBrand =
+                    _unitOfWork.CarBrands.Find(brand => brand.CarBrandName == carModel.CarBrand).FirstOrDefault(),
+                CarModel =
+                    _unitOfWork.CarModels.Find(model => model.CarModelName == carModel.CarModel).FirstOrDefault(),
+                CarColor =
+                    _unitOfWork.CarColors.Find(color => color.CarColorName == carModel.CarColor).FirstOrDefault(),
                 ImgUrl = carModel.ImgUrl,
-                Brand = carModel.Brand,
-                Model = carModel.Model,
                 Description = carModel.Description,
-                Color = carModel.Color,
                 Year = carModel.Year,
                 VIN = carModel.VIN,
                 Mileage = carModel.Mileage,
