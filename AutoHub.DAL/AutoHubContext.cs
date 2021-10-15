@@ -1,6 +1,8 @@
-﻿using AutoHub.DAL.Entities;
+﻿using System;
+using AutoHub.DAL.Entities;
 using AutoHub.DAL.EntitySettings;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AutoHub.DAL
 {
@@ -22,13 +24,17 @@ namespace AutoHub.DAL
         public AutoHubContext(DbContextOptions<AutoHubContext> options)
            : base(options)
         {
-            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            IConfigurationRoot configurationRoot = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            
             optionsBuilder.UseSqlServer(
-                "Data Source=DESKTOP-CUS63EG\\SQLMACHINE; Initial Catalog=AutoHubDb; Integrated Security=True");
+                configurationRoot.GetConnectionString("LocalConnectionString"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
