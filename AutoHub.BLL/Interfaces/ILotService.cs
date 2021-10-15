@@ -5,8 +5,8 @@ namespace AutoHub.BLL.Interfaces
 {
     public interface ILotService
     {
-        IEnumerable<LotModel> GetAll();
-        IEnumerable<LotModel> GetActiveLots();
-        LotModel GetById(int id);
+        IEnumerable<LotResponseModel> GetAll();
+        IEnumerable<LotResponseModel> GetActiveLots();
+        LotResponseModel GetById(int id);
     }
 }

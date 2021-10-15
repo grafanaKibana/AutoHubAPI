@@ -1,4 +1,5 @@
 using System;
+using AutoHub.DAL.Entities;
 
 namespace AutoHub.BLL.Models.BidModels
 {
@@ -6,9 +7,9 @@ namespace AutoHub.BLL.Models.BidModels
     {
         public int BidId { get; set; }
 
-        public int UserId { get; set; }
+        public User User { get; set; }
 
-        public int LotId { get; set; }
+        public Lot Lot { get; set; }
 
         public decimal BidValue { get; set; }
 

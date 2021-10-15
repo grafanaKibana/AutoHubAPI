@@ -17,7 +17,7 @@ namespace AutoHub.DAL.Entities
         public int CarId { get; set; }
         public virtual Car Car { get; set; }
 
-        public int WinnerId { get; set; }
+        public int? WinnerId { get; set; }
         public virtual User Winner { get; set; }
 
         public virtual IEnumerable<Bid> Bids { get; set; }

@@ -1,14 +1,12 @@
-﻿using System;
-using AutoHub.DAL.Entities;
+using System;
 
 namespace AutoHub.BLL.Models.LotModels
 {
-    public class LotModel
+    public class LotCreateRequestModel
     {
-        public int LotId { get; set; }
-        public User User { get; set; }
-        public Car Car { get; set; }
-        public User Winner { get; set; }
+        public int UserId { get; set; }
+        public int CarId { get; set; }
+        public int? WinnerId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public decimal StartPrice { get; set; }

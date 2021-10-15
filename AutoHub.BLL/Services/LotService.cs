@@ -17,24 +17,24 @@ namespace AutoHub.BLL.Services
         {
             _unitOfWork = unitOfWork;
 
-            var mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<Lot, LotModel>());
+            var mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<Lot, LotResponseModel>());
             _mapper = new Mapper(mapperConfig);
         }
 
-        public IEnumerable<LotModel> GetAll()
+        public IEnumerable<LotResponseModel> GetAll()
         {
-            return _mapper.Map<IEnumerable<LotModel>>(_unitOfWork.Lots.GetAll());
+            return _mapper.Map<IEnumerable<LotResponseModel>>(_unitOfWork.Lots.GetAll());
         }
 
-        public IEnumerable<LotModel> GetActiveLots()
+        public IEnumerable<LotResponseModel> GetActiveLots()
         {
-            return _mapper.Map<IEnumerable<LotModel>>(_unitOfWork.Lots.Find(lot =>
+            return _mapper.Map<IEnumerable<LotResponseModel>>(_unitOfWork.Lots.Find(lot =>
                 lot.LotStatusId == LotStatusId.InProgress));
         }
 
-        public LotModel GetById(int id)
+        public LotResponseModel GetById(int id)
         {
-            return _mapper.Map<LotModel>(_unitOfWork.Lots.GetById(id));
+            return _mapper.Map<LotResponseModel>(_unitOfWork.Lots.GetById(id));
         }
     }
 }
