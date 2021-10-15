@@ -8,5 +8,6 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<LotResponseModel> GetAll();
         IEnumerable<LotResponseModel> GetActiveLots();
         LotResponseModel GetById(int id);
+        LotCreateRequestModel CreateLot(LotCreateRequestModel lotModel);
     }
 }

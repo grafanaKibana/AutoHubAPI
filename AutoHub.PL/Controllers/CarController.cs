@@ -47,7 +47,7 @@ namespace AutoHub.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddCar([FromBody] CarCreateRequestModel carCreateRequestModel)
+        public IActionResult CreateCar([FromBody] CarCreateRequestModel carCreateRequestModel)
         {
             try
             {

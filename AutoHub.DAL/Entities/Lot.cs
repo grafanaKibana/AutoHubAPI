@@ -6,6 +6,11 @@ namespace AutoHub.DAL.Entities
 {
     public class Lot
     {
+        public Lot()
+        {
+            Bids = new List<Bid>();
+        }
+
         public int LotId { get; set; }
 
         public LotStatusId LotStatusId { get; set; }
@@ -24,8 +29,6 @@ namespace AutoHub.DAL.Entities
 
         public DateTime StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
-
-        public decimal? LastBid { get; set; }
+        public DateTime? EndTime { get; set; }
     }
 }

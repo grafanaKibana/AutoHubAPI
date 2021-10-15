@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.LotModels;
@@ -35,6 +36,22 @@ namespace AutoHub.BLL.Services
         public LotResponseModel GetById(int id)
         {
             return _mapper.Map<LotResponseModel>(_unitOfWork.Lots.GetById(id));
+        }
+
+        public LotCreateRequestModel CreateLot(LotCreateRequestModel lotModel)
+        {
+            _unitOfWork.Lots.Add(new Lot
+            {
+                LotStatusId = LotStatusId.New,
+                Creator = _unitOfWork.Users.GetById(lotModel.UserId),
+                Car = _unitOfWork.Cars.GetById(lotModel.CarId),
+                Winner = null,
+                StartTime = DateTime.UtcNow,
+                EndTime = DateTime.UtcNow.AddDays(lotModel.DurationInDays)
+            });
+
+            _unitOfWork.Commit();
+            return lotModel;
         }
     }
 }

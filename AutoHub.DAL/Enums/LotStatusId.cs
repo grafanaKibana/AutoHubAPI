@@ -2,8 +2,9 @@
 {
     public enum LotStatusId
     {
-        NotStarted = 1,
-        InProgress = 2,
-        EndedUp = 3
+        New = 1,
+        NotStarted = 2,
+        InProgress = 3,
+        EndedUp = 4
     }
 }

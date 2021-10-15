@@ -65,7 +65,7 @@ namespace AutoHub.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBid([FromBody] BidCreateRequestModel bidCreateRequestModel)
+        public IActionResult CreateBid([FromBody] BidCreateRequestModel bidCreateRequestModel)
         {
             try
             {

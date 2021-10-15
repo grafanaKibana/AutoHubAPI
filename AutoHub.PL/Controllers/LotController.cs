@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoHub.BLL.Interfaces;
+using AutoHub.BLL.Models.LotModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.PL.Controllers
@@ -50,6 +51,24 @@ namespace AutoHub.PL.Controllers
                 if (lot == null)
                     return NotFound();
                 return Ok(lot);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CreateLot([FromBody] LotCreateRequestModel lotCreateRequestModel)
+        {
+            try
+            {
+                if (lotCreateRequestModel == null)
+                    return BadRequest();
+
+                _lotService.CreateLot(lotCreateRequestModel);
+
+                return Ok(lotCreateRequestModel);
             }
             catch (Exception ex)
             {

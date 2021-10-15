@@ -12,6 +12,10 @@ namespace AutoHub.DAL.EntitySettings
 
             entity.Property(lot => lot.StartTime).IsRequired();
 
+            // entity.Navigation(lot => lot.Creator).AutoInclude();
+            // entity.Navigation(lot => lot.Car).AutoInclude();
+            // entity.Navigation(lot => lot.Winner).AutoInclude();
+
             entity.HasOne(lot => lot.Creator)
                 .WithMany(user => user.UserLots)
                 .OnDelete(DeleteBehavior.NoAction);
