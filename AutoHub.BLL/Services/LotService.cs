@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.LotModels;
 using AutoHub.DAL.Entities;
@@ -24,7 +25,16 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<LotResponseModel> GetAll()
         {
-            return _mapper.Map<IEnumerable<LotResponseModel>>(_unitOfWork.Lots.GetAll());
+            // return _mapper.Map<IEnumerable<LotResponseModel>>(_unitOfWork.Lots.GetAll());
+            return _unitOfWork.Lots.GetAll().Select(lot => new LotResponseModel
+            {
+                LotStatus = lot.LotStatus,
+                Creator = lot.Creator,
+                Car = lot.Car,
+                Winner = lot.Winner,
+                StartTime = lot.StartTime,
+                EndTime = lot.EndTime
+            });
         }
 
         public IEnumerable<LotResponseModel> GetActiveLots()

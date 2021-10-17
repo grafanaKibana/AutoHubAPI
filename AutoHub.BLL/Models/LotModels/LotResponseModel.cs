@@ -6,6 +6,7 @@ namespace AutoHub.BLL.Models.LotModels
     public class LotResponseModel
     {
         public int LotId { get; set; }
+        public LotStatus LotStatus { get; set; }
         public User Creator { get; set; }
         public Car Car { get; set; }
         public User Winner { get; set; }

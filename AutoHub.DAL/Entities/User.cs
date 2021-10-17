@@ -32,5 +32,7 @@ namespace AutoHub.DAL.Entities
         public virtual IEnumerable<Bid> UserBids { get; set; }
 
         public virtual IEnumerable<Lot> UserLots { get; set; }
+
+        public virtual IEnumerable<Lot> VictoryLots { get; set; }
     }
 }

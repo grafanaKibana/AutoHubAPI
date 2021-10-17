@@ -18,7 +18,7 @@ namespace AutoHub.DAL.EntitySettings
             entity.HasOne(bid => bid.Lot)
                 .WithMany(lot => lot.Bids)
                 .HasForeignKey(bid => bid.LotId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

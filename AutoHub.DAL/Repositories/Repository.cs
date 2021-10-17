@@ -19,6 +19,18 @@ namespace AutoHub.DAL.Repositories
 
         public IEnumerable<T> GetAll()
         {
+            /*if (typeof(Lot).IsAssignableFrom(typeof(T)))
+            {
+                return (IEnumerable<T>)_context.Lots
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarBrand)
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarModel)
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarColor)
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarStatus)
+                    .Include(lot => lot.Creator).ThenInclude(user => user.UserRole)
+                    .Include(lot => lot.Winner).ThenInclude(user => user.UserRole)
+                    .Include(lot => lot.LotStatus)
+                    .ToList();
+            }*/
             return _context.Set<T>().ToList();
         }
 
