@@ -13,6 +13,9 @@ namespace AutoHub.DAL.EntitySettings
         public UserConfiguration(EntityTypeBuilder<User> entity)
         {
             entity.ToTable("User").HasKey(user => user.UserId);
+
+            entity.Navigation(user => user.UserRole).AutoInclude();
+
             entity.Property(user => user.FirstName).IsRequired().HasMaxLength(30);
             entity.Property(user => user.LastName).IsRequired().HasMaxLength(30);
             entity.Property(user => user.Email).IsRequired().HasMaxLength(60);

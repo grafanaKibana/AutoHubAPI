@@ -12,23 +12,14 @@ namespace AutoHub.DAL.EntitySettings
 
             entity.Property(lot => lot.StartTime).IsRequired();
 
-            /*entity.Navigation(lot => lot.LotStatus).AutoInclude();
-            entity.Navigation(lot => lot.Creator).AutoInclude();
-            entity.Navigation(lot => lot.Creator.UserRole).AutoInclude();
-            entity.Navigation(lot => lot.Car).AutoInclude();
-            entity.Navigation(lot => lot.Car.CarBrand).AutoInclude();
-            entity.Navigation(lot => lot.Car.CarModel).AutoInclude();
-            entity.Navigation(lot => lot.Car.CarColor).AutoInclude();
-            entity.Navigation(lot => lot.Car.CarStatus).AutoInclude();
-            entity.Navigation(lot => lot.Winner).AutoInclude();
-            entity.Navigation(lot => lot.Winner.UserRole).AutoInclude();*/
-
             entity.HasOne(lot => lot.Creator)
                 .WithMany(user => user.UserLots)
+                .HasForeignKey(lot => lot.CreatorId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             entity.HasOne(lot => lot.Winner)
                 .WithMany(user => user.VictoryLots)
+                .HasForeignKey(lot => lot.WinnerId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

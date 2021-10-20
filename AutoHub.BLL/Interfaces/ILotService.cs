@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using AutoHub.BLL.Models.LotModels;
+using AutoHub.DAL.Entities;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface ILotService
     {
-        IEnumerable<LotResponseModel> GetAll();
-        IEnumerable<LotResponseModel> GetActiveLots();
-        LotResponseModel GetById(int id);
-        LotCreateRequestModel CreateLot(LotCreateRequestModel lotModel);
+        IEnumerable<Lot> GetAll();
+        IEnumerable<Lot> GetActiveLots();
+        Lot GetById(int id);
+        Lot CreateLot(Lot lotModel);
     }
 }

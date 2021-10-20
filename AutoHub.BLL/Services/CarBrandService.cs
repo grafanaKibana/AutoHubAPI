@@ -1,43 +1,33 @@
 using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarBrandModels;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
-using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class CarBrandService : ICarBrandService
     {
-        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public CarBrandService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-
-            var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<CarBrand, CarBrandResponseModel>());
-            _mapper = new Mapper(mapperConfig);
         }
 
 
-        public IEnumerable<CarBrandResponseModel> GetAll()
+        public IEnumerable<CarBrand> GetAll()
         {
-            return _mapper.Map<IEnumerable<CarBrandResponseModel>>(_unitOfWork.CarBrands.GetAll());
+            return _unitOfWork.CarBrands.GetAll();
         }
 
-        public CarBrandResponseModel GetById(int id)
+        public CarBrand GetById(int id)
         {
             var carBrand = _unitOfWork.CarBrands.GetById(id);
 
-            if (carBrand == null)
-                return null;
-
-            return _mapper.Map<CarBrandResponseModel>(carBrand);
+            return carBrand ?? null;
         }
 
-        public CarBrandCreateRequestModel CreateCarBrand(CarBrandCreateRequestModel carBrandModel)
+        public CarBrand CreateCarBrand(CarBrand carBrandModel)
         {
             _unitOfWork.CarBrands.Add(new CarBrand
             {

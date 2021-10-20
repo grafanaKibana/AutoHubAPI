@@ -1,19 +1,22 @@
 using System;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.BidModels;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AutoHub.PL.Controllers
+namespace AutoHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class BidController : Controller
     {
         private readonly IBidService _bidService;
+        private readonly IMapper _mapper;
 
-        public BidController(IBidService bidService)
+        public BidController(IBidService bidService, IMapper mapper)
         {
             _bidService = bidService;
+            _mapper = mapper;
         }
 
         [HttpGet("GetByUser/{userId}")]
@@ -72,7 +75,8 @@ namespace AutoHub.PL.Controllers
                 if (bidCreateRequestModel == null)
                     return BadRequest();
 
-                _bidService.CreateBid(bidCreateRequestModel);
+                /*_bidService.CreateBid(bidCreateRequestModel);*/
+
                 return Ok(bidCreateRequestModel);
             }
             catch (Exception ex)

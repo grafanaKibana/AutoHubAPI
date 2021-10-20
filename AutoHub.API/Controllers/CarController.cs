@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.CarModels;
+using AutoHub.DAL.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AutoHub.PL.Controllers
+namespace AutoHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CarController : Controller
     {
         private readonly ICarService _carService;
+        private readonly IMapper _mapper;
 
-
-        public CarController(ICarService carService)
+        public CarController(ICarService carService, IMapper mapper)
         {
             _carService = carService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,7 +26,9 @@ namespace AutoHub.PL.Controllers
         {
             try
             {
-                return Ok(_carService.GetAll());
+                var cars = _carService.GetAll();
+                var mappedCars = _mapper.Map<IEnumerable<CarResponseModel>>(cars);
+                return Ok(mappedCars);
             }
             catch (Exception ex)
             {
@@ -38,7 +44,8 @@ namespace AutoHub.PL.Controllers
                 var car = _carService.GetById(id);
                 if (car == null)
                     return NotFound();
-                return Ok(car);
+                var mappedCar = _mapper.Map<CarResponseModel>(car);
+                return Ok(mappedCar);
             }
             catch (Exception ex)
             {
@@ -54,9 +61,10 @@ namespace AutoHub.PL.Controllers
                 if (carCreateRequestModel == null)
                     return BadRequest();
 
-                _carService.CreateCar(carCreateRequestModel);
+                var mappedCar = _mapper.Map<Car>(carCreateRequestModel);
+                _carService.CreateCar(mappedCar);
 
-                return Ok(carCreateRequestModel);
+                return Ok(mappedCar);
             }
             catch (Exception ex)
             {

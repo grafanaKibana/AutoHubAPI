@@ -1,42 +1,32 @@
 using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarColorModels;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
-using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class CarColorService : ICarColorService
     {
-        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public CarColorService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-
-            var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<CarColor, CarColorResponseModel>());
-            _mapper = new Mapper(mapperConfig);
         }
 
-        public IEnumerable<CarColorResponseModel> GetAll()
+        public IEnumerable<CarColor> GetAll()
         {
-            return _mapper.Map<IEnumerable<CarColorResponseModel>>(_unitOfWork.CarColors.GetAll());
+            return _unitOfWork.CarColors.GetAll();
         }
 
-        public CarColorResponseModel GetById(int id)
+        public CarColor GetById(int id)
         {
             var carColor = _unitOfWork.CarColors.GetById(id);
 
-            if (carColor == null)
-                return null;
-
-            return _mapper.Map<CarColorResponseModel>(carColor);
+            return carColor ?? null;
         }
 
-        public CarColorCreateRequestModel CreateCarColor(CarColorCreateRequestModel carColorModel)
+        public CarColor CreateCarColor(CarColor carColorModel)
         {
             _unitOfWork.CarColors.Add(new CarColor
             {

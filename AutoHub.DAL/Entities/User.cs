@@ -10,6 +10,7 @@ namespace AutoHub.DAL.Entities
         {
             UserBids = new HashSet<Bid>();
             UserLots = new HashSet<Lot>();
+            VictoryLots = new List<Lot>();
         }
 
         public int UserId { get; set; }

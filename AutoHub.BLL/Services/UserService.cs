@@ -5,39 +5,32 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.UserModels;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoHub.DAL.Interfaces;
-using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class UserService : IUserService
     {
-        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-
-            var mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<User, UserResponseModel>());
-            _mapper = new Mapper(mapperConfig);
         }
 
-        public IEnumerable<UserResponseModel> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            return _mapper.Map<IEnumerable<UserResponseModel>>(_unitOfWork.Users.GetAll());
+            return _unitOfWork.Users.GetAll();
         }
 
-        public UserResponseModel GetById(int id)
+        public User GetById(int id)
         {
-            return _mapper.Map<UserResponseModel>(_unitOfWork.Users.GetById(id));
+            return _unitOfWork.Users.GetById(id);
         }
 
-
-        public bool Register(UserRegisterRequestModel userModel)
+        public bool Register(User userModel)
         {
             if (IsPasswordMatchRules(userModel.Password) && IsEmailUnique(userModel.Email))
             {

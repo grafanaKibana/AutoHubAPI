@@ -1,19 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.LotModels;
+using AutoHub.DAL.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AutoHub.PL.Controllers
+namespace AutoHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class LotController : Controller
     {
         private readonly ILotService _lotService;
+        private readonly IMapper _mapper;
 
-        public LotController(ILotService lotService)
+        public LotController(ILotService lotService, IMapper mapper)
         {
             _lotService = lotService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -21,7 +26,9 @@ namespace AutoHub.PL.Controllers
         {
             try
             {
-                return Ok(_lotService.GetAll());
+                var lots = _lotService.GetAll();
+                var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
+                return Ok(mappedLots);
             }
             catch (Exception ex)
             {
@@ -34,7 +41,9 @@ namespace AutoHub.PL.Controllers
         {
             try
             {
-                return Ok(_lotService.GetActiveLots());
+                var lots = _lotService.GetActiveLots();
+                var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
+                return Ok(mappedLots);
             }
             catch (Exception ex)
             {
@@ -50,7 +59,8 @@ namespace AutoHub.PL.Controllers
                 var lot = _lotService.GetById(id);
                 if (lot == null)
                     return NotFound();
-                return Ok(lot);
+                var mappedLot = _mapper.Map<LotResponseModel>(lot);
+                return Ok(mappedLot);
             }
             catch (Exception ex)
             {
@@ -66,7 +76,8 @@ namespace AutoHub.PL.Controllers
                 if (lotCreateRequestModel == null)
                     return BadRequest();
 
-                _lotService.CreateLot(lotCreateRequestModel);
+                var mappedLot = _mapper.Map<Lot>(lotCreateRequestModel);
+                _lotService.CreateLot(mappedLot);
 
                 return Ok(lotCreateRequestModel);
             }

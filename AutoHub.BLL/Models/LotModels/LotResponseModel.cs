@@ -1,15 +1,16 @@
 using System;
-using AutoHub.DAL.Entities;
+using AutoHub.BLL.Models.CarModels;
+using AutoHub.BLL.Models.UserModels;
 
 namespace AutoHub.BLL.Models.LotModels
 {
     public class LotResponseModel
     {
         public int LotId { get; set; }
-        public LotStatus LotStatus { get; set; }
-        public User Creator { get; set; }
-        public Car Car { get; set; }
-        public User Winner { get; set; }
+        public string LotStatus { get; set; }
+        public UserResponseModel Creator { get; set; }
+        public CarResponseModel Car { get; set; }
+        public UserResponseModel Winner { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
     }

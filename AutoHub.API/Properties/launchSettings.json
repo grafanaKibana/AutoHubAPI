@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "AutoHub.PL": {
+    "AutoHub.API": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

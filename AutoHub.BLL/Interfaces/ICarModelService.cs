@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using AutoHub.BLL.Models.CarModelModels;
+using AutoHub.DAL.Entities;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface ICarModelService
     {
-        IEnumerable<CarModelResponseModel> GetAll();
-        CarModelResponseModel GetById(int id);
-        CarModelCreateRequestModel CreateCarModel(CarModelCreateRequestModel carModelModel);
+        IEnumerable<CarModel> GetAll();
+        CarModel GetById(int id);
+        CarModel CreateCarModel(CarModel carModelModel);
         bool Exist(string carModelName);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,8 +20,8 @@ namespace AutoHub.DAL.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            /*if (typeof(Lot).IsAssignableFrom(typeof(T)))
-            {
+            //TODO: This shouldn`t exist! (Needed to be done via AutoInclude)
+            if (typeof(Lot).IsAssignableFrom(typeof(T)))
                 return (IEnumerable<T>)_context.Lots
                     .Include(lot => lot.Car).ThenInclude(car => car.CarBrand)
                     .Include(lot => lot.Car).ThenInclude(car => car.CarModel)
@@ -30,7 +31,6 @@ namespace AutoHub.DAL.Repositories
                     .Include(lot => lot.Winner).ThenInclude(user => user.UserRole)
                     .Include(lot => lot.LotStatus)
                     .ToList();
-            }*/
             return _context.Set<T>().ToList();
         }
 
