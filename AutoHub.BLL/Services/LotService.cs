@@ -17,7 +17,6 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<Lot> GetAll()
         {
-            // return _mapper.Map<IEnumerable<LotResponseModel>>(_unitOfWork.Lots.GetAll());
             return _unitOfWork.Lots.GetAll();
         }
 
@@ -35,7 +34,6 @@ namespace AutoHub.BLL.Services
         public Lot CreateLot(Lot lotModel)
         {
             _unitOfWork.Lots.Add(lotModel);
-
             _unitOfWork.Commit();
             return lotModel;
         }
