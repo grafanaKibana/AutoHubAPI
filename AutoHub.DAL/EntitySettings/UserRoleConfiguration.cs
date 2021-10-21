@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
@@ -10,12 +11,11 @@ namespace AutoHub.DAL.EntitySettings
     {
         public UserRoleConfiguration(EntityTypeBuilder<UserRole> entity)
         {
-            entity.Property(role => role.UserRoleId).HasConversion<int>();
-            entity.Property(role => role.UserRoleName).HasConversion<string>();
+            entity.ToTable("UserRole").HasKey(role => role.UserRoleId);
 
             entity.HasData(
-                Enum.GetValues(typeof(UserRoleId))
-                    .Cast<UserRoleId>()
+                Enum.GetValues(typeof(UserRoleEnum))
+                    .Cast<UserRoleEnum>()
                     .Select(u => new UserRole
                     {
                         UserRoleId = u,

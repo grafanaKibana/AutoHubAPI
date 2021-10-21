@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using AutoHub.DAL.Enums;
-using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
@@ -11,9 +10,9 @@ namespace AutoHub.DAL.Entities
             Lots = new List<Lot>();
         }
 
-        public LotStatusId LotStatusId { get; set; }
+        public LotStatusEnum LotStatusId { get; set; }
         public string LotStatusName { get; set; }
 
-        private IEnumerable<Lot> Lots { get; }
+        public virtual IEnumerable<Lot> Lots { get; }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,49 +11,75 @@ namespace AutoHub.DAL.Repositories
     // Generic variant of repository (Currently using non-generic repos)
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly DbSet<T> _entities;
+        private readonly AutoHubContext _context;
 
-        public Repository(DbContext context)
+        public Repository(AutoHubContext context)
         {
-            _entities = context.Set<T>();
+            _context = context;
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _entities.ToList();
+            //TODO: This shouldn`t exist! (Needed to be done via AutoInclude)
+            if (typeof(Lot).IsAssignableFrom(typeof(T)))
+                return (IEnumerable<T>)_context.Lots
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarBrand)
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarModel)
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarColor)
+                    .Include(lot => lot.Car).ThenInclude(car => car.CarStatus)
+                    .Include(lot => lot.Creator).ThenInclude(user => user.UserRole)
+                    .Include(lot => lot.Winner).ThenInclude(user => user.UserRole)
+                    .Include(lot => lot.LotStatus)
+                    .ToList();
+            return _context.Set<T>().ToList();
         }
 
         public T GetById(int id)
         {
-            return _entities.Find(id);
+            return _context.Set<T>().Find(id);
         }
 
         public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
-            return _entities.Where(predicate);
+            return _context.Set<T>().Where(predicate);
         }
 
-        public void Add(T newItem)
+        public bool Any(Expression<Func<T, bool>> predicate)
         {
-            _entities.Add(newItem);
+            return _context.Set<T>().Any(predicate);
         }
 
-        public void AddRange(IEnumerable<T> newItems)
+        public T Add(T newItem)
         {
-            _entities.AddRange(newItems);
+            _context.Add(newItem);
+            return newItem;
         }
 
-        public void Update(T item)
+        public IEnumerable<T> AddRange(IEnumerable<T> newItems)
         {
-            _entities.Update(item);
+            _context.AddRange(newItems);
+            return newItems;
         }
 
-        public void Delete(int id)
+        public bool Update(int id, T item)
         {
-            var toRemove = _entities.Find(id);
+            var toUpdate = _context.Set<T>().Find(id);
+            if (toUpdate == null)
+            {
+                return false;
+            }
 
-            if (toRemove != null)
-                _entities.Remove(toRemove);
+            _context.Entry(item).State = EntityState.Modified;
+            return true;
+        }
+
+        public bool Delete(int id)
+        {
+            var toRemove = _context.Set<T>().Find(id);
+            if (toRemove == null) return false;
+
+            _context.Remove(toRemove);
+            return true;
         }
     };
 }

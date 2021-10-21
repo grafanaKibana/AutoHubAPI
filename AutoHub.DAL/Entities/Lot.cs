@@ -1,21 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoHub.DAL.Enums;
-using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.DAL.Entities
 {
     public class Lot
     {
-        public int LotId { get; set; }
-        public User Creator { get; set; }
-        public Car Car { get; set; }
-        public User Winner { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public decimal StartPrice { get; set; }
-        public decimal LastBid { get; set; }
+        public Lot()
+        {
+            Bids = new List<Bid>();
+        }
 
-        public LotStatusId LotStatusId { get; set; }
-        public LotStatus LotStatus { get; set; }
+        public int LotId { get; set; }
+
+        public LotStatusEnum LotStatusId { get; set; }
+        public virtual LotStatus LotStatus { get; set; }
+
+        public int CreatorId { get; set; }
+        public virtual User Creator { get; set; }
+
+        public int CarId { get; set; }
+        public virtual Car Car { get; set; }
+
+        public int? WinnerId { get; set; }
+        public virtual User Winner { get; set; }
+
+        public virtual IEnumerable<Bid> Bids { get; set; }
+
+        public DateTime StartTime { get; set; }
+
+        public DateTime? EndTime { get; set; }
     }
 }

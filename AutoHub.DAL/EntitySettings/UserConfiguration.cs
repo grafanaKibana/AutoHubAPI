@@ -13,12 +13,15 @@ namespace AutoHub.DAL.EntitySettings
         public UserConfiguration(EntityTypeBuilder<User> entity)
         {
             entity.ToTable("User").HasKey(user => user.UserId);
+
+            entity.Navigation(user => user.UserRole).AutoInclude();
+
             entity.Property(user => user.FirstName).IsRequired().HasMaxLength(30);
             entity.Property(user => user.LastName).IsRequired().HasMaxLength(30);
             entity.Property(user => user.Email).IsRequired().HasMaxLength(60);
             entity.Property(user => user.Phone).IsRequired().HasMaxLength(24);
             entity.Property(user => user.Password).IsRequired().HasMaxLength(2000);
-            entity.Property(user => user.RegistrationTime).IsRequired().HasDefaultValue(DateTime.UtcNow);
+            entity.Property(user => user.RegistrationTime).IsRequired();
             entity.HasIndex(user => user.Email).IsUnique();
 
             entity.HasData(
@@ -32,7 +35,7 @@ namespace AutoHub.DAL.EntitySettings
                     Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
                         .ComputeHash(Encoding.UTF8.GetBytes("password123"))),
                     RegistrationTime = DateTime.UtcNow,
-                    UserRoleId = UserRoleId.Administrator,
+                    UserRoleId = UserRoleEnum.Administrator
                 },
                 new User
                 {
@@ -44,7 +47,7 @@ namespace AutoHub.DAL.EntitySettings
                     Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
                         .ComputeHash(Encoding.UTF8.GetBytes("junkyardistolow"))),
                     RegistrationTime = DateTime.UtcNow,
-                    UserRoleId = UserRoleId.Regular
+                    UserRoleId = UserRoleEnum.Regular
                 },
                 new User
                 {
@@ -56,7 +59,7 @@ namespace AutoHub.DAL.EntitySettings
                     Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
                         .ComputeHash(Encoding.UTF8.GetBytes("gogotothemars"))),
                     RegistrationTime = DateTime.UtcNow,
-                    UserRoleId = UserRoleId.Regular
+                    UserRoleId = UserRoleEnum.Regular
                 });
         }
     }

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.PL", "AutoHub.PL\AutoHub.PL.csproj", "{713919A6-4AB2-4DA3-9E0F-99FBF8710174}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.API", "AutoHub.API\AutoHub.API.csproj", "{713919A6-4AB2-4DA3-9E0F-99FBF8710174}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.DAL", "AutoHub.DAL\AutoHub.DAL.csproj", "{0681D150-7584-4BB8-8395-4A2860F5F2C6}"
 EndProject
