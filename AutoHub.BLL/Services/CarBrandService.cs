@@ -23,8 +23,7 @@ namespace AutoHub.BLL.Services
         public CarBrand GetById(int id)
         {
             var carBrand = _unitOfWork.CarBrands.GetById(id);
-
-            return carBrand ?? null;
+            return carBrand;
         }
 
         public CarBrand CreateCarBrand(CarBrand carBrandModel)
@@ -39,8 +38,7 @@ namespace AutoHub.BLL.Services
 
         public bool Exist(string carBrandName)
         {
-            var carBrand = _unitOfWork.CarBrands.Find(brand => brand.CarBrandName == carBrandName);
-            return carBrand != null;
+            return _unitOfWork.CarBrands.Any(brand => brand.CarBrandName == carBrandName);
         }
     }
 }

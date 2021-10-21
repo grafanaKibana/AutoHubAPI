@@ -22,8 +22,7 @@ namespace AutoHub.BLL.Services
         public CarColor GetById(int id)
         {
             var carColor = _unitOfWork.CarColors.GetById(id);
-
-            return carColor ?? null;
+            return carColor;
         }
 
         public CarColor CreateCarColor(CarColor carColorModel)
@@ -38,8 +37,7 @@ namespace AutoHub.BLL.Services
 
         public bool Exist(string carColorName)
         {
-            var carColor = _unitOfWork.CarColors.Find(color => color.CarColorName == carColorName);
-            return carColor != null;
+            return _unitOfWork.CarColors.Any(color => color.CarColorName == carColorName);
         }
     }
 }

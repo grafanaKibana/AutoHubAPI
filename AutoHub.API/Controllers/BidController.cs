@@ -1,6 +1,7 @@
 using System;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.BidModels;
+using AutoHub.DAL.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -75,7 +76,8 @@ namespace AutoHub.API.Controllers
                 if (bidCreateRequestModel == null)
                     return BadRequest();
 
-                /*_bidService.CreateBid(bidCreateRequestModel);*/
+                var mappedBid = _mapper.Map<Bid>(bidCreateRequestModel);
+                _bidService.CreateBid(mappedBid);
 
                 return Ok(bidCreateRequestModel);
             }

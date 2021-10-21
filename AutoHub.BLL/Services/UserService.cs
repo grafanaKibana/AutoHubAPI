@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -59,7 +58,7 @@ namespace AutoHub.BLL.Services
 
         public bool IsEmailUnique(string email)
         {
-            return _unitOfWork.Users.GetAll().All(user => user.Email != email);
+            return _unitOfWork.Users.Any(user => user.Email != email);
         }
 
         public bool IsPasswordMatchRules(string password)

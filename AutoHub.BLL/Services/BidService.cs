@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
@@ -28,20 +27,12 @@ namespace AutoHub.BLL.Services
         public Bid GetById(int id)
         {
             var bid = _unitOfWork.Bids.GetById(id);
-
-            return bid ?? null;
+            return bid;
         }
 
         public Bid CreateBid(Bid bidModel)
         {
-            _unitOfWork.Bids.Add(new Bid
-            {
-                UserId = bidModel.UserId,
-                LotId = bidModel.UserId,
-                BidValue = bidModel.BidValue,
-                BidTime = DateTime.UtcNow
-            });
-
+            _unitOfWork.Bids.Add(bidModel);
             _unitOfWork.Commit();
             return bidModel;
         }

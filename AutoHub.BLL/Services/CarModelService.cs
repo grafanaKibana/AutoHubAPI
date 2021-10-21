@@ -22,8 +22,7 @@ namespace AutoHub.BLL.Services
         public CarModel GetById(int id)
         {
             var carModel = _unitOfWork.CarModels.GetById(id);
-
-            return carModel ?? null;
+            return carModel;
         }
 
         public CarModel CreateCarModel(CarModel carModelModel)
@@ -38,8 +37,7 @@ namespace AutoHub.BLL.Services
 
         public bool Exist(string carModelName)
         {
-            var carModel = _unitOfWork.CarModels.Find(model => model.CarModelName == carModelName);
-            return carModel != null;
+            return _unitOfWork.CarModels.Any(model => model.CarModelName == carModelName);
         }
     }
 }
