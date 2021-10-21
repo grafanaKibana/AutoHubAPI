@@ -15,7 +15,7 @@ namespace AutoHub.DAL.Entities
 
         public int UserId { get; set; }
 
-        public UserRoleId UserRoleId { get; set; }
+        public UserRoleEnum UserRoleId { get; set; }
         public virtual UserRole UserRole { get; set; }
 
         public string FirstName { get; set; }

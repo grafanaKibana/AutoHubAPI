@@ -23,7 +23,7 @@ namespace AutoHub.BLL.Services
         public IEnumerable<Lot> GetActiveLots()
         {
             return _unitOfWork.Lots.Find(lot =>
-                lot.LotStatusId == LotStatusId.InProgress);
+                lot.LotStatusId == LotStatusEnum.InProgress);
         }
 
         public Lot GetById(int id)

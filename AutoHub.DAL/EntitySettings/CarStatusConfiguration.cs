@@ -14,8 +14,8 @@ namespace AutoHub.DAL.EntitySettings
             entity.ToTable("CarStatus").HasKey(status => status.CarStatusId);
 
             entity.HasData(
-                Enum.GetValues(typeof(CarStatusId))
-                    .Cast<CarStatusId>()
+                Enum.GetValues(typeof(CarStatusEnum))
+                    .Cast<CarStatusEnum>()
                     .Select(s => new CarStatus
                     {
                         CarStatusId = s,

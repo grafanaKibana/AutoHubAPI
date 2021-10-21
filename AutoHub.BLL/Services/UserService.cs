@@ -37,7 +37,7 @@ namespace AutoHub.BLL.Services
                 _unitOfWork.Users.Add(new User
                 {
                     UserId = 0,
-                    UserRoleId = UserRoleId.Regular,
+                    UserRoleId = UserRoleEnum.Regular,
                     FirstName = userModel.FirstName,
                     LastName = userModel.FirstName,
                     Email = userModel.Email,

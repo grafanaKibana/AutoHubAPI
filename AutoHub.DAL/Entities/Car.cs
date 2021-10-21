@@ -12,7 +12,7 @@ namespace AutoHub.DAL.Entities
         public int CarModelId { get; set; }
         public virtual CarModel CarModel { get; set; }
 
-        public CarStatusId CarStatusId { get; set; }
+        public CarStatusEnum CarStatusId { get; set; }
         public virtual CarStatus CarStatus { get; set; }
 
         public int CarColorId { get; set; }

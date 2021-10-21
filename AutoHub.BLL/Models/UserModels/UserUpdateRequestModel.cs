@@ -6,7 +6,7 @@ namespace AutoHub.BLL.Models.UserModels
     {
         public int UserId { get; set; }
 
-        public UserRoleId UserRoleId { get; set; }
+        public UserRoleEnum UserRoleId { get; set; }
 
         public string FirstName { get; set; }
 

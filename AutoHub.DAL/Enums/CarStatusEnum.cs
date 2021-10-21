@@ -1,6 +1,6 @@
 ﻿namespace AutoHub.DAL.Enums
 {
-    public enum CarStatusId
+    public enum CarStatusEnum
     {
         New = 1,
         OnHold = 2,

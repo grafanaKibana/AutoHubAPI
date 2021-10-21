@@ -1,6 +1,6 @@
 ﻿namespace AutoHub.DAL.Enums
 {
-    public enum LotStatusId
+    public enum LotStatusEnum
     {
         New = 1,
         NotStarted = 2,

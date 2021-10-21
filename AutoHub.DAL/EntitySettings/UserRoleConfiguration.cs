@@ -14,8 +14,8 @@ namespace AutoHub.DAL.EntitySettings
             entity.ToTable("UserRole").HasKey(role => role.UserRoleId);
 
             entity.HasData(
-                Enum.GetValues(typeof(UserRoleId))
-                    .Cast<UserRoleId>()
+                Enum.GetValues(typeof(UserRoleEnum))
+                    .Cast<UserRoleEnum>()
                     .Select(u => new UserRole
                     {
                         UserRoleId = u,

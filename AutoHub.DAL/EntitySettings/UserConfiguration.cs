@@ -35,7 +35,7 @@ namespace AutoHub.DAL.EntitySettings
                     Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
                         .ComputeHash(Encoding.UTF8.GetBytes("password123"))),
                     RegistrationTime = DateTime.UtcNow,
-                    UserRoleId = UserRoleId.Administrator,
+                    UserRoleId = UserRoleEnum.Administrator
                 },
                 new User
                 {
@@ -47,7 +47,7 @@ namespace AutoHub.DAL.EntitySettings
                     Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
                         .ComputeHash(Encoding.UTF8.GetBytes("junkyardistolow"))),
                     RegistrationTime = DateTime.UtcNow,
-                    UserRoleId = UserRoleId.Regular
+                    UserRoleId = UserRoleEnum.Regular
                 },
                 new User
                 {
@@ -59,7 +59,7 @@ namespace AutoHub.DAL.EntitySettings
                     Password = Convert.ToBase64String(HashAlgorithm.Create("sha256")
                         .ComputeHash(Encoding.UTF8.GetBytes("gogotothemars"))),
                     RegistrationTime = DateTime.UtcNow,
-                    UserRoleId = UserRoleId.Regular
+                    UserRoleId = UserRoleEnum.Regular
                 });
         }
     }

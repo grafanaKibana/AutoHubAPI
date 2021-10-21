@@ -10,7 +10,7 @@ namespace AutoHub.DAL.Entities
             Lots = new List<Lot>();
         }
 
-        public LotStatusId LotStatusId { get; set; }
+        public LotStatusEnum LotStatusId { get; set; }
         public string LotStatusName { get; set; }
 
         public virtual IEnumerable<Lot> Lots { get; }

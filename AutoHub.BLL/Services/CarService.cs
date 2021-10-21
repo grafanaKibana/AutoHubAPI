@@ -61,7 +61,7 @@ namespace AutoHub.BLL.Services
                 Mileage = carModel.Mileage,
                 CostPrice = carModel.CostPrice,
                 SellingPrice = carModel.SellingPrice,
-                CarStatusId = CarStatusId.New
+                CarStatusId = CarStatusEnum.New
             });
 
             _unitOfWork.Commit();

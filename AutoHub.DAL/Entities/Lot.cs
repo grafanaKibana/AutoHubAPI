@@ -13,7 +13,7 @@ namespace AutoHub.DAL.Entities
 
         public int LotId { get; set; }
 
-        public LotStatusId LotStatusId { get; set; }
+        public LotStatusEnum LotStatusId { get; set; }
         public virtual LotStatus LotStatus { get; set; }
 
         public int CreatorId { get; set; }

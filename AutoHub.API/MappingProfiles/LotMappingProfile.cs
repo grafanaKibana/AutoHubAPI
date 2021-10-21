@@ -20,7 +20,7 @@ namespace AutoHub.API.MappingProfiles
                 .ForMember(dest => dest.EndTime, o => o.MapFrom(lot => lot.EndTime));
 
             CreateMap<LotCreateRequestModel, Lot>()
-                .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => LotStatusId.New))
+                .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => LotStatusEnum.New))
                 .ForMember(dest => dest.CreatorId, o => o.MapFrom(model => model.UserId))
                 .ForMember(dest => dest.CarId, o => o.MapFrom(model => model.CarId))
                 .ForMember(dest => dest.StartTime, o => o.MapFrom(model => DateTime.UtcNow))
