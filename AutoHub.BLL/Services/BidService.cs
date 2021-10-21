@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
@@ -18,12 +17,12 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<Bid> GetAllUserBids(int userId)
         {
-            return _unitOfWork.Bids.GetAll().Where(bid => bid.UserId == userId);
+            return _unitOfWork.Bids.Find(bid => bid.UserId == userId);
         }
 
         public IEnumerable<Bid> GetAllLotBids(int lotId)
         {
-            return _unitOfWork.Bids.GetAll().Where(bid => bid.LotId == lotId);
+            return _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
         }
 
         public Bid GetById(int id)

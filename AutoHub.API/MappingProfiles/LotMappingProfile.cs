@@ -11,13 +11,10 @@ namespace AutoHub.API.MappingProfiles
         public LotMappingProfile()
         {
             CreateMap<Lot, LotResponseModel>()
-                .ForMember(dest => dest.LotId, o => o.MapFrom(lot => lot.LotId))
                 .ForPath(dest => dest.LotStatus, o => o.MapFrom(lot => lot.LotStatus.LotStatusName))
                 .ForMember(dest => dest.Creator, o => o.MapFrom(lot => lot.Creator))
                 .ForMember(dest => dest.Car, o => o.MapFrom(lot => lot.Car))
-                .ForMember(dest => dest.Winner, o => o.MapFrom(lot => lot.Winner))
-                .ForMember(dest => dest.StartTime, o => o.MapFrom(lot => lot.StartTime))
-                .ForMember(dest => dest.EndTime, o => o.MapFrom(lot => lot.EndTime));
+                .ForMember(dest => dest.Winner, o => o.MapFrom(lot => lot.Winner));
 
             CreateMap<LotCreateRequestModel, Lot>()
                 .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => LotStatusEnum.New))
