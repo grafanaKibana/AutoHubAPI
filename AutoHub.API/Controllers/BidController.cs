@@ -69,17 +69,17 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateBid([FromBody] BidCreateRequestModel bidCreateRequestModel)
+        public IActionResult CreateBid([FromBody] BidCreateRequestModel model)
         {
             try
             {
-                if (bidCreateRequestModel == null)
+                if (model == null)
                     return BadRequest();
 
-                var mappedBid = _mapper.Map<Bid>(bidCreateRequestModel);
+                var mappedBid = _mapper.Map<Bid>(model);
                 _bidService.CreateBid(mappedBid);
 
-                return Ok(bidCreateRequestModel);
+                return Ok(mappedBid);
             }
             catch (Exception ex)
             {

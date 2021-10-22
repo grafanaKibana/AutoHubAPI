@@ -22,7 +22,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllUsers()
         {
             try
             {
@@ -37,20 +37,21 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterUser([FromBody] UserRegisterRequestModel userRegisterRequestModel)
+        public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
         {
             try
             {
-                if (userRegisterRequestModel == null)
+                if (model == null)
                     return BadRequest();
-                var mappedUser = _mapper.Map<User>(userRegisterRequestModel);
+                var mappedUser = _mapper.Map<User>(model);
+                var successfulRegistration = _userService.Register(mappedUser);
+                if (!successfulRegistration) return BadRequest();
 
-                return Ok(_userService.Register(mappedUser));
+                return Ok(mappedUser);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
-                throw;
+                return StatusCode(500, ex);
             }
         }
     }
