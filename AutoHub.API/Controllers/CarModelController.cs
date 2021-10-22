@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.CarModelModels;
 using AutoHub.DAL.Entities;
@@ -26,7 +27,7 @@ namespace AutoHub.API.Controllers
             try
             {
                 var carModels = _carModelService.GetAll();
-                var mappedCarModels = _mapper.Map<CarModelResponseModel>(carModels);
+                var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
                 return Ok(mappedCarModels);
             }
             catch (Exception ex)
@@ -46,7 +47,7 @@ namespace AutoHub.API.Controllers
                 var mappedCarModel = _mapper.Map<CarModel>(model);
                 _carModelService.CreateCarModel(mappedCarModel);
 
-                return Ok(mappedCarModel);
+                return Ok(model);
             }
             catch (Exception ex)
             {

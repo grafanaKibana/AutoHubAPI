@@ -47,7 +47,7 @@ namespace AutoHub.API.Controllers
                 var mappedCarColor = _mapper.Map<CarColor>(model);
                 _carColorService.CreateCarColor(mappedCarColor);
 
-                return Ok(mappedCarColor);
+                return Ok(model);
             }
             catch (Exception ex)
             {

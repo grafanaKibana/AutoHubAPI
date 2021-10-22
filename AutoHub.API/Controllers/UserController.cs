@@ -47,7 +47,7 @@ namespace AutoHub.API.Controllers
                 var successfulRegistration = _userService.Register(mappedUser);
                 if (!successfulRegistration) return BadRequest();
 
-                return Ok(mappedUser);
+                return Ok(model);
             }
             catch (Exception ex)
             {

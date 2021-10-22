@@ -79,7 +79,7 @@ namespace AutoHub.API.Controllers
                 var mappedLot = _mapper.Map<Lot>(model);
                 _lotService.CreateLot(mappedLot);
 
-                return Ok(mappedLot);
+                return Ok(model);
             }
             catch (Exception ex)
             {

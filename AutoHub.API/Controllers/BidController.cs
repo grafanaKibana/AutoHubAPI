@@ -79,7 +79,7 @@ namespace AutoHub.API.Controllers
                 var mappedBid = _mapper.Map<Bid>(model);
                 _bidService.CreateBid(mappedBid);
 
-                return Ok(mappedBid);
+                return Ok(model);
             }
             catch (Exception ex)
             {

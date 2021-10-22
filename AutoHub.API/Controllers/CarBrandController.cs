@@ -47,7 +47,7 @@ namespace AutoHub.API.Controllers
                 var mappedCarBrand = _mapper.Map<CarBrand>(model);
                 _carBrandService.CreateCarBrand(mappedCarBrand);
 
-                return Ok(mappedCarBrand);
+                return Ok(model);
             }
             catch (Exception ex)
             {

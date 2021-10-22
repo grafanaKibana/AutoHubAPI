@@ -64,7 +64,7 @@ namespace AutoHub.API.Controllers
                 var mappedCar = _mapper.Map<Car>(model);
                 _carService.CreateCar(mappedCar);
 
-                return Ok(mappedCar);
+                return Ok(model);
             }
             catch (Exception ex)
             {

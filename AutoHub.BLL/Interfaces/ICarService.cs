@@ -8,6 +8,6 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<Car> GetAll();
         Car GetById(int id);
         Car CreateCar(Car carModel);
-        Car UpdateCar(int id, Car carModel);
+        Car UpdateCar(Car carModel);
     }
 }

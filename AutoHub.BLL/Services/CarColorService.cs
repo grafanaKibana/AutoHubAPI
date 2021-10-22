@@ -27,10 +27,7 @@ namespace AutoHub.BLL.Services
 
         public CarColor CreateCarColor(CarColor carColorModel)
         {
-            _unitOfWork.CarColors.Add(new CarColor
-            {
-                CarColorName = carColorModel.CarColorName
-            });
+            _unitOfWork.CarColors.Add(carColorModel);
             _unitOfWork.Commit();
             return carColorModel;
         }
