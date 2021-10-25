@@ -12,7 +12,7 @@ namespace AutoHub.DAL.Interfaces
         bool Any(Expression<Func<T, bool>> predicate);
         T Add(T newItem);
         IEnumerable<T> AddRange(IEnumerable<T> newItems);
-        bool Update(int id, T item);
+        bool Update(T item);
         bool Delete(int id);
     }
 }

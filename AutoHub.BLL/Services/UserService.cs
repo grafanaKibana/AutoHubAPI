@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
-using AutoHub.DAL.Enums;
 using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.BLL.Services
@@ -31,24 +30,11 @@ namespace AutoHub.BLL.Services
 
         public bool Register(User userModel)
         {
-            if (IsPasswordMatchRules(userModel.Password) && IsEmailUnique(userModel.Email))
-            {
-                _unitOfWork.Users.Add(new User
-                {
-                    UserId = 0,
-                    UserRoleId = UserRoleEnum.Regular,
-                    FirstName = userModel.FirstName,
-                    LastName = userModel.FirstName,
-                    Email = userModel.Email,
-                    Phone = userModel.Phone,
-                    Password = HashPassword(userModel.Password),
-                    RegistrationTime = DateTime.UtcNow
-                });
-                _unitOfWork.Commit();
-                return true;
-            }
-
-            return false;
+            if (!IsPasswordMatchRules(userModel.Password) || !IsEmailUnique(userModel.Email))
+                return false;
+            _unitOfWork.Users.Add(userModel);
+            _unitOfWork.Commit();
+            return true;
         }
 
         public bool Login()

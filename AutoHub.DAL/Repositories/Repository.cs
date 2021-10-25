@@ -61,14 +61,8 @@ namespace AutoHub.DAL.Repositories
             return newItems;
         }
 
-        public bool Update(int id, T item)
+        public bool Update(T item)
         {
-            var toUpdate = _context.Set<T>().Find(id);
-            if (toUpdate == null)
-            {
-                return false;
-            }
-
             _context.Entry(item).State = EntityState.Modified;
             return true;
         }

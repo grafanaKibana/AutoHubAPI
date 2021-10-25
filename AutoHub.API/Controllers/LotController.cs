@@ -69,17 +69,17 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateLot([FromBody] LotCreateRequestModel lotCreateRequestModel)
+        public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
             try
             {
-                if (lotCreateRequestModel == null)
+                if (model == null)
                     return BadRequest();
 
-                var mappedLot = _mapper.Map<Lot>(lotCreateRequestModel);
+                var mappedLot = _mapper.Map<Lot>(model);
                 _lotService.CreateLot(mappedLot);
 
-                return Ok(lotCreateRequestModel);
+                return Ok(model);
             }
             catch (Exception ex)
             {

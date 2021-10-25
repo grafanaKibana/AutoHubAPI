@@ -54,17 +54,17 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCar([FromBody] CarCreateRequestModel carCreateRequestModel)
+        public IActionResult CreateCar([FromBody] CarCreateRequestModel model)
         {
             try
             {
-                if (carCreateRequestModel == null)
+                if (model == null)
                     return BadRequest();
 
-                var mappedCar = _mapper.Map<Car>(carCreateRequestModel);
+                var mappedCar = _mapper.Map<Car>(model);
                 _carService.CreateCar(mappedCar);
 
-                return Ok(mappedCar);
+                return Ok(model);
             }
             catch (Exception ex)
             {

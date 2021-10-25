@@ -28,10 +28,7 @@ namespace AutoHub.BLL.Services
 
         public CarBrand CreateCarBrand(CarBrand carBrandModel)
         {
-            _unitOfWork.CarBrands.Add(new CarBrand
-            {
-                CarBrandName = carBrandModel.CarBrandName
-            });
+            _unitOfWork.CarBrands.Add(carBrandModel);
             _unitOfWork.Commit();
             return carBrandModel;
         }

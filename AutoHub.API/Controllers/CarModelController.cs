@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.UserModels;
+using AutoHub.BLL.Models.CarModelModels;
 using AutoHub.DAL.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -10,25 +10,25 @@ namespace AutoHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class CarModelController : Controller
     {
+        private readonly ICarModelService _carModelService;
         private readonly IMapper _mapper;
-        private readonly IUserService _userService;
 
-        public UserController(IUserService userService, IMapper mapper)
+        public CarModelController(ICarModelService carModelService, IMapper mapper)
         {
-            _userService = userService;
+            _carModelService = carModelService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAll()
         {
             try
             {
-                var users = _userService.GetAll();
-                var mappedUsers = _mapper.Map<IEnumerable<UserResponseModel>>(users);
-                return Ok(mappedUsers);
+                var carModels = _carModelService.GetAll();
+                var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
+                return Ok(mappedCarModels);
             }
             catch (Exception ex)
             {
@@ -37,15 +37,15 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
+        public IActionResult CreateCarModel([FromBody] CarModelCreateRequestModel model)
         {
             try
             {
                 if (model == null)
                     return BadRequest();
-                var mappedUser = _mapper.Map<User>(model);
-                var successfulRegistration = _userService.Register(mappedUser);
-                if (!successfulRegistration) return BadRequest();
+
+                var mappedCarModel = _mapper.Map<CarModel>(model);
+                _carModelService.CreateCarModel(mappedCarModel);
 
                 return Ok(model);
             }

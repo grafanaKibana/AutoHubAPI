@@ -27,10 +27,7 @@ namespace AutoHub.BLL.Services
 
         public CarModel CreateCarModel(CarModel carModelModel)
         {
-            _unitOfWork.CarModels.Add(new CarModel
-            {
-                CarModelName = carModelModel.CarModelName
-            });
+            _unitOfWork.CarModels.Add(carModelModel);
             _unitOfWork.Commit();
             return carModelModel;
         }
