@@ -54,5 +54,33 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpPut("SetAdminRole")]
+        public IActionResult SetAdminRole(int userId)
+        {
+            try
+            {
+                var success = _userService.SetAdminRole(userId);
+                return success ? Ok(success) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("SetRegularRole")]
+        public IActionResult SetRegularRole(int userId)
+        {
+            try
+            {
+                var success = _userService.SetRegularRole(userId);
+                return success ? Ok(success) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

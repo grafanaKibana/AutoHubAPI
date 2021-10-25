@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
+using AutoHub.DAL.Enums;
 using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.BLL.Services
@@ -33,6 +35,30 @@ namespace AutoHub.BLL.Services
             if (!IsPasswordMatchRules(userModel.Password) || !IsEmailUnique(userModel.Email))
                 return false;
             _unitOfWork.Users.Add(userModel);
+            _unitOfWork.Commit();
+            return true;
+        }
+
+        public bool SetAdminRole(int userId)
+        {
+            if (!_unitOfWork.Users.Any(user => user.UserId == userId))
+                return false;
+
+            var userToUpdate = _unitOfWork.Users.Find(user => user.UserId == userId).FirstOrDefault();
+            userToUpdate.UserRoleId = UserRoleEnum.Administrator;
+            _unitOfWork.Users.Update(userToUpdate);
+            _unitOfWork.Commit();
+            return true;
+        }
+
+        public bool SetRegularRole(int userId)
+        {
+            if (!_unitOfWork.Users.Any(user => user.UserId == userId))
+                return false;
+
+            var userToUpdate = _unitOfWork.Users.Find(user => user.UserId == userId).FirstOrDefault();
+            userToUpdate.UserRoleId = UserRoleEnum.Regular;
+            _unitOfWork.Users.Update(userToUpdate);
             _unitOfWork.Commit();
             return true;
         }

@@ -49,6 +49,11 @@ namespace AutoHub.DAL.Repositories
             return _context.Set<T>().Any(predicate);
         }
 
+        public bool Contains(T item)
+        {
+            return _context.Set<T>().Contains(item);
+        }
+
         public T Add(T newItem)
         {
             _context.Add(newItem);
@@ -63,7 +68,10 @@ namespace AutoHub.DAL.Repositories
 
         public bool Update(T item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            if (!_context.Set<T>().Contains(item))
+                return false;
+            _context.Set<T>().Update(item);
+            // _context.Entry(item).State = EntityState.Modified;
             return true;
         }
 

@@ -9,6 +9,8 @@ namespace AutoHub.BLL.Interfaces
         User GetById(int id);
         bool Register(User userModel);
         bool Login();
+        bool SetAdminRole(int userId);
+        bool SetRegularRole(int userId);
         bool IsEmailUnique(string email);
         bool IsPasswordMatchRules(string password);
         string HashPassword(string password);

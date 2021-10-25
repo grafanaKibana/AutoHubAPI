@@ -51,12 +51,12 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetLotById(int id)
+        [HttpGet("{lotId}")]
+        public IActionResult GetLotById(int lotId)
         {
             try
             {
-                var lot = _lotService.GetById(id);
+                var lot = _lotService.GetById(lotId);
                 if (lot == null)
                     return NotFound();
                 var mappedLot = _mapper.Map<LotResponseModel>(lot);
@@ -80,6 +80,45 @@ namespace AutoHub.API.Controllers
                 _lotService.CreateLot(mappedLot);
 
                 return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{lotId}/SetStatus")]
+        public IActionResult UpdateLotStatus(int lotId, int statusId)
+        {
+            try
+            {
+                //TODO: Where to check for NotFound?
+                /*if (_lotService.GetById(lotId) == null)
+                {
+                    return NotFound("Lot not found");
+                }
+
+                if (!Enum.IsDefined(typeof(LotStatusEnum), statusId))
+                {
+                    return NotFound("Status with this ID not exist");
+                }*/
+
+                var success = _lotService.SetStatus(lotId, statusId);
+                return success ? Ok(success) : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{lotId}/SetWinner")]
+        public IActionResult SetWinner(int lotId, int winnerId)
+        {
+            try
+            {
+                var success = _lotService.SetWinner(lotId, winnerId);
+                return success ? Ok(success) : BadRequest();
             }
             catch (Exception ex)
             {
