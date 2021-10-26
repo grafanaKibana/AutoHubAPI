@@ -8,6 +8,7 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<CarModel> GetAll();
         CarModel GetById(int id);
         CarModel CreateCarModel(CarModel carModelModel);
+        CarModel UpdateCarModel(CarModel carModelModel);
         bool Exist(string carModelName);
     }
 }

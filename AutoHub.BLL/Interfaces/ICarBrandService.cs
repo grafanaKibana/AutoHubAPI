@@ -8,6 +8,7 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<CarBrand> GetAll();
         CarBrand GetById(int id);
         CarBrand CreateCarBrand(CarBrand carBrandModel);
+        CarBrand UpdateCarBrand(CarBrand carBrandModel);
         bool Exist(string carBrandName);
     }
 }

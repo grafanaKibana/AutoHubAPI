@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoHub.BLL.Interfaces;
@@ -24,7 +23,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<Lot> GetActiveLots()
         {
-            return _unitOfWork.Lots.Find(lot =>
+            return _unitOfWork.Lots.GetAll().Where(lot =>
                 lot.LotStatusId == LotStatusEnum.InProgress);
         }
 
@@ -40,14 +39,22 @@ namespace AutoHub.BLL.Services
             return lotModel;
         }
 
+        public Lot UpdateLot(Lot lotModel)
+        {
+            var lot = _unitOfWork.Lots.GetById(lotModel.LotId);
+            lot.CreatorId = lotModel.CreatorId;
+            lot.LotStatusId = lotModel.LotStatusId;
+            lot.CarId = lotModel.CarId;
+            lot.WinnerId = lotModel.WinnerId;
+            // lot.EndTime = lot.StartTime + lotModel.Duration
+
+            _unitOfWork.Lots.Update(lot);
+            _unitOfWork.Commit();
+            return lotModel;
+        }
+
         public bool SetStatus(int lotId, int statusId)
         {
-            if (!_unitOfWork.Lots.Any(lot => lot.LotId == lotId))
-                return false;
-
-            if (!Enum.IsDefined(typeof(LotStatusEnum), statusId))
-                return false;
-
             var lotToUpdate = _unitOfWork.Lots.Find(lot => lot.LotId == lotId).FirstOrDefault();
             lotToUpdate.LotStatusId = (LotStatusEnum)statusId;
             _unitOfWork.Lots.Update(lotToUpdate);

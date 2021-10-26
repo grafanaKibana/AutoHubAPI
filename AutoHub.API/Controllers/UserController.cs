@@ -45,9 +45,10 @@ namespace AutoHub.API.Controllers
                     return BadRequest();
                 var mappedUser = _mapper.Map<User>(model);
                 var successfulRegistration = _userService.Register(mappedUser);
-                if (!successfulRegistration) return BadRequest();
+                if (!successfulRegistration)
+                    return BadRequest();
 
-                return Ok(model);
+                return StatusCode(201, model);
             }
             catch (Exception ex)
             {

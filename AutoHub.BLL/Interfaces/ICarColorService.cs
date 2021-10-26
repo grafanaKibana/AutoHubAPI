@@ -8,6 +8,7 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<CarColor> GetAll();
         CarColor GetById(int id);
         CarColor CreateCarColor(CarColor carColorModel);
+        CarColor UpdateCarColor(CarColor carColorModel);
         bool Exist(string carColorName);
     }
 }

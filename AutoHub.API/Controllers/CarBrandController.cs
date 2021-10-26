@@ -47,6 +47,26 @@ namespace AutoHub.API.Controllers
                 var mappedCarBrand = _mapper.Map<CarBrand>(model);
                 _carBrandService.CreateCarBrand(mappedCarBrand);
 
+                return StatusCode(201, model);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCarBrand(int id, [FromBody] CarBrandUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+                if (_carBrandService.GetById(id) == null)
+                    return NotFound();
+
+                var mappedCarBrand = _mapper.Map<CarBrand>(model);
+                _carBrandService.UpdateCarBrand(mappedCarBrand);
                 return Ok(model);
             }
             catch (Exception ex)

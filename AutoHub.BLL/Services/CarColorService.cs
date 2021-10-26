@@ -32,6 +32,17 @@ namespace AutoHub.BLL.Services
             return carColorModel;
         }
 
+        public CarColor UpdateCarColor(CarColor carColorModel)
+        {
+            var carColor = _unitOfWork.CarColors.GetById(carColorModel.CarColorId);
+            carColor.CarColorName = carColorModel.CarColorName;
+
+            _unitOfWork.CarColors.Update(carColor);
+            _unitOfWork.Commit();
+
+            return carColorModel;
+        }
+
         public bool Exist(string carColorName)
         {
             return _unitOfWork.CarColors.Any(color => color.CarColorName == carColorName);

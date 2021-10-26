@@ -11,18 +11,19 @@ namespace AutoHub.API.MappingProfiles
         public LotMappingProfile()
         {
             CreateMap<Lot, LotResponseModel>()
-                .ForPath(dest => dest.LotStatus, o => o.MapFrom(lot => lot.LotStatus.LotStatusName))
-                .ForMember(dest => dest.Creator, o => o.MapFrom(lot => lot.Creator))
-                .ForMember(dest => dest.Car, o => o.MapFrom(lot => lot.Car))
-                .ForMember(dest => dest.Winner, o => o.MapFrom(lot => lot.Winner));
+                .ForPath(dest => dest.LotStatus, o => o.MapFrom(lot => lot.LotStatus.LotStatusName));
 
             CreateMap<LotCreateRequestModel, Lot>()
                 .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => LotStatusEnum.New))
-                .ForMember(dest => dest.CreatorId, o => o.MapFrom(model => model.UserId))
-                .ForMember(dest => dest.CarId, o => o.MapFrom(model => model.CarId))
                 .ForMember(dest => dest.StartTime, o => o.MapFrom(model => DateTime.UtcNow))
                 .ForMember(dest => dest.EndTime,
                     o => o.MapFrom(model => DateTime.UtcNow.AddDays(model.DurationInDays)));
+
+            CreateMap<LotUpdateRequestModel, Lot>()
+                .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => (LotStatusEnum)model.LotStatusId));
+            //TODO: I need to map Duration in days to destination.EndTime = destination.StartTime + model.DurationInDays
+            //// .ForMember(dest => dest.EndTime, o => o.MapFrom(model => ));
+            // .ForMember(dest => dest.StartTime, o => o.MapFrom(model => model))
         }
     }
 }

@@ -10,6 +10,7 @@ namespace AutoHub.API.MappingProfiles
         {
             CreateMap<CarModel, CarModelResponseModel>();
             CreateMap<CarModelCreateRequestModel, CarModel>();
+            CreateMap<CarModelUpdateRequestModel, CarModel>();
         }
     }
 }

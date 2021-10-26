@@ -39,6 +39,21 @@ namespace AutoHub.BLL.Services
             return true;
         }
 
+        public User UpdateUser(User userModel)
+        {
+            var user = _unitOfWork.Users.GetById(userModel.UserId);
+            user.UserRoleId = userModel.UserRoleId;
+            user.FirstName = userModel.FirstName;
+            user.LastName = userModel.LastName;
+            user.Email = userModel.Email;
+            user.Phone = userModel.Phone;
+            user.Password = HashPassword(userModel.Password);
+
+            _unitOfWork.Users.Update(userModel);
+            _unitOfWork.Commit();
+            return userModel;
+        }
+
         public bool SetAdminRole(int userId)
         {
             if (!_unitOfWork.Users.Any(user => user.UserId == userId))

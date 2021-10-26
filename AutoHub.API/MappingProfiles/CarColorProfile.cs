@@ -10,6 +10,7 @@ namespace AutoHub.API.MappingProfiles
         {
             CreateMap<CarColor, CarColorResponseModel>();
             CreateMap<CarColorCreateRequestModel, CarColor>();
+            CreateMap<CarColorUpdateRequestModel, CarColor>();
         }
     }
 }

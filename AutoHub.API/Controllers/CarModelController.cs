@@ -46,7 +46,26 @@ namespace AutoHub.API.Controllers
 
                 var mappedCarModel = _mapper.Map<CarModel>(model);
                 _carModelService.CreateCarModel(mappedCarModel);
+                return StatusCode(201, model);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
 
+        [HttpPut("{id}")]
+        public IActionResult UpdateCarModel(int id, [FromBody] CarModelUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+                if (_carModelService.GetById(id) == null)
+                    return NotFound();
+
+                var mappedCarModel = _mapper.Map<CarModel>(model);
+                _carModelService.UpdateCarModel(mappedCarModel);
                 return Ok(model);
             }
             catch (Exception ex)

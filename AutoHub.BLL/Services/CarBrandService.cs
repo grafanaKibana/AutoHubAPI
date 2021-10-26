@@ -33,6 +33,17 @@ namespace AutoHub.BLL.Services
             return carBrandModel;
         }
 
+        public CarBrand UpdateCarBrand(CarBrand carBrandModel)
+        {
+            var carBrand = _unitOfWork.CarBrands.GetById(carBrandModel.CarBrandId);
+            carBrand.CarBrandName = carBrandModel.CarBrandName;
+
+            _unitOfWork.CarBrands.Update(carBrand);
+            _unitOfWork.Commit();
+
+            return carBrandModel;
+        }
+
         public bool Exist(string carBrandName)
         {
             return _unitOfWork.CarBrands.Any(brand => brand.CarBrandName == carBrandName);

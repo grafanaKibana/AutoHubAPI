@@ -47,6 +47,26 @@ namespace AutoHub.API.Controllers
                 var mappedCarColor = _mapper.Map<CarColor>(model);
                 _carColorService.CreateCarColor(mappedCarColor);
 
+                return StatusCode(201, model);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCarColor(int id, [FromBody] CarColorUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+                if (_carColorService.GetById(id) == null)
+                    return NotFound();
+
+                var mappedCarColor = _mapper.Map<CarColor>(model);
+                _carColorService.UpdateCarColor(mappedCarColor);
                 return Ok(model);
             }
             catch (Exception ex)

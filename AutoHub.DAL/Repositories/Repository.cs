@@ -68,10 +68,8 @@ namespace AutoHub.DAL.Repositories
 
         public bool Update(T item)
         {
-            if (!_context.Set<T>().Contains(item))
-                return false;
             _context.Set<T>().Update(item);
-            // _context.Entry(item).State = EntityState.Modified;
+            /*_context.Entry(item).State = EntityState.Modified;*/
             return true;
         }
 

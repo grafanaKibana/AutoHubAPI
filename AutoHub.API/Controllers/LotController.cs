@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.LotModels;
 using AutoHub.DAL.Entities;
+using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,7 +52,7 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpGet("{lotId}")]
+        [HttpGet("{id}")]
         public IActionResult GetLotById(int lotId)
         {
             try
@@ -79,6 +80,30 @@ namespace AutoHub.API.Controllers
                 var mappedLot = _mapper.Map<Lot>(model);
                 _lotService.CreateLot(mappedLot);
 
+                return StatusCode(201, model);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateLot(int id, [FromBody] LotUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+
+                if (_lotService.GetById(id) == null)
+                    return NotFound();
+
+                if (!Enum.IsDefined(typeof(LotStatusEnum), model.LotStatusId))
+                    return NotFound("Incorrect Status ID");
+
+                var mappedLot = _mapper.Map<Lot>(model);
+                _lotService.UpdateLot(mappedLot);
                 return Ok(model);
             }
             catch (Exception ex)
@@ -87,24 +112,21 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpPut("{lotId}/SetStatus")]
-        public IActionResult UpdateLotStatus(int lotId, int statusId)
+        [HttpPut("{id}/SetStatus")]
+        public IActionResult UpdateLotStatus(int id, int statusId)
         {
             try
             {
                 //TODO: Where to check for NotFound?
-                /*if (_lotService.GetById(lotId) == null)
-                {
+                if (_lotService.GetById(id) == null)
                     return NotFound("Lot not found");
-                }
 
                 if (!Enum.IsDefined(typeof(LotStatusEnum), statusId))
-                {
-                    return NotFound("Status with this ID not exist");
-                }*/
+                    return NotFound("Incorrect Status ID");
 
-                var success = _lotService.SetStatus(lotId, statusId);
-                return success ? Ok(success) : BadRequest();
+
+                var success = _lotService.SetStatus(id, statusId);
+                return success ? Ok(success) : StatusCode(500);
             }
             catch (Exception ex)
             {
@@ -112,18 +134,22 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpPut("{lotId}/SetWinner")]
-        public IActionResult SetWinner(int lotId, int winnerId)
+        /*
+        [HttpPut("{id}/SetWinner")]
+        public IActionResult SetWinner(int id, int winnerId)
         {
             try
             {
-                var success = _lotService.SetWinner(lotId, winnerId);
-                return success ? Ok(success) : BadRequest();
+                if (_lotService.GetById(id) == null)
+                    return NotFound("Lot not found");
+                
+                var success = _lotService.SetWinner(id, winnerId);
+                return success ? Ok(success) : StatusCode(500);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex);
             }
-        }
+        }*/
     }
 }

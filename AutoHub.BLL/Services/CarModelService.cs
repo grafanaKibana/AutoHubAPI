@@ -32,6 +32,17 @@ namespace AutoHub.BLL.Services
             return carModelModel;
         }
 
+        public CarModel UpdateCarModel(CarModel carModelModel)
+        {
+            var carModel = _unitOfWork.CarModels.GetById(carModelModel.CarModelId);
+            carModel.CarModelName = carModelModel.CarModelName;
+
+            _unitOfWork.CarModels.Update(carModelModel);
+            _unitOfWork.Commit();
+
+            return carModelModel;
+        }
+
         public bool Exist(string carModelName)
         {
             return _unitOfWork.CarModels.Any(model => model.CarModelName == carModelName);
