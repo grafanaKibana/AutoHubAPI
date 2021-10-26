@@ -6,6 +6,7 @@ using AutoHub.BLL.Models.UserModels;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
@@ -24,6 +25,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<UserResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAllUsers()
         {
             try
@@ -39,6 +41,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{userId}/Bids")]
+        [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetUserBids(int id)
         {
             try

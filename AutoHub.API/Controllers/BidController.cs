@@ -3,6 +3,7 @@ using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.BidModels;
 using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
@@ -21,6 +22,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{bidId}")]
+        [ProducesResponseType(typeof(BidResponseModel), StatusCodes.Status200OK)]
         public IActionResult GetBidById(int bidId)
         {
             try
@@ -28,7 +30,9 @@ namespace AutoHub.API.Controllers
                 var bid = _bidService.GetById(bidId);
                 if (bid == null)
                     return NotFound();
-                return Ok(bid);
+
+                var mappedBid = _mapper.Map<BidResponseModel>(bid);
+                return Ok(mappedBid);
             }
             catch (Exception ex)
             {

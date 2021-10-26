@@ -4,6 +4,7 @@ using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.CarModels;
 using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
@@ -22,6 +23,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAllCars()
         {
             try
@@ -37,6 +39,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{carId}")]
+        [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetCarById(int carId)
         {
             try

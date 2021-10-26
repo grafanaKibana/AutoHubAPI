@@ -48,7 +48,12 @@ namespace AutoHub.API
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "AutoHub.API",
-                    Version = "v1"
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Nikita Reshetnik",
+                        Email = "reshetnik.nikita@gmail.com"
+                    }
                 });
             });
         }

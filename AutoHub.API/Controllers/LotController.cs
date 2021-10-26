@@ -6,6 +6,7 @@ using AutoHub.BLL.Models.LotModels;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
@@ -26,6 +27,7 @@ namespace AutoHub.API.Controllers
 
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAllLots()
         {
             try
@@ -41,6 +43,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("Active")]
+        [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetActiveLots()
         {
             try
@@ -56,6 +59,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{lotId}")]
+        [ProducesResponseType(typeof(LotResponseModel), StatusCodes.Status200OK)]
         public IActionResult GetLotById(int lotId)
         {
             try
@@ -74,6 +78,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{lotId}/Bids")]
+        [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetLotBids(int id)
         {
             try

@@ -4,6 +4,7 @@ using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.CarBrandModels;
 using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
@@ -37,6 +38,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(IEnumerable<CarBrandResponseModel>), StatusCodes.Status200OK)]
         public IActionResult CreateCarBrand([FromBody] CarBrandCreateRequestModel model)
         {
             try

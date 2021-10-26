@@ -4,6 +4,7 @@ using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Models.CarModelModels;
 using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
@@ -22,6 +23,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CarModelResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             try
