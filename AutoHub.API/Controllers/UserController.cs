@@ -39,7 +39,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{userId}/Bids")]
-        public IActionResult GetLotBids(int id)
+        public IActionResult GetUserBids(int id)
         {
             try
             {
