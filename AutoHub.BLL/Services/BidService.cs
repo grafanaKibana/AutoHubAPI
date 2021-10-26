@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
@@ -12,16 +11,6 @@ namespace AutoHub.BLL.Services
         public BidService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-        }
-
-        public IEnumerable<Bid> GetAllUserBids(int userId)
-        {
-            return _unitOfWork.Bids.Find(bid => bid.UserId == userId);
-        }
-
-        public IEnumerable<Bid> GetAllLotBids(int lotId)
-        {
-            return _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
         }
 
         public Bid GetById(int id)

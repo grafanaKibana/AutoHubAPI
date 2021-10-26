@@ -45,7 +45,11 @@ namespace AutoHub.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutoHub.API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "AutoHub.API",
+                    Version = "v1"
+                });
             });
         }
 

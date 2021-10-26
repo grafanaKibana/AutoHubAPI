@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoHub.BLL.Interfaces;
+using AutoHub.BLL.Models.BidModels;
 using AutoHub.BLL.Models.LotModels;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
@@ -9,18 +10,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class LotController : Controller
     {
         private readonly ILotService _lotService;
         private readonly IMapper _mapper;
 
+
         public LotController(ILotService lotService, IMapper mapper)
         {
             _lotService = lotService;
             _mapper = mapper;
         }
+
 
         [HttpGet]
         public IActionResult GetAllLots()
@@ -42,7 +45,7 @@ namespace AutoHub.API.Controllers
         {
             try
             {
-                var lots = _lotService.GetActiveLots();
+                var lots = _lotService.GetActive();
                 var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
                 return Ok(mappedLots);
             }
@@ -52,7 +55,7 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{lotId}")]
         public IActionResult GetLotById(int lotId)
         {
             try
@@ -60,8 +63,27 @@ namespace AutoHub.API.Controllers
                 var lot = _lotService.GetById(lotId);
                 if (lot == null)
                     return NotFound();
+
                 var mappedLot = _mapper.Map<LotResponseModel>(lot);
                 return Ok(mappedLot);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet("{lotId}/Bids")]
+        public IActionResult GetLotBids(int id)
+        {
+            try
+            {
+                if (_lotService.GetById(id) == null)
+                    return NotFound();
+
+                var bids = _lotService.GetBids(id);
+                var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
+                return Ok(mappedBids);
             }
             catch (Exception ex)
             {
@@ -88,15 +110,15 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateLot(int id, [FromBody] LotUpdateRequestModel model)
+        [HttpPut("{lotId}")]
+        public IActionResult UpdateLot(int lotId, [FromBody] LotUpdateRequestModel model)
         {
             try
             {
                 if (model == null)
                     return BadRequest();
 
-                if (_lotService.GetById(id) == null)
+                if (_lotService.GetById(lotId) == null)
                     return NotFound();
 
                 if (!Enum.IsDefined(typeof(LotStatusEnum), model.LotStatusId))
@@ -111,45 +133,5 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
-
-        [HttpPut("{id}/SetStatus")]
-        public IActionResult UpdateLotStatus(int id, int statusId)
-        {
-            try
-            {
-                //TODO: Where to check for NotFound?
-                if (_lotService.GetById(id) == null)
-                    return NotFound("Lot not found");
-
-                if (!Enum.IsDefined(typeof(LotStatusEnum), statusId))
-                    return NotFound("Incorrect Status ID");
-
-
-                var success = _lotService.SetStatus(id, statusId);
-                return success ? Ok(success) : StatusCode(500);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }
-
-        /*
-        [HttpPut("{id}/SetWinner")]
-        public IActionResult SetWinner(int id, int winnerId)
-        {
-            try
-            {
-                if (_lotService.GetById(id) == null)
-                    return NotFound("Lot not found");
-                
-                var success = _lotService.SetWinner(id, winnerId);
-                return success ? Ok(success) : StatusCode(500);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }*/
     }
 }

@@ -21,10 +21,17 @@ namespace AutoHub.BLL.Services
             return _unitOfWork.Lots.GetAll();
         }
 
-        public IEnumerable<Lot> GetActiveLots()
+        public IEnumerable<Lot> GetActive()
         {
             return _unitOfWork.Lots.GetAll().Where(lot =>
                 lot.LotStatusId == LotStatusEnum.InProgress);
+        }
+
+        public IEnumerable<Bid> GetBids(int lotId)
+        {
+            //TODO: Why _unitOfWork.Lots.GetById(lotId).Bids returns [nothing]?
+            //TODO: Set-up Including of user, and lot and its members
+            return _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
         }
 
         public Lot GetById(int id)
@@ -51,60 +58,6 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Lots.Update(lot);
             _unitOfWork.Commit();
             return lotModel;
-        }
-
-        public bool SetStatus(int lotId, int statusId)
-        {
-            var lotToUpdate = _unitOfWork.Lots.Find(lot => lot.LotId == lotId).FirstOrDefault();
-            lotToUpdate.LotStatusId = (LotStatusEnum)statusId;
-            _unitOfWork.Lots.Update(lotToUpdate);
-            _unitOfWork.Commit();
-            return true;
-
-            /*switch (statusId)
-            {
-                case (int)LotStatusEnum.New:
-                    lotToUpdate.LotStatusId = LotStatusEnum.New;
-                    _unitOfWork.Lots.Update(lotToUpdate);
-                    _unitOfWork.Commit();
-                    return true;
-
-                case (int)LotStatusEnum.NotStarted:
-                    lotToUpdate.LotStatusId = LotStatusEnum.NotStarted;
-                    _unitOfWork.Lots.Update(lotToUpdate);
-                    _unitOfWork.Commit();
-                    return true;
-
-                case (int)LotStatusEnum.InProgress:
-                    lotToUpdate.LotStatusId = LotStatusEnum.InProgress;
-                    _unitOfWork.Lots.Update(lotToUpdate);
-                    _unitOfWork.Commit();
-                    return true;
-
-                case (int)LotStatusEnum.EndedUp:
-                    lotToUpdate.LotStatusId = LotStatusEnum.EndedUp;
-                    _unitOfWork.Lots.Update(lotToUpdate);
-                    _unitOfWork.Commit();
-                    return true;
-
-                default:
-                    return false;
-            }
-
-            return false;*/
-        }
-
-        public bool SetWinner(int lotId, int userId)
-        {
-            if (!_unitOfWork.Lots.Any(lot => lot.LotId == lotId) &&
-                !_unitOfWork.Users.Any(user => user.UserId == userId))
-                return false;
-
-            var lotToUpdate = _unitOfWork.Lots.Find(lot => lot.LotId == lotId).FirstOrDefault();
-            lotToUpdate.WinnerId = userId;
-            _unitOfWork.Lots.Update(lotToUpdate);
-            _unitOfWork.Commit();
-            return true;
         }
     }
 }

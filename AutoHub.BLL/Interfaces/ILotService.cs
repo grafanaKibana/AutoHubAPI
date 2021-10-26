@@ -6,11 +6,10 @@ namespace AutoHub.BLL.Interfaces
     public interface ILotService
     {
         IEnumerable<Lot> GetAll();
-        IEnumerable<Lot> GetActiveLots();
+        IEnumerable<Lot> GetActive();
+        IEnumerable<Bid> GetBids(int userId);
         Lot GetById(int id);
         Lot CreateLot(Lot lotModel);
         Lot UpdateLot(Lot lotModel);
-        bool SetStatus(int lotId, int statusId);
-        bool SetWinner(int lotId, int userId);
     }
 }

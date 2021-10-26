@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class CarBrandController : Controller
     {
@@ -55,14 +55,14 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateCarBrand(int id, [FromBody] CarBrandUpdateRequestModel model)
+        [HttpPut("{carBrandId}")]
+        public IActionResult UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequestModel model)
         {
             try
             {
                 if (model == null)
                     return BadRequest();
-                if (_carBrandService.GetById(id) == null)
+                if (_carBrandService.GetById(carBrandId) == null)
                     return NotFound();
 
                 var mappedCarBrand = _mapper.Map<CarBrand>(model);
