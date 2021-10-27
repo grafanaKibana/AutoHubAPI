@@ -23,6 +23,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CarBrandResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             try
@@ -38,7 +39,6 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(IEnumerable<CarBrandResponseModel>), StatusCodes.Status200OK)]
         public IActionResult CreateCarBrand([FromBody] CarBrandCreateRequestModel model)
         {
             try
