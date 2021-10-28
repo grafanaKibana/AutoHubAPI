@@ -13,7 +13,10 @@ namespace AutoHub.DAL.Interfaces
         bool Contains(T item);
         T Add(T newItem);
         IEnumerable<T> AddRange(IEnumerable<T> newItems);
+
+        //TODO: That must return updated entity(not boolean)
         bool Update(T item);
+
         bool Delete(int id);
     }
 }

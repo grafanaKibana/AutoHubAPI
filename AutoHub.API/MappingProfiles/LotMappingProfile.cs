@@ -1,7 +1,6 @@
-using System;
-using AutoHub.BLL.Models.LotModels;
+using AutoHub.API.Models.LotModels;
+using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.DAL.Entities;
-using AutoHub.DAL.Enums;
 using AutoMapper;
 
 namespace AutoHub.API.MappingProfiles
@@ -10,20 +9,16 @@ namespace AutoHub.API.MappingProfiles
     {
         public LotMappingProfile()
         {
-            CreateMap<Lot, LotResponseModel>()
+            //Model <-> DTO maps
+            CreateMap<LotResponseDTO, LotResponseModel>();
+            CreateMap<LotCreateRequestModel, LotCreateRequestDTO>();
+            CreateMap<LotUpdateRequestModel, LotUpdateRequestDTO>();
+
+            //DTO <-> Entity maps
+            CreateMap<Lot, LotResponseDTO>()
                 .ForPath(dest => dest.LotStatus, o => o.MapFrom(lot => lot.LotStatus.LotStatusName));
-
-            CreateMap<LotCreateRequestModel, Lot>()
-                .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => LotStatusEnum.New))
-                .ForMember(dest => dest.StartTime, o => o.MapFrom(model => DateTime.UtcNow))
-                .ForMember(dest => dest.EndTime,
-                    o => o.MapFrom(model => DateTime.UtcNow.AddDays(model.DurationInDays)));
-
-            CreateMap<LotUpdateRequestModel, Lot>()
-                .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => (LotStatusEnum)model.LotStatusId));
-            //TODO: I need to map Duration in days to destination.EndTime = destination.StartTime + model.DurationInDays
-            //// .ForMember(dest => dest.EndTime, o => o.MapFrom(model => ));
-            // .ForMember(dest => dest.StartTime, o => o.MapFrom(model => model))
+            CreateMap<LotCreateRequestDTO, Lot>();
+            CreateMap<LotUpdateRequestDTO, Lot>();
         }
     }
 }

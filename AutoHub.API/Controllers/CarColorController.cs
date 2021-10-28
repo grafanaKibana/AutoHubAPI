@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using AutoHub.API.Models.CarColorModels;
+using AutoHub.BLL.DTOs.CarColorDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarColorModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,10 +46,10 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                var mappedCarColor = _mapper.Map<CarColor>(model);
+                var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
                 _carColorService.CreateCarColor(mappedCarColor);
 
-                return StatusCode(201, model);
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
@@ -67,9 +67,11 @@ namespace AutoHub.API.Controllers
                 if (_carColorService.GetById(carColorId) == null)
                     return NotFound();
 
-                var mappedCarColor = _mapper.Map<CarColor>(model);
+                var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
+                mappedCarColor.CarColorId = carColorId;
+
                 _carColorService.UpdateCarColor(mappedCarColor);
-                return Ok(model);
+                return Ok();
             }
             catch (Exception ex)
             {

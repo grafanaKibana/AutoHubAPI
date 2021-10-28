@@ -1,52 +1,52 @@
 using System.Collections.Generic;
+using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
+using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class CarBrandService : ICarBrandService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CarBrandService(IUnitOfWork unitOfWork)
+        public CarBrandService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
-        public IEnumerable<CarBrand> GetAll()
+        public IEnumerable<CarBrandResponseDTO> GetAll()
         {
-            return _unitOfWork.CarBrands.GetAll();
+            var brands = _unitOfWork.CarBrands.GetAll();
+            var mappedBrands = _mapper.Map<IEnumerable<CarBrandResponseDTO>>(brands);
+            return mappedBrands;
         }
 
-        public CarBrand GetById(int id)
+        public CarBrandResponseDTO GetById(int carBrandId)
         {
-            var carBrand = _unitOfWork.CarBrands.GetById(id);
-            return carBrand;
+            var brand = _unitOfWork.CarBrands.GetById(carBrandId);
+            var mappedBrand = _mapper.Map<CarBrandResponseDTO>(brand);
+            return mappedBrand;
         }
 
-        public CarBrand CreateCarBrand(CarBrand carBrandModel)
+        public void CreateCarBrand(CarBrandCreateRequestDTO createBrandDTO)
         {
-            _unitOfWork.CarBrands.Add(carBrandModel);
+            var brand = _mapper.Map<CarBrand>(createBrandDTO);
+            _unitOfWork.CarBrands.Add(brand);
             _unitOfWork.Commit();
-            return carBrandModel;
         }
 
-        public CarBrand UpdateCarBrand(CarBrand carBrandModel)
+        public void UpdateCarBrand(CarBrandUpdateRequestDTO updateBrandDTO)
         {
-            var carBrand = _unitOfWork.CarBrands.GetById(carBrandModel.CarBrandId);
-            carBrand.CarBrandName = carBrandModel.CarBrandName;
+            var carBrand = _unitOfWork.CarBrands.GetById(updateBrandDTO.CarBrandId);
+            carBrand.CarBrandName = updateBrandDTO.CarBrandName;
 
             _unitOfWork.CarBrands.Update(carBrand);
             _unitOfWork.Commit();
-
-            return carBrandModel;
-        }
-
-        public bool Exist(string carBrandName)
-        {
-            return _unitOfWork.CarBrands.Any(brand => brand.CarBrandName == carBrandName);
         }
     }
 }

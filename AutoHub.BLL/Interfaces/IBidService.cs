@@ -1,10 +1,10 @@
-using AutoHub.DAL.Entities;
+using AutoHub.BLL.DTOs.BidDTOs;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface IBidService
     {
-        Bid GetById(int id);
-        Bid CreateBid(Bid bidModel);
+        BidResponseDTO GetById(int bidId);
+        void CreateBid(BidCreateRequestDTO createBidDTO);
     }
 }

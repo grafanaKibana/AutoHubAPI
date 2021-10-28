@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Models"/>
+        <PackageReference Include="AutoMapper" Version="10.1.1"/>
     </ItemGroup>
 
 </Project>

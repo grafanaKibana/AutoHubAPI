@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoHub.API.Models.BidModels;
+using AutoHub.API.Models.UserModels;
+using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.BidModels;
-using AutoHub.BLL.Models.UserModels;
-using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -42,14 +42,14 @@ namespace AutoHub.API.Controllers
 
         [HttpGet("{userId}/Bids")]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
-        public IActionResult GetUserBids(int id)
+        public IActionResult GetUserBids(int userId)
         {
             try
             {
-                if (_userService.GetById(id) == null)
+                if (_userService.GetById(userId) == null)
                     return NotFound();
 
-                var bids = _userService.GetBids(id);
+                var bids = _userService.GetBids(userId);
                 var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
                 return Ok(mappedBids);
             }
@@ -66,12 +66,10 @@ namespace AutoHub.API.Controllers
             {
                 if (model == null)
                     return BadRequest();
-                var mappedUser = _mapper.Map<User>(model);
-                var successfulRegistration = _userService.Register(mappedUser);
-                if (!successfulRegistration)
-                    return BadRequest();
+                var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
+                _userService.Register(mappedUser);
 
-                return StatusCode(201, model);
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
@@ -93,9 +91,9 @@ namespace AutoHub.API.Controllers
                 if (!Enum.IsDefined(typeof(UserRoleEnum), model.UserRoleId))
                     return NotFound("Incorrect user role ID");
 
-                var mappedUser = _mapper.Map<User>(model);
+                var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
                 _userService.UpdateUser(mappedUser);
-                return Ok(model);
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -1,7 +1,7 @@
 using System;
+using AutoHub.API.Models.BidModels;
+using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.BidModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +28,7 @@ namespace AutoHub.API.Controllers
             try
             {
                 var bid = _bidService.GetById(bidId);
+
                 if (bid == null)
                     return NotFound();
 
@@ -48,10 +49,10 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                var mappedBid = _mapper.Map<Bid>(model);
+                var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
                 _bidService.CreateBid(mappedBid);
 
-                return Ok(model);
+                return Ok();
             }
             catch (Exception ex)
             {

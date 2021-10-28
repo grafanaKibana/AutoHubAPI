@@ -1,51 +1,51 @@
 using System.Collections.Generic;
+using AutoHub.BLL.DTOs.CarModelDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
+using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class CarModelService : ICarModelService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CarModelService(IUnitOfWork unitOfWork)
+        public CarModelService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IEnumerable<CarModel> GetAll()
+        public IEnumerable<CarModelResponseDTO> GetAll()
         {
-            return _unitOfWork.CarModels.GetAll();
+            var models = _unitOfWork.CarModels.GetAll();
+            var mappedModels = _mapper.Map<IEnumerable<CarModelResponseDTO>>(models);
+            return mappedModels;
         }
 
-        public CarModel GetById(int id)
+        public CarModelResponseDTO GetById(int carBrandId)
         {
-            var carModel = _unitOfWork.CarModels.GetById(id);
-            return carModel;
+            var model = _unitOfWork.CarModels.GetById(carBrandId);
+            var mappedModels = _mapper.Map<CarModelResponseDTO>(model);
+            return mappedModels;
         }
 
-        public CarModel CreateCarModel(CarModel carModelModel)
+        public void CreateCarModel(CarModelCreateRequestDTO createModelDTO)
         {
-            _unitOfWork.CarModels.Add(carModelModel);
+            var model = _mapper.Map<CarModel>(createModelDTO);
+            _unitOfWork.CarModels.Add(model);
             _unitOfWork.Commit();
-            return carModelModel;
         }
 
-        public CarModel UpdateCarModel(CarModel carModelModel)
+        public void UpdateCarModel(CarModelUpdateRequestDTO updateModelDTO)
         {
-            var carModel = _unitOfWork.CarModels.GetById(carModelModel.CarModelId);
-            carModel.CarModelName = carModelModel.CarModelName;
+            var carModel = _unitOfWork.CarModels.GetById(updateModelDTO.CarModelId);
+            carModel.CarModelName = updateModelDTO.CarModelName;
 
-            _unitOfWork.CarModels.Update(carModelModel);
+            _unitOfWork.CarModels.Update(carModel);
             _unitOfWork.Commit();
-
-            return carModelModel;
-        }
-
-        public bool Exist(string carModelName)
-        {
-            return _unitOfWork.CarModels.Any(model => model.CarModelName == carModelName);
         }
     }
 }

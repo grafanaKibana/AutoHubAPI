@@ -1,5 +1,5 @@
-using System;
-using AutoHub.BLL.Models.BidModels;
+using AutoHub.API.Models.BidModels;
+using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.DAL.Entities;
 using AutoMapper;
 
@@ -9,10 +9,13 @@ namespace AutoHub.API.MappingProfiles
     {
         public BidMappingProfile()
         {
-            CreateMap<Bid, BidResponseModel>();
+            //Model <-> DTO maps
+            CreateMap<BidResponseDTO, BidResponseModel>();
+            CreateMap<BidCreateRequestModel, BidCreateRequestDTO>();
 
-            CreateMap<BidCreateRequestModel, Bid>()
-                .ForMember(dest => dest.BidTime, o => o.MapFrom(model => DateTime.UtcNow));
+            //DTO <-> Entity maps
+            CreateMap<Bid, BidResponseDTO>();
+            CreateMap<BidCreateRequestDTO, Bid>();
         }
     }
 }

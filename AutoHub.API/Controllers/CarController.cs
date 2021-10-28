@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoHub.API.Models.CarModels;
+using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -64,10 +64,32 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                var mappedCar = _mapper.Map<Car>(model);
+                var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
                 _carService.CreateCar(mappedCar);
 
-                return Ok(model);
+                return StatusCode(201);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{carId}")]
+        public IActionResult UpdateCar(int carId, [FromBody] CarUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+                if (_carService.GetById(carId) == null)
+                    return NotFound();
+
+                var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
+                mappedCar.CarId = carId;
+
+                _carService.UpdateCar(mappedCar);
+                return Ok();
             }
             catch (Exception ex)
             {

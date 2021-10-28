@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using AutoHub.DAL.Entities;
+using AutoHub.BLL.DTOs.BidDTOs;
+using AutoHub.BLL.DTOs.LotDTOs;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface ILotService
     {
-        IEnumerable<Lot> GetAll();
-        IEnumerable<Lot> GetActive();
-        IEnumerable<Bid> GetBids(int userId);
-        Lot GetById(int id);
-        Lot CreateLot(Lot lotModel);
-        Lot UpdateLot(Lot lotModel);
+        IEnumerable<LotResponseDTO> GetAll();
+        IEnumerable<LotResponseDTO> GetActive();
+        IEnumerable<BidResponseDTO> GetBids(int userId);
+        LotResponseDTO GetById(int lotId);
+        void CreateLot(LotCreateRequestDTO createLotDTO);
+        void UpdateLot(LotUpdateRequestDTO updateLotDTO);
     }
 }

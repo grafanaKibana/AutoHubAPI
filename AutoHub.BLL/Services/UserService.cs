@@ -2,83 +2,90 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
+using AutoHub.BLL.DTOs.BidDTOs;
+using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
+using AutoHub.DAL.Enums;
 using AutoHub.DAL.Interfaces;
+using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class UserService : IUserService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<UserResponseDTO> GetAll()
         {
-            return _unitOfWork.Users.GetAll();
+            var users = _unitOfWork.Users.GetAll();
+            var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
+            return mappedUsers;
         }
 
-        public IEnumerable<Bid> GetBids(int userId)
+        public IEnumerable<BidResponseDTO> GetBids(int userId)
         {
-            //TODO: Set-up Including of user, and lot and its members
-            return _unitOfWork.Bids.Find(bid => bid.UserId == userId);
+            var users = _unitOfWork.Bids.Find(bid => bid.UserId == userId);
+            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(users);
+            return mappedBids;
         }
 
-        public User GetById(int id)
+        public UserResponseDTO GetById(int userId)
         {
-            return _unitOfWork.Users.GetById(id);
+            var user = _unitOfWork.Users.GetById(userId);
+            var mappedUser = _mapper.Map<UserResponseDTO>(user);
+            return mappedUser;
         }
 
-        public bool Register(User userModel)
+        public void Register(UserRegisterRequestDTO registerUserDTO)
         {
-            if (!IsPasswordMatchRules(userModel.Password) || !IsEmailUnique(userModel.Email))
-                return false;
-            _unitOfWork.Users.Add(userModel);
+            var user = _mapper.Map<User>(registerUserDTO);
+
+            user.UserRoleId = UserRoleEnum.Regular;
+            user.RegistrationTime = DateTime.UtcNow;
+
+            _unitOfWork.Users.Add(user);
             _unitOfWork.Commit();
-            return true;
         }
 
-        public User UpdateUser(User userModel)
-        {
-            var user = _unitOfWork.Users.GetById(userModel.UserId);
-            user.UserRoleId = userModel.UserRoleId;
-            user.FirstName = userModel.FirstName;
-            user.LastName = userModel.LastName;
-            user.Email = userModel.Email;
-            user.Phone = userModel.Phone;
-            user.Password = HashPassword(userModel.Password);
-
-            _unitOfWork.Users.Update(userModel);
-            _unitOfWork.Commit();
-            return userModel;
-        }
-
-        public bool Login()
+        public bool Login(UserLoginRequestDTO userModel)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsEmailUnique(string email)
+        public void UpdateUser(UserUpdateRequestDTO updateUserDTO)
+        {
+            var user = _unitOfWork.Users.GetById(updateUserDTO.UserId);
+
+            user.UserRoleId = (UserRoleEnum)updateUserDTO.UserRoleId;
+            user.FirstName = updateUserDTO.FirstName;
+            user.LastName = updateUserDTO.LastName;
+            user.Email = updateUserDTO.Email;
+            user.Phone = updateUserDTO.Phone;
+            user.Password = HashPassword(updateUserDTO.Password);
+
+            _unitOfWork.Users.Update(user);
+            _unitOfWork.Commit();
+        }
+
+        private bool IsEmailUnique(string email)
         {
             return _unitOfWork.Users.Any(user => user.Email != email);
         }
 
-        public bool IsPasswordMatchRules(string password)
-        {
-            var rgx = new Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
-            return rgx.IsMatch(password);
-        }
+        // private bool IsPasswordMatchRules(string password) => new Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$").IsMatch(password);
 
-        public string HashPassword(string password)
+        private string HashPassword(string password)
         {
-            return Convert
-                .ToBase64String(HashAlgorithm.Create("sha256")
-                    .ComputeHash(Encoding.UTF8.GetBytes(password)));
+            return Convert.ToBase64String(HashAlgorithm.Create("sha256")
+                .ComputeHash(Encoding.UTF8.GetBytes(password)));
         }
     }
 }

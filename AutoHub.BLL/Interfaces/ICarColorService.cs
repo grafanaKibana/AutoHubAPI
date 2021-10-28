@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using AutoHub.DAL.Entities;
+using AutoHub.BLL.DTOs.CarColorDTOs;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface ICarColorService
     {
-        IEnumerable<CarColor> GetAll();
-        CarColor GetById(int id);
-        CarColor CreateCarColor(CarColor carColorModel);
-        CarColor UpdateCarColor(CarColor carColorModel);
-        bool Exist(string carColorName);
+        IEnumerable<CarColorResponseDTO> GetAll();
+        CarColorResponseDTO GetById(int carColorId);
+        void CreateCarColor(CarColorCreateRequestDTO createColorDTO);
+        void UpdateCarColor(CarColorUpdateRequestDTO updateColorDTO);
     }
 }

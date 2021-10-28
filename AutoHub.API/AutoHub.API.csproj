@@ -14,4 +14,8 @@
         <ProjectReference Include="..\AutoHub.BLL\AutoHub.BLL.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Filters"/>
+    </ItemGroup>
+
 </Project>

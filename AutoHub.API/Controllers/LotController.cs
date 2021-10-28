@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoHub.API.Models.BidModels;
+using AutoHub.API.Models.LotModels;
+using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.BidModels;
-using AutoHub.BLL.Models.LotModels;
-using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -104,10 +104,10 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                var mappedLot = _mapper.Map<Lot>(model);
+                var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
                 _lotService.CreateLot(mappedLot);
 
-                return StatusCode(201, model);
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
@@ -129,9 +129,11 @@ namespace AutoHub.API.Controllers
                 if (!Enum.IsDefined(typeof(LotStatusEnum), model.LotStatusId))
                     return NotFound("Incorrect Status ID");
 
-                var mappedLot = _mapper.Map<Lot>(model);
+                var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
+                mappedLot.LotId = lotId;
+
                 _lotService.UpdateLot(mappedLot);
-                return Ok(model);
+                return Ok();
             }
             catch (Exception ex)
             {
