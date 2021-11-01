@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
-using AutoHub.BLL.Models;
+using AutoHub.DAL.Entities;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<UserModel> GetAll();
-        UserModel GetById(int id);
+        IEnumerable<User> GetAll();
+        User GetById(int id);
+        bool Register(User userModel);
+        bool Login();
+        bool IsEmailUnique(string email);
+        bool IsPasswordMatchRules(string password);
+        string HashPassword(string password);
     }
 }

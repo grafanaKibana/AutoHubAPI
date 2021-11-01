@@ -1,55 +1,42 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models;
-using AutoHub.DAL;
+using AutoHub.DAL.Entities;
+using AutoHub.DAL.Interfaces;
 
 namespace AutoHub.BLL.Services
 {
     public class CarService : ICarService
     {
-        private readonly AutoHubContext _dbContext = new();
+        private readonly IUnitOfWork _unitOfWork;
 
-        public IEnumerable<CarModel> GetAll()
+        public CarService(IUnitOfWork unitOfWork)
         {
-            return _dbContext.Car.Select(car =>
-                new CarModel
-                {
-                    CarId = car.CarId,
-                    ImgUrl = car.ImgUrl,
-                    Brand = car.Brand,
-                    Model = car.Model,
-                    Description = car.Description,
-                    Color = car.Color,
-                    Year = car.Year,
-                    VIN = car.VIN,
-                    Mileage = car.Mileage,
-                    SellingPrice = car.SellingPrice
-                });
+            _unitOfWork = unitOfWork;
         }
-        
-        public CarModel GetById(int id)
+
+        public IEnumerable<Car> GetAll()
         {
-            var car = _dbContext.Car.Find(id);
-            
-            if (car == null)
-            {
-                return null;
-            }
-            
-            return new CarModel
-            {
-                CarId = car.CarId,
-                ImgUrl = car.ImgUrl,
-                Brand = car.Brand,
-                Model = car.Model,
-                Description = car.Description,
-                Color = car.Color,
-                Year = car.Year,
-                VIN = car.VIN,
-                Mileage = car.Mileage,
-                SellingPrice = car.SellingPrice
-            };
+            return _unitOfWork.Cars.GetAll();
+        }
+
+        public Car GetById(int id)
+        {
+            var car = _unitOfWork.Cars.GetById(id);
+            return car;
+        }
+
+        public Car CreateCar(Car carModel)
+        {
+            _unitOfWork.Cars.Add(carModel);
+            _unitOfWork.Commit();
+            return carModel;
+        }
+
+        public Car UpdateCar(Car carModel)
+        {
+            _unitOfWork.Cars.Update(carModel);
+            _unitOfWork.Commit();
+            return carModel;
         }
     }
 }

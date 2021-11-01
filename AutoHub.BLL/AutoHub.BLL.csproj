@@ -5,7 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AutoHub.DAL\AutoHub.DAL.csproj" />
+        <ProjectReference Include="..\AutoHub.DAL\AutoHub.DAL.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Models"/>
     </ItemGroup>
 
 </Project>
