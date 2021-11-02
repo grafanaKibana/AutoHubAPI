@@ -9,8 +9,9 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<UserResponseDTO> GetAll();
         IEnumerable<BidResponseDTO> GetBids(int userId);
         UserResponseDTO GetById(int userId);
+        UserResponseDTO GetByEmail(string email);
+        UserLoginResponseDTO Login(UserLoginRequestDTO userModel);
         void Register(UserRegisterRequestDTO registerUserDTO);
         void UpdateUser(UserUpdateRequestDTO updateUserDTO);
-        bool Login(UserLoginRequestDTO userModel);
     }
 }

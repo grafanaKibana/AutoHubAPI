@@ -96,6 +96,7 @@ namespace AutoHub.API.Controllers
             }
         }
 
+        // [Authorize]
         [HttpPost]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {

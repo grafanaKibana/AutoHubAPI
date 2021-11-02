@@ -59,7 +59,34 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
+        public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+
+                if (_userService.GetByEmail(model.Email) == null)
+                    return NotFound("User not found");
+
+                var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
+                var authModel = _userService.Login(mappedUser);
+
+                if (authModel == null)
+                    return BadRequest();
+
+                var mappedAuthModel = _mapper.Map<UserLoginResponseModel>(authModel);
+
+                return Ok(mappedAuthModel);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPost("Register")]
         public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
         {
             try
@@ -86,12 +113,13 @@ namespace AutoHub.API.Controllers
                     return BadRequest();
 
                 if (_userService.GetById(userId) == null)
-                    return NotFound();
+                    return NotFound("User not found");
 
                 if (!Enum.IsDefined(typeof(UserRoleEnum), model.UserRoleId))
                     return NotFound("Incorrect user role ID");
 
                 var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
+                mappedUser.UserId = userId;
                 _userService.UpdateUser(mappedUser);
                 return Ok();
             }

@@ -31,7 +31,7 @@ namespace AutoHub.DAL.Repositories
                     .Include(lot => lot.Winner).ThenInclude(user => user.UserRole)
                     .Include(lot => lot.LotStatus)
                     .ToList();
-            return _context.Set<T>().ToList();
+            return _context.Set<T>();
         }
 
         public T GetById(int id)
@@ -66,11 +66,9 @@ namespace AutoHub.DAL.Repositories
             return newItems;
         }
 
-        public bool Update(T item)
+        public T Update(T item)
         {
-            _context.Set<T>().Update(item);
-            /*_context.Entry(item).State = EntityState.Modified;*/
-            return true;
+            return _context.Set<T>().Update(item).Entity;
         }
 
         public bool Delete(int id)
@@ -81,5 +79,30 @@ namespace AutoHub.DAL.Repositories
             _context.Remove(toRemove);
             return true;
         }
-    };
+
+        public IQueryable<T> Include(params Expression<Func<T, object>>[] includes)
+        {
+            var dbSet = _context.Set<T>();
+
+            IQueryable<T> query = null;
+
+            foreach (var include in includes) query = dbSet.Include(include);
+            return query ?? dbSet;
+        }
+    }
+
+    /*public static class IncludeExtension
+    {
+        public static IQueryable<T> Include<T>(this DbSet<T> dbSet,
+            params Expression<Func<T, object>>[] includes) where T : class
+        {
+            IQueryable<T> query = null;
+            foreach (var include in includes)
+            {
+                query = dbSet.Include(include);
+            }
+
+            return query ?? dbSet;
+        }
+    }*/
 }

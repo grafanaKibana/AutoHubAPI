@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
@@ -31,7 +30,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<LotResponseDTO> GetActive()
         {
-            var lots = _unitOfWork.Lots.GetAll().Where(lot => lot.LotStatusId == LotStatusEnum.InProgress);
+            var lots = _unitOfWork.Lots.Find(lot => lot.LotStatusId == LotStatusEnum.InProgress);
             var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
             return mappedLots;
         }

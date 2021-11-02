@@ -12,11 +12,15 @@ namespace AutoHub.API.MappingProfiles
             //Model <-> DTO maps
             CreateMap<UserResponseDTO, UserResponseModel>();
             CreateMap<UserRegisterRequestModel, UserRegisterRequestDTO>();
+            CreateMap<UserLoginRequestModel, UserLoginRequestDTO>();
+            CreateMap<UserLoginResponseDTO, UserLoginResponseModel>();
+            CreateMap<UserUpdateRequestModel, UserUpdateRequestDTO>();
 
             //DTO <-> Entity maps
             CreateMap<User, UserResponseDTO>()
                 .ForPath(dest => dest.UserRole, o => o.MapFrom(user => user.UserRole.UserRoleName));
             CreateMap<UserRegisterRequestDTO, User>();
+            CreateMap<UserUpdateRequestDTO, User>();
         }
     }
 }
