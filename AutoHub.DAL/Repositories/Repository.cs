@@ -69,10 +69,16 @@ namespace AutoHub.DAL.Repositories
             return true;
         }
 
-        public IQueryable<T> Include(params Expression<Func<T, object>>[] includes)
+        public IEnumerable<T> Include(params Expression<Func<T, object>>[] includes)
         {
             var query = _context.Set<T>().AsNoTracking();
-            return includes.Aggregate(query, (current, include) => current.Include(include));
+            return includes.Aggregate(query, (current, include) => current.Include(include)).ToList();
+        }
+
+        public IEnumerable<T> Include(Func<T, bool> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            var query = Include(includes);
+            return query.Where(predicate);
         }
     }
 }

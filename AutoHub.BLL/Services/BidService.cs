@@ -21,14 +21,14 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<BidResponseDTO> GetUserBids(int userId)
         {
-            var bids = _unitOfWork.Bids.Find(bid => bid.UserId == userId);
+            var bids = _unitOfWork.Bids.Include(bid => bid.UserId == userId, bid => bid.Lot, bid => bid.User);
             var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
             return mappedBids;
         }
 
         public IEnumerable<BidResponseDTO> GetLotBids(int lotId)
         {
-            var bids = _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
+            var bids = _unitOfWork.Bids.Include(bid => bid.LotId == lotId, bid => bid.Lot, bid => bid.User);
             var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
             return mappedBids;
         }
