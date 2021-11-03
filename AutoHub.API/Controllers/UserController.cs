@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using AutoHub.API.Models.BidModels;
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
@@ -41,6 +40,7 @@ namespace AutoHub.API.Controllers
             }
         }
 
+        /*
         [HttpGet("{userId}/Bids")]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetUserBids(int userId)
@@ -59,6 +59,7 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+        */
 
         [HttpPost("Login")]
         public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
@@ -123,7 +124,7 @@ namespace AutoHub.API.Controllers
 
                 var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
 
-                _userService.UpdateUser(userId, mappedUser);
+                _userService.Update(userId, mappedUser);
                 return NoContent();
             }
             catch (Exception ex)

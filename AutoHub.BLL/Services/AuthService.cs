@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using AutoHub.BLL.Configuration;
 using AutoHub.BLL.Interfaces;
@@ -26,15 +27,16 @@ namespace AutoHub.BLL.Services
             var tokenKey = Encoding.ASCII.GetBytes(_jwtOptions.Key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.UserRole.UserRoleName),
-                    new Claim("UserId", user.UserId.ToString())
-                }),
+                Subject = new ClaimsIdentity(new GenericIdentity(user.Email, "Token"),
+                    new[]
+                    {
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Role, user.UserRole.UserRoleName),
+                        new Claim("UserId", user.UserId.ToString())
+                    }),
                 Expires = DateTime.UtcNow.AddDays(_jwtOptions.ExpirationDate),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),
-                    SecurityAlgorithms.HmacSha256Signature)
+                    SecurityAlgorithms.HmacSha256)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

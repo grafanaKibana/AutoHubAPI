@@ -31,13 +31,6 @@ namespace AutoHub.BLL.Services
             return mappedUsers;
         }
 
-        public IEnumerable<BidResponseDTO> GetBids(int userId)
-        {
-            var users = _unitOfWork.Bids.Find(bid => bid.UserId == userId);
-            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(users);
-            return mappedBids;
-        }
-
         public UserResponseDTO GetById(int userId)
         {
             var user = _unitOfWork.Users.GetById(userId);
@@ -79,7 +72,7 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateUser(int userId, UserUpdateRequestDTO updateUserDTO)
+        public void Update(int userId, UserUpdateRequestDTO updateUserDTO)
         {
             var user = _unitOfWork.Users.GetById(userId);
 
@@ -92,6 +85,13 @@ namespace AutoHub.BLL.Services
 
             _unitOfWork.Users.Update(user);
             _unitOfWork.Commit();
+        }
+
+        public IEnumerable<BidResponseDTO> GetBids(int userId)
+        {
+            var users = _unitOfWork.Bids.Find(bid => bid.UserId == userId);
+            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(users);
+            return mappedBids;
         }
     }
 }

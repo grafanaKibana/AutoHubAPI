@@ -33,14 +33,14 @@ namespace AutoHub.BLL.Services
             return mappedBrand;
         }
 
-        public void CreateCarBrand(CarBrandCreateRequestDTO createBrandDTO)
+        public void Create(CarBrandCreateRequestDTO createBrandDTO)
         {
             var brand = _mapper.Map<CarBrand>(createBrandDTO);
             _unitOfWork.CarBrands.Add(brand);
             _unitOfWork.Commit();
         }
 
-        public void UpdateCarBrand(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO)
+        public void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO)
         {
             var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
             carBrand.CarBrandName = updateBrandDTO.CarBrandName;

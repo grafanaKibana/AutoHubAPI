@@ -32,14 +32,14 @@ namespace AutoHub.BLL.Services
             return mappedModels;
         }
 
-        public void CreateCarModel(CarModelCreateRequestDTO createModelDTO)
+        public void Create(CarModelCreateRequestDTO createModelDTO)
         {
             var model = _mapper.Map<CarModel>(createModelDTO);
             _unitOfWork.CarModels.Add(model);
             _unitOfWork.Commit();
         }
 
-        public void UpdateCarModel(int carModelId, CarModelUpdateRequestDTO updateModelDTO)
+        public void Update(int carModelId, CarModelUpdateRequestDTO updateModelDTO)
         {
             var carModel = _unitOfWork.CarModels.GetById(carModelId);
             carModel.CarModelName = updateModelDTO.CarModelName;

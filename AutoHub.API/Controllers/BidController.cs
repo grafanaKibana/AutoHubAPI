@@ -4,7 +4,6 @@ using AutoHub.API.Models.BidModels;
 using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
@@ -22,26 +21,6 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{bidId}")]
-        [ProducesResponseType(typeof(BidResponseModel), StatusCodes.Status200OK)]
-        public IActionResult GetBidById(int bidId)
-        {
-            try
-            {
-                var bid = _bidService.GetById(bidId);
-
-                if (bid == null)
-                    return NotFound();
-
-                var mappedBid = _mapper.Map<BidResponseModel>(bid);
-                return Ok(mappedBid);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }
-
         [HttpPost]
         public IActionResult CreateBid([FromBody] BidCreateRequestModel model)
         {
@@ -51,7 +30,7 @@ namespace AutoHub.API.Controllers
                     return BadRequest();
 
                 var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
-                _bidService.CreateBid(mappedBid);
+                _bidService.Create(mappedBid);
 
                 return StatusCode((int)HttpStatusCode.Created);
             }

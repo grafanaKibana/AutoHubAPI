@@ -34,7 +34,7 @@ namespace AutoHub.BLL.Services
             return mappedCar;
         }
 
-        public void CreateCar(CarCreateRequestDTO createCarDTO)
+        public void Create(CarCreateRequestDTO createCarDTO)
         {
             var car = _mapper.Map<Car>(createCarDTO);
 
@@ -45,17 +45,16 @@ namespace AutoHub.BLL.Services
             var color = _unitOfWork.CarColors.Find(color => color.CarColorName == createCarDTO.CarColor)
                 .FirstOrDefault();
 
+            car.CarStatusId = CarStatusEnum.New;
             car.CarBrand = brand ?? new CarBrand { CarBrandName = createCarDTO.CarBrand };
             car.CarModel = model ?? new CarModel { CarModelName = createCarDTO.CarModel };
             car.CarColor = color ?? new CarColor { CarColorName = createCarDTO.CarColor };
-
-            car.CarStatusId = CarStatusEnum.New;
 
             _unitOfWork.Cars.Add(car);
             _unitOfWork.Commit();
         }
 
-        public void UpdateCar(int carId, CarUpdateRequestDTO updateCarDTO)
+        public void Update(int carId, CarUpdateRequestDTO updateCarDTO)
         {
             var car = _unitOfWork.Cars.GetById(carId);
 

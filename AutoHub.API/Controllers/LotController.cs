@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using AutoHub.API.Models.BidModels;
 using AutoHub.API.Models.LotModels;
 using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Enums;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -79,6 +77,7 @@ namespace AutoHub.API.Controllers
             }
         }
 
+        /*
         [HttpGet("{lotId}/Bids")]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetLotBids(int id)
@@ -97,8 +96,9 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+        */
 
-        [Authorize(Roles = "Administrator")]
+
         [HttpPost]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
@@ -108,7 +108,7 @@ namespace AutoHub.API.Controllers
                     return BadRequest();
 
                 var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
-                _lotService.CreateLot(mappedLot);
+                _lotService.Create(mappedLot);
 
                 return StatusCode((int)HttpStatusCode.Created);
             }
@@ -134,7 +134,7 @@ namespace AutoHub.API.Controllers
 
                 var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
 
-                _lotService.UpdateLot(lotId, mappedLot);
+                _lotService.Update(lotId, mappedLot);
                 return NoContent();
             }
             catch (Exception ex)

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,17 +19,6 @@ namespace AutoHub.DAL.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            //TODO: This shouldn`t exist! (Needed to be done via AutoInclude)
-            if (typeof(Lot).IsAssignableFrom(typeof(T)))
-                return (IEnumerable<T>)_context.Lots
-                    .Include(lot => lot.Car).ThenInclude(car => car.CarBrand)
-                    .Include(lot => lot.Car).ThenInclude(car => car.CarModel)
-                    .Include(lot => lot.Car).ThenInclude(car => car.CarColor)
-                    .Include(lot => lot.Car).ThenInclude(car => car.CarStatus)
-                    .Include(lot => lot.Creator).ThenInclude(user => user.UserRole)
-                    .Include(lot => lot.Winner).ThenInclude(user => user.UserRole)
-                    .Include(lot => lot.LotStatus)
-                    .ToList();
             return _context.Set<T>();
         }
 
@@ -76,33 +64,15 @@ namespace AutoHub.DAL.Repositories
             var toRemove = _context.Set<T>().Find(id);
             if (toRemove == null) return false;
 
+
             _context.Remove(toRemove);
             return true;
         }
 
         public IQueryable<T> Include(params Expression<Func<T, object>>[] includes)
         {
-            var dbSet = _context.Set<T>();
-
-            IQueryable<T> query = null;
-
-            foreach (var include in includes) query = dbSet.Include(include);
-            return query ?? dbSet;
+            var query = _context.Set<T>().AsNoTracking();
+            return includes.Aggregate(query, (current, include) => current.Include(include));
         }
     }
-
-    /*public static class IncludeExtension
-    {
-        public static IQueryable<T> Include<T>(this DbSet<T> dbSet,
-            params Expression<Func<T, object>>[] includes) where T : class
-        {
-            IQueryable<T> query = null;
-            foreach (var include in includes)
-            {
-                query = dbSet.Include(include);
-            }
-
-            return query ?? dbSet;
-        }
-    }*/
 }

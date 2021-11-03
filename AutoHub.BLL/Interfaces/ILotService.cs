@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.DTOs.LotDTOs;
 
 namespace AutoHub.BLL.Interfaces
@@ -8,9 +7,8 @@ namespace AutoHub.BLL.Interfaces
     {
         IEnumerable<LotResponseDTO> GetAll();
         IEnumerable<LotResponseDTO> GetActive();
-        IEnumerable<BidResponseDTO> GetBids(int userId);
         LotResponseDTO GetById(int lotId);
-        void CreateLot(LotCreateRequestDTO createLotDTO);
-        void UpdateLot(int lotId, LotUpdateRequestDTO updateLotDTO);
+        void Create(LotCreateRequestDTO createLotDTO);
+        void Update(int lotId, LotUpdateRequestDTO updateLotDTO);
     }
 }

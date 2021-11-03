@@ -21,7 +21,12 @@ namespace AutoHub.API.MappingProfiles
                 .ForPath(dest => dest.CarModel, o => o.MapFrom(car => car.CarModel.CarModelName))
                 .ForPath(dest => dest.CarColor, o => o.MapFrom(car => car.CarColor.CarColorName))
                 .ForPath(dest => dest.CarStatus, o => o.MapFrom(car => car.CarStatus.CarStatusName));
-            CreateMap<CarCreateRequestDTO, Car>();
+            CreateMap<CarCreateRequestDTO, Car>()
+                .ForMember(dest => dest.CarBrand, o => o.Ignore())
+                .ForMember(dest => dest.CarModel, o => o.Ignore())
+                .ForMember(dest => dest.CarColor, o => o.Ignore())
+                .ForMember(dest => dest.CarStatus, o => o.Ignore());
+
             CreateMap<CarUpdateRequestDTO, Car>();
         }
     }

@@ -48,7 +48,7 @@ namespace AutoHub.API.Controllers
                     return BadRequest();
 
                 var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
-                _carColorService.CreateCarColor(mappedCarColor);
+                _carColorService.Create(mappedCarColor);
 
                 return StatusCode((int)HttpStatusCode.Created);
             }
@@ -70,7 +70,7 @@ namespace AutoHub.API.Controllers
 
                 var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
 
-                _carColorService.UpdateCarColor(carColorId, mappedCarColor);
+                _carColorService.Update(carColorId, mappedCarColor);
                 return NoContent();
             }
             catch (Exception ex)

@@ -13,12 +13,7 @@ namespace AutoHub.API.Extensions
         {
             services.Configure<JwtConfiguration>(configuration.GetSection("JwtConfiguration"));
             var jwtOptions = configuration.GetSection(nameof(JwtConfiguration)).Get<JwtConfiguration>();
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters

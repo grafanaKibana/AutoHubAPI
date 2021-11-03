@@ -48,7 +48,7 @@ namespace AutoHub.API.Controllers
                     return BadRequest();
 
                 var mappedCarModel = _mapper.Map<CarModelCreateRequestDTO>(model);
-                _carModelService.CreateCarModel(mappedCarModel);
+                _carModelService.Create(mappedCarModel);
                 return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace AutoHub.API.Controllers
 
                 var mappedCarModel = _mapper.Map<CarModelUpdateRequestDTO>(model);
 
-                _carModelService.UpdateCarModel(carModelId, mappedCarModel);
+                _carModelService.Update(carModelId, mappedCarModel);
                 return NoContent();
             }
             catch (Exception ex)

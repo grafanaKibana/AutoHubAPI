@@ -32,14 +32,14 @@ namespace AutoHub.BLL.Services
             return mappedColor;
         }
 
-        public void CreateCarColor(CarColorCreateRequestDTO createColorDTO)
+        public void Create(CarColorCreateRequestDTO createColorDTO)
         {
             var color = _mapper.Map<CarColor>(createColorDTO);
             _unitOfWork.CarColors.Add(color);
             _unitOfWork.Commit();
         }
 
-        public void UpdateCarColor(int carColorId, CarColorUpdateRequestDTO updateColorDTO)
+        public void Update(int carColorId, CarColorUpdateRequestDTO updateColorDTO)
         {
             var carColor = _unitOfWork.CarColors.GetById(carColorId);
             carColor.CarColorName = updateColorDTO.CarColorName;

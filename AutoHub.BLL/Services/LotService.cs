@@ -23,7 +23,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<LotResponseDTO> GetAll()
         {
-            var lots = _unitOfWork.Lots.GetAll();
+            var lots = _unitOfWork.Lots.Include(lot => lot.Car, lot => lot.Creator, lot => lot.Winner);
             var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
             return mappedLots;
         }
@@ -35,13 +35,6 @@ namespace AutoHub.BLL.Services
             return mappedLots;
         }
 
-        public IEnumerable<BidResponseDTO> GetBids(int lotId)
-        {
-            var bids = _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
-            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
-            return mappedBids;
-        }
-
         public LotResponseDTO GetById(int lotId)
         {
             var lot = _unitOfWork.Lots.GetById(lotId);
@@ -49,7 +42,7 @@ namespace AutoHub.BLL.Services
             return mappedLot;
         }
 
-        public void CreateLot(LotCreateRequestDTO createLotDTO)
+        public void Create(LotCreateRequestDTO createLotDTO)
         {
             var lot = _mapper.Map<Lot>(createLotDTO);
 
@@ -61,16 +54,28 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateLot(int lotId, LotUpdateRequestDTO updateLotDTO)
+        public void Update(int lotId, LotUpdateRequestDTO updateLotDTO)
         {
             var lot = _unitOfWork.Lots.GetById(lotId);
 
+            if (updateLotDTO.WinnerId.HasValue)
+            {
+                var winner = _unitOfWork.Users.GetById(updateLotDTO.WinnerId.Value);
+                lot.Winner = winner;
+            }
+
             lot.LotStatusId = (LotStatusEnum)updateLotDTO.LotStatusId;
-            lot.WinnerId = updateLotDTO.WinnerId;
             lot.EndTime = lot.StartTime.AddDays(updateLotDTO.DurationInDays);
 
             _unitOfWork.Lots.Update(lot);
             _unitOfWork.Commit();
+        }
+
+        public IEnumerable<BidResponseDTO> GetBids(int lotId)
+        {
+            var bids = _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
+            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
+            return mappedBids;
         }
     }
 }
