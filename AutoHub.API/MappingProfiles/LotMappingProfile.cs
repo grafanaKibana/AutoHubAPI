@@ -1,7 +1,6 @@
-using System;
-using AutoHub.BLL.Models.LotModels;
+using AutoHub.API.Models.LotModels;
+using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.DAL.Entities;
-using AutoHub.DAL.Enums;
 using AutoMapper;
 
 namespace AutoHub.API.MappingProfiles
@@ -10,19 +9,16 @@ namespace AutoHub.API.MappingProfiles
     {
         public LotMappingProfile()
         {
-            CreateMap<Lot, LotResponseModel>()
-                .ForPath(dest => dest.LotStatus, o => o.MapFrom(lot => lot.LotStatus.LotStatusName))
-                .ForMember(dest => dest.Creator, o => o.MapFrom(lot => lot.Creator))
-                .ForMember(dest => dest.Car, o => o.MapFrom(lot => lot.Car))
-                .ForMember(dest => dest.Winner, o => o.MapFrom(lot => lot.Winner));
+            //Model <-> DTO maps
+            CreateMap<LotResponseDTO, LotResponseModel>();
+            CreateMap<LotCreateRequestModel, LotCreateRequestDTO>();
+            CreateMap<LotUpdateRequestModel, LotUpdateRequestDTO>();
 
-            CreateMap<LotCreateRequestModel, Lot>()
-                .ForMember(dest => dest.LotStatusId, o => o.MapFrom(model => LotStatusEnum.New))
-                .ForMember(dest => dest.CreatorId, o => o.MapFrom(model => model.UserId))
-                .ForMember(dest => dest.CarId, o => o.MapFrom(model => model.CarId))
-                .ForMember(dest => dest.StartTime, o => o.MapFrom(model => DateTime.UtcNow))
-                .ForMember(dest => dest.EndTime,
-                    o => o.MapFrom(model => DateTime.UtcNow.AddDays(model.DurationInDays)));
+            //DTO <-> Entity maps
+            CreateMap<Lot, LotResponseDTO>()
+                .ForPath(dest => dest.LotStatus, o => o.MapFrom(lot => lot.LotStatus.LotStatusName));
+            CreateMap<LotCreateRequestDTO, Lot>();
+            CreateMap<LotUpdateRequestDTO, Lot>();
         }
     }
 }

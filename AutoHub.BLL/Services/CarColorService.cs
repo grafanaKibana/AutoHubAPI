@@ -1,40 +1,51 @@
 using System.Collections.Generic;
+using AutoHub.BLL.DTOs.CarColorDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
+using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class CarColorService : ICarColorService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CarColorService(IUnitOfWork unitOfWork)
+        public CarColorService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IEnumerable<CarColor> GetAll()
+        public IEnumerable<CarColorResponseDTO> GetAll()
         {
-            return _unitOfWork.CarColors.GetAll();
+            var colors = _unitOfWork.CarColors.GetAll();
+            var mappedColors = _mapper.Map<IEnumerable<CarColorResponseDTO>>(colors);
+            return mappedColors;
         }
 
-        public CarColor GetById(int id)
+        public CarColorResponseDTO GetById(int carColorId)
         {
-            var carColor = _unitOfWork.CarColors.GetById(id);
-            return carColor;
+            var color = _unitOfWork.CarColors.GetById(carColorId);
+            var mappedColor = _mapper.Map<CarColorResponseDTO>(color);
+            return mappedColor;
         }
 
-        public CarColor CreateCarColor(CarColor carColorModel)
+        public void Create(CarColorCreateRequestDTO createColorDTO)
         {
-            _unitOfWork.CarColors.Add(carColorModel);
+            var color = _mapper.Map<CarColor>(createColorDTO);
+            _unitOfWork.CarColors.Add(color);
             _unitOfWork.Commit();
-            return carColorModel;
         }
 
-        public bool Exist(string carColorName)
+        public void Update(int carColorId, CarColorUpdateRequestDTO updateColorDTO)
         {
-            return _unitOfWork.CarColors.Any(color => color.CarColorName == carColorName);
+            var carColor = _unitOfWork.CarColors.GetById(carColorId);
+            carColor.CarColorName = updateColorDTO.CarColorName;
+
+            _unitOfWork.CarColors.Update(carColor);
+            _unitOfWork.Commit();
         }
     }
 }

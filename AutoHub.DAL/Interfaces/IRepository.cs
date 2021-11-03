@@ -10,9 +10,12 @@ namespace AutoHub.DAL.Interfaces
         T GetById(int id);
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
         bool Any(Expression<Func<T, bool>> predicate);
+        bool Contains(T item);
         T Add(T newItem);
         IEnumerable<T> AddRange(IEnumerable<T> newItems);
-        bool Update(T item);
+        T Update(T item);
         bool Delete(int id);
+        IEnumerable<T> Include(params Expression<Func<T, object>>[] includes);
+        IEnumerable<T> Include(Func<T, bool> predicate, params Expression<Func<T, object>>[] includes);
     }
 }

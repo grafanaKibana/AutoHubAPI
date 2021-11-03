@@ -9,7 +9,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Models"/>
+        <PackageReference Include="AutoMapper" Version="10.1.1"/>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="MappingProfiles"/>
     </ItemGroup>
 
 </Project>

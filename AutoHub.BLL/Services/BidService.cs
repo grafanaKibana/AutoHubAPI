@@ -1,40 +1,48 @@
+using System;
 using System.Collections.Generic;
+using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Interfaces;
+using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class BidService : IBidService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public BidService(IUnitOfWork unitOfWork)
+        public BidService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public IEnumerable<Bid> GetAllUserBids(int userId)
+        public IEnumerable<BidResponseDTO> GetUserBids(int userId)
         {
-            return _unitOfWork.Bids.Find(bid => bid.UserId == userId);
+            var bids = _unitOfWork.Bids.Include(bid => bid.UserId == userId,
+                bid => bid.User, bid => bid.Lot, bid => bid.Lot.Creator, bid => bid.Lot.Car, bid => bid.Lot.Winner);
+            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
+            return mappedBids;
         }
 
-        public IEnumerable<Bid> GetAllLotBids(int lotId)
+        public IEnumerable<BidResponseDTO> GetLotBids(int lotId)
         {
-            return _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
+            var bids = _unitOfWork.Bids.Include(bid => bid.LotId == lotId,
+                bid => bid.User, bid => bid.Lot, bid => bid.Lot.Creator, bid => bid.Lot.Car, bid => bid.Lot.Winner);
+            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
+            return mappedBids;
         }
 
-        public Bid GetById(int id)
+        public void Create(int lotId, BidCreateRequestDTO createBidDTO)
         {
-            var bid = _unitOfWork.Bids.GetById(id);
-            return bid;
-        }
+            var bid = _mapper.Map<Bid>(createBidDTO);
+            bid.LotId = lotId;
+            bid.BidTime = DateTime.UtcNow;
 
-        public Bid CreateBid(Bid bidModel)
-        {
-            _unitOfWork.Bids.Add(bidModel);
+            _unitOfWork.Bids.Add(bid);
             _unitOfWork.Commit();
-            return bidModel;
         }
     }
 }

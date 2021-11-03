@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
+using AutoHub.API.Models.CarModelModels;
+using AutoHub.BLL.DTOs.CarModelDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarModelModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class CarModelController : Controller
     {
@@ -22,6 +24,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CarModelResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             try
@@ -44,10 +47,30 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                var mappedCarModel = _mapper.Map<CarModel>(model);
-                _carModelService.CreateCarModel(mappedCarModel);
+                var mappedCarModel = _mapper.Map<CarModelCreateRequestDTO>(model);
+                _carModelService.Create(mappedCarModel);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
 
-                return Ok(model);
+        [HttpPut("{carModelId}")]
+        public IActionResult UpdateCarModel(int carModelId, [FromBody] CarModelUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+                if (_carModelService.GetById(carModelId) == null)
+                    return NotFound();
+
+                var mappedCarModel = _mapper.Map<CarModelUpdateRequestDTO>(model);
+
+                _carModelService.Update(carModelId, mappedCarModel);
+                return NoContent();
             }
             catch (Exception ex)
             {

@@ -1,13 +1,10 @@
-using System;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.BidModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class BidController : Controller
     {
@@ -18,73 +15,6 @@ namespace AutoHub.API.Controllers
         {
             _bidService = bidService;
             _mapper = mapper;
-        }
-
-        [HttpGet("GetByUser/{userId}")]
-        public IActionResult GetAllBidsByUser(int userId)
-        {
-            try
-            {
-                var bids = _bidService.GetAllUserBids(userId);
-                if (bids == null)
-                    return NotFound();
-                return Ok(bids);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }
-
-        [HttpGet("GetByLot/{lotId}")]
-        public IActionResult GetAllBidsByLot(int lotId)
-        {
-            try
-            {
-                var bids = _bidService.GetAllLotBids(lotId);
-                if (bids == null)
-                    return NotFound();
-                return Ok(bids);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetBidById(int id)
-        {
-            try
-            {
-                var bid = _bidService.GetById(id);
-                if (bid == null)
-                    return NotFound();
-                return Ok(bid);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }
-
-        [HttpPost]
-        public IActionResult CreateBid([FromBody] BidCreateRequestModel model)
-        {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
-
-                var mappedBid = _mapper.Map<Bid>(model);
-                _bidService.CreateBid(mappedBid);
-
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
         }
     }
 }

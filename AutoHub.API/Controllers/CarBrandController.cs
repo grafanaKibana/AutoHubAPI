@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
+using AutoHub.API.Models.CarBrandModels;
+using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarBrandModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class CarBrandController : Controller
     {
@@ -22,6 +24,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CarBrandResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             try
@@ -44,10 +47,31 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                var mappedCarBrand = _mapper.Map<CarBrand>(model);
-                _carBrandService.CreateCarBrand(mappedCarBrand);
+                var mappedCarBrand = _mapper.Map<CarBrandCreateRequestDTO>(model);
+                _carBrandService.Create(mappedCarBrand);
 
-                return Ok(model);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{carBrandId}")]
+        public IActionResult UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+                if (_carBrandService.GetById(carBrandId) == null)
+                    return NotFound();
+
+                var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
+
+                _carBrandService.Update(carBrandId, mappedCarBrand);
+                return NoContent();
             }
             catch (Exception ex)
             {

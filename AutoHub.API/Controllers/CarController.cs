@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using AutoHub.API.Models.CarModels;
+using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class CarController : Controller
     {
@@ -22,6 +24,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
         public IActionResult GetAllCars()
         {
             try
@@ -36,12 +39,13 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetCarById(int id)
+        [HttpGet("{carId}")]
+        [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
+        public IActionResult GetCarById(int carId)
         {
             try
             {
-                var car = _carService.GetById(id);
+                var car = _carService.GetById(carId);
                 if (car == null)
                     return NotFound();
                 var mappedCar = _mapper.Map<CarResponseModel>(car);
@@ -61,10 +65,32 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                var mappedCar = _mapper.Map<Car>(model);
-                _carService.CreateCar(mappedCar);
+                var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
+                _carService.Create(mappedCar);
 
-                return Ok(model);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("{carId}")]
+        public IActionResult UpdateCar(int carId, [FromBody] CarUpdateRequestModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return BadRequest();
+
+                if (_carService.GetById(carId) == null)
+                    return NotFound();
+
+                var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
+
+                _carService.Update(carId, mappedCar);
+                return NoContent();
             }
             catch (Exception ex)
             {
