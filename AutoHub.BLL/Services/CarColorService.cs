@@ -47,5 +47,11 @@ namespace AutoHub.BLL.Services
             _unitOfWork.CarColors.Update(carColor);
             _unitOfWork.Commit();
         }
+
+        public void Delete(int carColorId)
+        {
+            _unitOfWork.CarColors.Delete(carColorId);
+            _unitOfWork.Commit();
+        }
     }
 }

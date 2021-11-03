@@ -48,5 +48,11 @@ namespace AutoHub.BLL.Services
             _unitOfWork.CarBrands.Update(carBrand);
             _unitOfWork.Commit();
         }
+
+        public void Delete(int carBrandId)
+        {
+            _unitOfWork.CarBrands.Delete(carBrandId);
+            _unitOfWork.Commit();
+        }
     }
 }

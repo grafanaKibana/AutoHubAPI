@@ -78,5 +78,21 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpDelete("{carColorId}")]
+        public IActionResult DeleteCarColor(int carColorId)
+        {
+            try
+            {
+                if (_carColorService.GetById(carColorId) == null)
+                    return NotFound();
+                _carColorService.Delete(carColorId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }
