@@ -40,9 +40,9 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateCarBrand(CarBrandUpdateRequestDTO updateBrandDTO)
+        public void UpdateCarBrand(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO)
         {
-            var carBrand = _unitOfWork.CarBrands.GetById(updateBrandDTO.CarBrandId);
+            var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
             carBrand.CarBrandName = updateBrandDTO.CarBrandName;
 
             _unitOfWork.CarBrands.Update(carBrand);

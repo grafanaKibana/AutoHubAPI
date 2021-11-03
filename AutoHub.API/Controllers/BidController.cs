@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using AutoHub.API.Models.BidModels;
 using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.Interfaces;
@@ -52,7 +53,7 @@ namespace AutoHub.API.Controllers
                 var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
                 _bidService.CreateBid(mappedBid);
 
-                return Ok();
+                return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {

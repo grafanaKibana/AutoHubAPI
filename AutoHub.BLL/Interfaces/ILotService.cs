@@ -11,6 +11,6 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<BidResponseDTO> GetBids(int userId);
         LotResponseDTO GetById(int lotId);
         void CreateLot(LotCreateRequestDTO createLotDTO);
-        void UpdateLot(LotUpdateRequestDTO updateLotDTO);
+        void UpdateLot(int lotId, LotUpdateRequestDTO updateLotDTO);
     }
 }

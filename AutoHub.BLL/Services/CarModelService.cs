@@ -39,9 +39,9 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateCarModel(CarModelUpdateRequestDTO updateModelDTO)
+        public void UpdateCarModel(int carModelId, CarModelUpdateRequestDTO updateModelDTO)
         {
-            var carModel = _unitOfWork.CarModels.GetById(updateModelDTO.CarModelId);
+            var carModel = _unitOfWork.CarModels.GetById(carModelId);
             carModel.CarModelName = updateModelDTO.CarModelName;
 
             _unitOfWork.CarModels.Update(carModel);

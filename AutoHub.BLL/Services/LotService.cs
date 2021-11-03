@@ -61,13 +61,11 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateLot(LotUpdateRequestDTO updateLotDTO)
+        public void UpdateLot(int lotId, LotUpdateRequestDTO updateLotDTO)
         {
-            var lot = _unitOfWork.Lots.GetById(updateLotDTO.LotId);
+            var lot = _unitOfWork.Lots.GetById(lotId);
 
             lot.LotStatusId = (LotStatusEnum)updateLotDTO.LotStatusId;
-            lot.CreatorId = updateLotDTO.CreatorId;
-            lot.CarId = updateLotDTO.CarId;
             lot.WinnerId = updateLotDTO.WinnerId;
             lot.EndTime = lot.StartTime.AddDays(updateLotDTO.DurationInDays);
 

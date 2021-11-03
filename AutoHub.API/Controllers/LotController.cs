@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using AutoHub.API.Models.BidModels;
 using AutoHub.API.Models.LotModels;
 using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Enums;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -96,7 +98,7 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        // [Authorize]
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
@@ -108,7 +110,7 @@ namespace AutoHub.API.Controllers
                 var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
                 _lotService.CreateLot(mappedLot);
 
-                return StatusCode(201);
+                return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
@@ -128,13 +130,12 @@ namespace AutoHub.API.Controllers
                     return NotFound();
 
                 if (!Enum.IsDefined(typeof(LotStatusEnum), model.LotStatusId))
-                    return NotFound("Incorrect Status ID");
+                    return UnprocessableEntity();
 
                 var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
-                mappedLot.LotId = lotId;
 
-                _lotService.UpdateLot(mappedLot);
-                return Ok();
+                _lotService.UpdateLot(lotId, mappedLot);
+                return NoContent();
             }
             catch (Exception ex)
             {

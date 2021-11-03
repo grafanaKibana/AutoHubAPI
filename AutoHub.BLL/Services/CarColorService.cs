@@ -39,9 +39,9 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateCarColor(CarColorUpdateRequestDTO updateColorDTO)
+        public void UpdateCarColor(int carColorId, CarColorUpdateRequestDTO updateColorDTO)
         {
-            var carColor = _unitOfWork.CarColors.GetById(updateColorDTO.CarColorId);
+            var carColor = _unitOfWork.CarColors.GetById(carColorId);
             carColor.CarColorName = updateColorDTO.CarColorName;
 
             _unitOfWork.CarColors.Update(carColor);

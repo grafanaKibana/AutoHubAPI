@@ -8,6 +8,6 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<CarBrandResponseDTO> GetAll();
         CarBrandResponseDTO GetById(int carBrandId);
         void CreateCarBrand(CarBrandCreateRequestDTO createBrandDTO);
-        void UpdateCarBrand(CarBrandUpdateRequestDTO updateBrandDTO);
+        void UpdateCarBrand(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO);
     }
 }

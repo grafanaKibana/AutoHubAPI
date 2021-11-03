@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using AutoHub.API.Models.BidModels;
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
@@ -67,7 +68,9 @@ namespace AutoHub.API.Controllers
                 if (model == null)
                     return BadRequest();
 
-                if (_userService.GetByEmail(model.Email) == null)
+                var user = _userService.GetByEmail(model.Email);
+
+                if (user == null)
                     return NotFound("User not found");
 
                 var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
@@ -96,7 +99,7 @@ namespace AutoHub.API.Controllers
                 var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
                 _userService.Register(mappedUser);
 
-                return StatusCode(201);
+                return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
@@ -119,9 +122,9 @@ namespace AutoHub.API.Controllers
                     return NotFound("Incorrect user role ID");
 
                 var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
-                mappedUser.UserId = userId;
-                _userService.UpdateUser(mappedUser);
-                return Ok();
+
+                _userService.UpdateUser(userId, mappedUser);
+                return NoContent();
             }
             catch (Exception ex)
             {

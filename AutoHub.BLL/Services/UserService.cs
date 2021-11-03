@@ -57,7 +57,7 @@ namespace AutoHub.BLL.Services
             var user = _unitOfWork.Users.Find(user1 =>
                 user1.Email == userModel.Email).FirstOrDefault();
 
-            if (user == null || !_authService.VerifyPassword(user.Password, userModel.Password)) return null;
+            if (user == null || !_authService.VerifyPassword(userModel.Password, user.Password)) return null;
 
             var mappedUser = new UserLoginResponseDTO
             {
@@ -79,9 +79,9 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateUser(UserUpdateRequestDTO updateUserDTO)
+        public void UpdateUser(int userId, UserUpdateRequestDTO updateUserDTO)
         {
-            var user = _unitOfWork.Users.GetById(updateUserDTO.UserId);
+            var user = _unitOfWork.Users.GetById(userId);
 
             user.UserRoleId = (UserRoleEnum)updateUserDTO.UserRoleId;
             user.FirstName = updateUserDTO.FirstName;

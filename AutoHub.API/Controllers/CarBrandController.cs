@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using AutoHub.API.Models.CarBrandModels;
 using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Interfaces;
@@ -49,7 +50,7 @@ namespace AutoHub.API.Controllers
                 var mappedCarBrand = _mapper.Map<CarBrandCreateRequestDTO>(model);
                 _carBrandService.CreateCarBrand(mappedCarBrand);
 
-                return StatusCode(201);
+                return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
@@ -68,10 +69,9 @@ namespace AutoHub.API.Controllers
                     return NotFound();
 
                 var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
-                mappedCarBrand.CarBrandId = carBrandId; //TODO: Is it need to be refactored?
 
-                _carBrandService.UpdateCarBrand(mappedCarBrand);
-                return Ok();
+                _carBrandService.UpdateCarBrand(carBrandId, mappedCarBrand);
+                return NoContent();
             }
             catch (Exception ex)
             {

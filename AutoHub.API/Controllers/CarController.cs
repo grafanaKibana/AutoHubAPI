@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using AutoHub.API.Models.CarModels;
 using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Interfaces;
@@ -67,7 +68,7 @@ namespace AutoHub.API.Controllers
                 var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
                 _carService.CreateCar(mappedCar);
 
-                return StatusCode(201);
+                return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
@@ -86,10 +87,9 @@ namespace AutoHub.API.Controllers
                     return NotFound();
 
                 var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
-                mappedCar.CarId = carId;
 
-                _carService.UpdateCar(mappedCar);
-                return Ok();
+                _carService.UpdateCar(carId, mappedCar);
+                return NoContent();
             }
             catch (Exception ex)
             {

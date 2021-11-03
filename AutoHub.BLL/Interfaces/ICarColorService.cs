@@ -8,6 +8,6 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<CarColorResponseDTO> GetAll();
         CarColorResponseDTO GetById(int carColorId);
         void CreateCarColor(CarColorCreateRequestDTO createColorDTO);
-        void UpdateCarColor(CarColorUpdateRequestDTO updateColorDTO);
+        void UpdateCarColor(int carColorId, CarColorUpdateRequestDTO updateColorDTO);
     }
 }

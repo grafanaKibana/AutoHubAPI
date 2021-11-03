@@ -12,6 +12,6 @@ namespace AutoHub.BLL.Interfaces
         UserResponseDTO GetByEmail(string email);
         UserLoginResponseDTO Login(UserLoginRequestDTO userModel);
         void Register(UserRegisterRequestDTO registerUserDTO);
-        void UpdateUser(UserUpdateRequestDTO updateUserDTO);
+        void UpdateUser(int userId, UserUpdateRequestDTO updateUserDTO);
     }
 }

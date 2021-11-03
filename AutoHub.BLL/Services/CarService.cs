@@ -55,9 +55,9 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public void UpdateCar(CarUpdateRequestDTO updateCarDTO)
+        public void UpdateCar(int carId, CarUpdateRequestDTO updateCarDTO)
         {
-            var car = _unitOfWork.Cars.GetById(updateCarDTO.CarId);
+            var car = _unitOfWork.Cars.GetById(carId);
 
             var brand = _unitOfWork.CarBrands.Find(brand => brand.CarBrandName == updateCarDTO.CarBrand)
                 .FirstOrDefault();
