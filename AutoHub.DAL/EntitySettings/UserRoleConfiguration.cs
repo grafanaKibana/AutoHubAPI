@@ -21,6 +21,10 @@ namespace AutoHub.DAL.EntitySettings
                         UserRoleId = u,
                         UserRoleName = u.ToString()
                     }));
+
+            entity.HasMany(role => role.Users)
+                .WithOne(user => user.UserRole)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

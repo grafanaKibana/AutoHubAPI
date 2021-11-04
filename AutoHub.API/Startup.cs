@@ -24,6 +24,7 @@ namespace AutoHub.API
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddRouting();
+            services.AddSingleton(_ => Configuration);
             services.AddDbContext<AutoHubContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnectionString")));
             services.AddServices();

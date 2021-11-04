@@ -21,6 +21,10 @@ namespace AutoHub.DAL.EntitySettings
                         CarStatusId = s,
                         CarStatusName = s.ToString()
                     }));
+
+            entity.HasMany(status => status.Cars)
+                .WithOne(car => car.CarStatus)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

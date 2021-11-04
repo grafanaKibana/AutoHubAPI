@@ -9,6 +9,10 @@ namespace AutoHub.DAL.EntitySettings
         public CarBrandConfiguration(EntityTypeBuilder<CarBrand> entity)
         {
             entity.ToTable("CarBrand");
+
+            entity.HasMany(brand => brand.Cars)
+                .WithOne(car => car.CarBrand)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

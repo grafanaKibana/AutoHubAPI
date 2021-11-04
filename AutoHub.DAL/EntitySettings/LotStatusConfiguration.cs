@@ -21,6 +21,10 @@ namespace AutoHub.DAL.EntitySettings
                         LotStatusId = s,
                         LotStatusName = s.ToString()
                     }));
+
+            entity.HasMany(status => status.Lots)
+                .WithOne(lot => lot.LotStatus)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
