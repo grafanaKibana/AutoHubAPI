@@ -10,5 +10,6 @@ namespace AutoHub.BLL.Interfaces
         LotResponseDTO GetById(int lotId);
         void Create(LotCreateRequestDTO createLotDTO);
         void Update(int lotId, LotUpdateRequestDTO updateLotDTO);
+        void Delete(int lotId);
     }
 }

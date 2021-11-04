@@ -97,5 +97,21 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpDelete("{carId}")]
+        public IActionResult DeleteCar(int carId)
+        {
+            try
+            {
+                if (_carService.GetById(carId) == null)
+                    return NotFound();
+                _carService.Delete(carId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

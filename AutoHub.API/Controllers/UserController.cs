@@ -132,5 +132,21 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpDelete("{userId}")]
+        public IActionResult DeleteUser(int userId)
+        {
+            try
+            {
+                if (_userService.GetById(userId) == null)
+                    return NotFound();
+                _userService.Delete(userId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

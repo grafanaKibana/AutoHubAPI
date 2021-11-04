@@ -58,19 +58,44 @@ namespace AutoHub.BLL.Services
         {
             var car = _unitOfWork.Cars.GetById(carId);
 
-            var brand = _unitOfWork.CarBrands.Find(brand => brand.CarBrandName == updateCarDTO.CarBrand)
-                .FirstOrDefault();
-            var model = _unitOfWork.CarModels.Find(model => model.CarModelName == updateCarDTO.CarModel)
-                .FirstOrDefault();
-            var color = _unitOfWork.CarColors.Find(color => color.CarColorName == updateCarDTO.CarColor)
-                .FirstOrDefault();
+            if (car.CarBrand.CarBrandName != updateCarDTO.CarBrand)
+            {
+                var brand = _unitOfWork.CarBrands.Find(brand => brand.CarBrandName == updateCarDTO.CarBrand)
+                    .FirstOrDefault();
+                car.CarBrand = brand ?? new CarBrand { CarBrandName = updateCarDTO.CarBrand };
+            }
 
-            car.CarBrand = brand ?? new CarBrand { CarBrandName = updateCarDTO.CarBrand };
-            car.CarModel = model ?? new CarModel { CarModelName = updateCarDTO.CarModel };
-            car.CarColor = color ?? new CarColor { CarColorName = updateCarDTO.CarColor };
-            car.CarStatusId = (CarStatusEnum)updateCarDTO.CarStatusId;
+            if (car.CarModel.CarModelName != updateCarDTO.CarModel)
+            {
+                var model = _unitOfWork.CarModels.Find(model => model.CarModelName == updateCarDTO.CarModel)
+                    .FirstOrDefault();
+                car.CarModel = model ?? new CarModel { CarModelName = updateCarDTO.CarModel };
+            }
+
+            if (car.CarColor.CarColorName != updateCarDTO.CarColor)
+            {
+                var color = _unitOfWork.CarColors.Find(color => color.CarColorName == updateCarDTO.CarColor)
+                    .FirstOrDefault();
+                car.CarColor = color ?? new CarColor { CarColorName = updateCarDTO.CarColor };
+            }
+
+            if (updateCarDTO.CarStatusId != 0) car.CarStatusId = (CarStatusEnum)updateCarDTO.CarStatusId;
+
+            car.ImgUrl = updateCarDTO.ImgUrl;
+            car.Description = updateCarDTO.Description;
+            car.Year = updateCarDTO.Year;
+            car.VIN = updateCarDTO.VIN;
+            car.Mileage = updateCarDTO.Mileage;
+            car.SellingPrice = updateCarDTO.SellingPrice;
+            car.CostPrice = updateCarDTO.CostPrice;
 
             _unitOfWork.Cars.Update(car);
+            _unitOfWork.Commit();
+        }
+
+        public void Delete(int carId)
+        {
+            _unitOfWork.Cars.Delete(carId);
             _unitOfWork.Commit();
         }
     }

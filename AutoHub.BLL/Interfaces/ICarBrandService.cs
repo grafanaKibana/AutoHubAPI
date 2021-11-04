@@ -9,5 +9,6 @@ namespace AutoHub.BLL.Interfaces
         CarBrandResponseDTO GetById(int carBrandId);
         void Create(CarBrandCreateRequestDTO createBrandDTO);
         void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO);
+        void Delete(int carBrandId);
     }
 }

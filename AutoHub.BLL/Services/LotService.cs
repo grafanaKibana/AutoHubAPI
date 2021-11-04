@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
@@ -71,11 +70,10 @@ namespace AutoHub.BLL.Services
             _unitOfWork.Commit();
         }
 
-        public IEnumerable<BidResponseDTO> GetBids(int lotId)
+        public void Delete(int lotId)
         {
-            var bids = _unitOfWork.Bids.Find(bid => bid.LotId == lotId);
-            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
-            return mappedBids;
+            _unitOfWork.Lots.Delete(lotId);
+            _unitOfWork.Commit();
         }
     }
 }

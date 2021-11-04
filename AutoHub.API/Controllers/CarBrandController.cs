@@ -78,5 +78,21 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpDelete("{carBrandId}")]
+        public IActionResult DeleteCarBrand(int carBrandId)
+        {
+            try
+            {
+                if (_carBrandService.GetById(carBrandId) == null)
+                    return NotFound();
+                _carBrandService.Delete(carBrandId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }

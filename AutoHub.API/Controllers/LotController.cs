@@ -142,5 +142,21 @@ namespace AutoHub.API.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpDelete("{lotId}")]
+        public IActionResult DeleteLot(int lotId)
+        {
+            try
+            {
+                if (_lotService.GetById(lotId) == null)
+                    return NotFound();
+                _lotService.Delete(lotId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
     }
 }
