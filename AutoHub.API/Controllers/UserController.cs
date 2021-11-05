@@ -40,26 +40,23 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        /*
-        [HttpGet("{userId}/Bids")]
-        [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
-        public IActionResult GetUserBids(int userId)
+        [HttpGet("{userId}")]
+        [ProducesResponseType(typeof(UserResponseModel), StatusCodes.Status200OK)]
+        public IActionResult GetUserById(int userId)
         {
             try
             {
-                if (_userService.GetById(userId) == null)
+                var user = _userService.GetById(userId);
+                if (user == null)
                     return NotFound();
-
-                var bids = _userService.GetBids(userId);
-                var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
-                return Ok(mappedBids);
+                var mappedUser = _mapper.Map<UserResponseModel>(user);
+                return Ok(mappedUser);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex);
             }
         }
-        */
 
         [HttpPost("Login")]
         public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
@@ -120,7 +117,7 @@ namespace AutoHub.API.Controllers
                     return NotFound("User not found");
 
                 if (!Enum.IsDefined(typeof(UserRoleEnum), model.UserRoleId))
-                    return NotFound("Incorrect user role ID");
+                    return UnprocessableEntity("Incorrect user role ID");
 
                 var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
 

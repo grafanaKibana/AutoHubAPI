@@ -130,7 +130,7 @@ namespace AutoHub.API.Controllers
                     return NotFound();
 
                 if (!Enum.IsDefined(typeof(LotStatusEnum), model.LotStatusId))
-                    return UnprocessableEntity();
+                    return UnprocessableEntity("Incorrect lot status ID");
 
                 var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
 
