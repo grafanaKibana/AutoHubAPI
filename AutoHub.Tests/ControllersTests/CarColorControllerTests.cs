@@ -97,7 +97,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateCarColor_InvalidData_ReturnsBadRequest()
+        public void UpdateCarColor_InvalidModel_ReturnsBadRequest()
         {
             //Arrange
             var carColorId = _fixture.Create<int>();

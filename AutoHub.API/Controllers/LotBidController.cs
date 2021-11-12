@@ -15,11 +15,13 @@ namespace AutoHub.API.Controllers
     public class LotBidController : Controller
     {
         private readonly IBidService _bidService;
+        private readonly ILotService _lotService;
         private readonly IMapper _mapper;
 
-        public LotBidController(IBidService bidService, IMapper mapper)
+        public LotBidController(IBidService bidService, ILotService lotService, IMapper mapper)
         {
             _bidService = bidService;
+            _lotService = lotService;
             _mapper = mapper;
         }
 
@@ -29,9 +31,12 @@ namespace AutoHub.API.Controllers
         {
             try
             {
-                var bids = _bidService.GetLotBids(lotId);
-                if (bids == null)
+                var lot = _lotService.GetById(lotId);
+
+                if (lot == null)
                     return NotFound();
+
+                var bids = _bidService.GetLotBids(lotId);
 
                 var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
                 return Ok(mappedBids);
@@ -49,6 +54,11 @@ namespace AutoHub.API.Controllers
             {
                 if (model == null)
                     return BadRequest();
+
+                var lot = _lotService.GetById(lotId);
+
+                if (lot == null)
+                    return NotFound();
 
                 var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
                 _bidService.Create(lotId, mappedBid);

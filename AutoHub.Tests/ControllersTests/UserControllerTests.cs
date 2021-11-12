@@ -182,7 +182,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateUser_WithValidData_ReturnsNoContent()
+        public void UpdateUser_ValidData_ReturnsNoContent()
         {
             //Arrange
             var userId = _fixture.Create<int>();

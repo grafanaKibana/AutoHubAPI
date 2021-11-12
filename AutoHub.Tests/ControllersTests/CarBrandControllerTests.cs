@@ -97,7 +97,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateCarBrand_InvalidData_ReturnsBadRequest()
+        public void UpdateCarBrand_InvalidModel_ReturnsBadRequest()
         {
             //Arrange
             var carBrandId = _fixture.Create<int>();

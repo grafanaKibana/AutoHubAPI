@@ -112,7 +112,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateCar_WithValidData_ReturnsNoContent()
+        public void UpdateCar_ValidData_ReturnsNoContent()
         {
             //Arrange
             var carId = _fixture.Create<int>();
