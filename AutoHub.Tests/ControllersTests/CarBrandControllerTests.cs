@@ -45,7 +45,7 @@ namespace AutoHub.Tests.ControllersTests
         public void CreateCarBrand_ValidModel_ReturnsCreated()
         {
             //Arrange
-            var carBrandModel = _fixture.Create<CarBrandCreateRequestModel>();
+            var requestModel = _fixture.Create<CarBrandCreateRequestModel>();
             var mappedCarBrand = _fixture.Build<CarBrandCreateRequestDTO>()
                 .With(x => x.CarBrandName)
                 .Create();
@@ -53,7 +53,7 @@ namespace AutoHub.Tests.ControllersTests
             _carBrandServiceMock.Setup(service => service.Create(mappedCarBrand));
 
             //Act
-            var result = _carBrandController.CreateCarBrand(carBrandModel);
+            var result = _carBrandController.CreateCarBrand(requestModel);
 
             //Assert
             result.Should().NotBeNull();
@@ -75,7 +75,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateCarBrand_WithValidData_ReturnsNoContent()
+        public void UpdateCarBrand_ValidData_ReturnsNoContent()
         {
             //Arrange
             var carBrandId = _fixture.Create<int>();
@@ -97,7 +97,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateCarBrand_WithInvalidData_ReturnsBadRequest()
+        public void UpdateCarBrand_InvalidData_ReturnsBadRequest()
         {
             //Arrange
             var carBrandId = _fixture.Create<int>();
