@@ -61,10 +61,11 @@ namespace AutoHub.Tests.ControllersTests
         public void GetByUserById_UserNotExists_ReturnsNotFound()
         {
             //Arrange
-            _userServiceMock.Setup(service => service.GetById(It.IsAny<int>())).Returns(null as UserResponseDTO);
+            var userId = _fixture.Create<int>();
+            _userServiceMock.Setup(service => service.GetById(userId)).Returns(null as UserResponseDTO);
 
             //Act
-            var result = _userController.GetUserById(int.MaxValue);
+            var result = _userController.GetUserById(userId);
 
             //Assert
             result.Should().BeOfType<NotFoundResult>();
@@ -185,7 +186,7 @@ namespace AutoHub.Tests.ControllersTests
         {
             //Arrange
             var userId = _fixture.Create<int>();
-            var requestModel = _fixture.Build<UserUpdateRequestModel>().Without(x => x.UserRoleId)
+            var requestModel = _fixture.Build<UserUpdateRequestModel>()
                 .With(x => x.UserRoleId,
                     _fixture.Create<int>() % (3 - 1 + 1) + 1) //To match enum values
                 .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;

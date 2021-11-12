@@ -60,10 +60,11 @@ namespace AutoHub.Tests.ControllersTests
         public void GetCarById_CarNotExists_ReturnsNotFound()
         {
             //Arrange
-            _carServiceMock.Setup(service => service.GetById(It.IsAny<int>())).Returns(null as CarResponseDTO);
+            var carId = _fixture.Create<int>();
+            _carServiceMock.Setup(service => service.GetById(carId)).Returns(null as CarResponseDTO);
 
             //Act
-            var result = _carController.GetCarById(int.MaxValue);
+            var result = _carController.GetCarById(carId);
 
             //Assert
             result.Should().BeOfType<NotFoundResult>();
@@ -115,9 +116,11 @@ namespace AutoHub.Tests.ControllersTests
         {
             //Arrange
             var carId = _fixture.Create<int>();
+
             var requestModel = _fixture.Build<CarUpdateRequestModel>()
                 .With(x => x.CarStatusId, _fixture.Create<int>() % (6 - 1 + 1) + 1) //To match enum values
                 .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
+
             var mappedCar = _fixture.Build<CarUpdateRequestDTO>()
                 .With(x => x.CarBrand, requestModel.CarBrand)
                 .With(x => x.CarModel, requestModel.CarModel)
