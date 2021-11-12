@@ -101,10 +101,10 @@ namespace AutoHub.Tests.ControllersTests
         public void CreateCar_InvalidModel_ReturnsBadRequest()
         {
             //Arrange
-            var car = _fixture.Create<object>() as CarCreateRequestModel;
+            var requestModel = _fixture.Create<object>() as CarCreateRequestModel;
 
             //Act
-            var result = _carController.CreateCar(car);
+            var result = _carController.CreateCar(requestModel);
 
             //Assert
             result.Should().BeOfType<BadRequestResult>();

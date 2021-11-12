@@ -18,6 +18,7 @@ namespace AutoHub.Tests.ControllersTests
         private readonly UserController _userController;
         private readonly Mock<IUserService> _userServiceMock;
 
+
         public UserControllerTests()
         {
             _fixture = new Fixture();
@@ -31,7 +32,7 @@ namespace AutoHub.Tests.ControllersTests
         {
             //Arrange
             var users = _fixture.CreateMany<UserResponseDTO>();
-            _userServiceMock.Setup(repo => repo.GetAll()).Returns(users);
+            _userServiceMock.Setup(service => service.GetAll()).Returns(users);
 
             //Act
             var result = _userController.GetAllUsers();
