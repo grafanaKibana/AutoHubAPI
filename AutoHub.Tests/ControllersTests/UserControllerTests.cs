@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.UserModels;
@@ -21,17 +20,17 @@ namespace AutoHub.Tests.ControllersTests
 
         public UserControllerTests()
         {
-            _userServiceMock = new Mock<IUserService>();
-            _mapperMock = new Mock<IMapper>();
-            _userController = new UserController(_userServiceMock.Object, _mapperMock.Object);
             _fixture = new Fixture();
+            _mapperMock = new Mock<IMapper>();
+            _userServiceMock = new Mock<IUserService>();
+            _userController = new UserController(_userServiceMock.Object, _mapperMock.Object);
         }
 
         [Fact]
         public void GetAllUsers_ReturnsOk()
         {
             //Arrange
-            var users = _fixture.Create<IEnumerable<UserResponseDTO>>();
+            var users = _fixture.CreateMany<UserResponseDTO>();
             _userServiceMock.Setup(repo => repo.GetAll()).Returns(users);
 
             //Act
@@ -43,7 +42,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void GetById_UserExists_ReturnsOk()
+        public void GetByUserById_UserExists_ReturnsOk()
         {
             //Arrange
             var user = _fixture.Create<UserResponseDTO>();
@@ -53,11 +52,12 @@ namespace AutoHub.Tests.ControllersTests
             var result = _userController.GetUserById(user.UserId);
 
             //Assert
+            result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
         }
 
         [Fact]
-        public void GetById_UserNotExists_ReturnsNotFound()
+        public void GetByUserById_UserNotExists_ReturnsNotFound()
         {
             //Arrange
             _userServiceMock.Setup(service => service.GetById(It.IsAny<int>())).Returns(null as UserResponseDTO);
@@ -163,8 +163,7 @@ namespace AutoHub.Tests.ControllersTests
 
             //Assert
             result.Should().NotBeNull();
-            result.Should()
-                .BeOfType<StatusCodeResult>().And.BeEquivalentTo(new StatusCodeResult(201));
+            result.Should().BeOfType<StatusCodeResult>().And.BeEquivalentTo(new StatusCodeResult(201));
         }
 
         [Fact]
@@ -181,14 +180,14 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateUser_WithExistingUser_ReturnsNoContent()
+        public void UpdateUser_WithValidData_ReturnsNoContent()
         {
             //Arrange
             var userId = _fixture.Create<int>();
             var requestModel = _fixture.Build<UserUpdateRequestModel>().Without(x => x.UserRoleId)
                 .With(x => x.UserRoleId,
-                    _fixture.Create<int>() % (3 - 1 + 1) + 1) //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
-                .Create();
+                    _fixture.Create<int>() % (3 - 1 + 1) + 1) //To match enum values
+                .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
 
             var mappedUser = _fixture.Build<UserUpdateRequestDTO>()
                 .With(x => x.Email, requestModel.Email)
@@ -199,7 +198,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.UserRoleId, requestModel.UserRoleId)
                 .Create();
 
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(new UserResponseDTO());
+            _userServiceMock.Setup(service => service.GetById(userId)).Returns(_fixture.Create<UserResponseDTO>());
             _userServiceMock.Setup(service => service.Update(userId, mappedUser));
 
             //Act
@@ -243,7 +242,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void UpdateUser_IncorrectStatusId_ReturnsUnprocessableEntity()
+        public void UpdateUser_IncorrectUserRoleId_ReturnsUnprocessableEntity()
         {
             //Arrange
             var userId = _fixture.Create<int>();
@@ -272,11 +271,11 @@ namespace AutoHub.Tests.ControllersTests
         {
             //Arrange
             var userId = _fixture.Create<int>();
-            var userDTO = _fixture.Build<UserResponseDTO>()
+            var userResponseDTO = _fixture.Build<UserResponseDTO>()
                 .With(x => x.UserId, userId)
                 .Create();
 
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(userDTO);
+            _userServiceMock.Setup(service => service.GetById(userId)).Returns(userResponseDTO);
             _userServiceMock.Setup(service => service.Delete(userId));
 
             //Act
