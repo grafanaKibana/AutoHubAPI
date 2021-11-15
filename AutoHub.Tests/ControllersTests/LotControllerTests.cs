@@ -206,7 +206,7 @@ namespace AutoHub.Tests.ControllersTests
 
             //Assert
             result.Should().NotBeNull();
-            result.Should().BeOfType<UnprocessableEntityResult>();
+            result.Should().BeOfType<UnprocessableEntityObjectResult>();
         }
 
         [Fact]
