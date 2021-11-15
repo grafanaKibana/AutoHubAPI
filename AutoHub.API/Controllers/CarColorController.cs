@@ -25,7 +25,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarColorResponseModel>), StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public IActionResult GetAllCarColors()
         {
             try
             {

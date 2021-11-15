@@ -14,10 +14,12 @@ namespace AutoHub.API.Controllers
     {
         private readonly IBidService _bidService;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public UserBidController(IBidService userService, IMapper mapper)
+        public UserBidController(IBidService bidService, IUserService userService, IMapper mapper)
         {
-            _bidService = userService;
+            _bidService = bidService;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -27,9 +29,12 @@ namespace AutoHub.API.Controllers
         {
             try
             {
-                var bids = _bidService.GetUserBids(userId);
-                if (bids == null)
+                var user = _userService.GetById(userId);
+
+                if (user == null)
                     return NotFound();
+
+                var bids = _bidService.GetUserBids(userId);
 
                 var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
                 return Ok(mappedBids);

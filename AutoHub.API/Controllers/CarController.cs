@@ -4,6 +4,7 @@ using System.Net;
 using AutoHub.API.Models.CarModels;
 using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Interfaces;
+using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -86,6 +87,8 @@ namespace AutoHub.API.Controllers
 
                 if (_carService.GetById(carId) == null)
                     return NotFound();
+                if (!Enum.IsDefined(typeof(CarStatusEnum), model.CarStatusId))
+                    return UnprocessableEntity("Incorrect car status ID");
 
                 var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
 
