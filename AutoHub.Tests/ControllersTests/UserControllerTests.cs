@@ -188,7 +188,7 @@ namespace AutoHub.Tests.ControllersTests
             var userId = _fixture.Create<int>();
             var requestModel = _fixture.Build<UserUpdateRequestModel>()
                 .With(x => x.UserRoleId,
-                    _fixture.Create<int>() % (3 - 1 + 1) + 1) //To match enum values
+                    _fixture.Create<int>() % (3 - 1 + 1) + 1) //Defines range of generating to match enum values
                 .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
 
             var mappedUser = _fixture.Build<UserUpdateRequestDTO>()
@@ -200,7 +200,11 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.UserRoleId, requestModel.UserRoleId)
                 .Create();
 
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(_fixture.Create<UserResponseDTO>());
+            var userResponseDTO = _fixture.Build<UserResponseDTO>()
+                .With(x => x.UserId, userId)
+                .Create();
+
+            _userServiceMock.Setup(service => service.GetById(userId)).Returns(userResponseDTO);
             _userServiceMock.Setup(service => service.Update(userId, mappedUser));
 
             //Act

@@ -84,8 +84,11 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.CarBrandName, requestModel.CarBrandName)
                 .Create();
 
-            _carBrandServiceMock.Setup(service => service.GetById(carBrandId))
-                .Returns(_fixture.Create<CarBrandResponseDTO>());
+            var carBrandResponseDTO = _fixture.Build<CarBrandResponseDTO>()
+                .With(x => x.CarBrandId, carBrandId)
+                .Create();
+
+            _carBrandServiceMock.Setup(service => service.GetById(carBrandId)).Returns(carBrandResponseDTO);
             _carBrandServiceMock.Setup(service => service.Update(carBrandId, mappedCarBrand));
 
             //Act

@@ -118,7 +118,8 @@ namespace AutoHub.Tests.ControllersTests
             var carId = _fixture.Create<int>();
 
             var requestModel = _fixture.Build<CarUpdateRequestModel>()
-                .With(x => x.CarStatusId, _fixture.Create<int>() % (6 - 1 + 1) + 1) //To match enum values
+                .With(x => x.CarStatusId,
+                    _fixture.Create<int>() % (6 - 1 + 1) + 1) //Defines range of generating to match enum values
                 .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
 
             var mappedCar = _fixture.Build<CarUpdateRequestDTO>()
@@ -135,7 +136,11 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.CarStatusId, requestModel.CarStatusId)
                 .Create();
 
-            _carServiceMock.Setup(service => service.GetById(carId)).Returns(_fixture.Create<CarResponseDTO>());
+            var carResponseDTO = _fixture.Build<CarResponseDTO>()
+                .With(x => x.CarId, carId)
+                .Create();
+
+            _carServiceMock.Setup(service => service.GetById(carId)).Returns(carResponseDTO);
             _carServiceMock.Setup(service => service.Update(carId, mappedCar));
 
             //Act
