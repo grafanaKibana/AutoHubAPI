@@ -41,25 +41,6 @@ namespace AutoHub.BLL.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-
-            /*var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.UserRole.UserRoleName),
-                new Claim("UserId", user.UserId.ToString())
-            };
-
-            var token = new JwtSecurityToken(
-                _jwtOptions.Issuer,
-                _jwtOptions.Issuer,
-                claims,
-                signingCredentials: credentials,
-                expires: DateTime.UtcNow.AddDays(_jwtOptions.ExpirationDate));
-
-            return new JwtSecurityTokenHandler().WriteToken(token);*/
         }
 
         public string HashPassword(string password)

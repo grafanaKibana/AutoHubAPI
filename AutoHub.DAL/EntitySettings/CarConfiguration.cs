@@ -10,11 +10,6 @@ namespace AutoHub.DAL.EntitySettings
         {
             entity.ToTable("Car").HasKey(car => car.CarId);
 
-            entity.Navigation(car => car.CarBrand).AutoInclude();
-            entity.Navigation(car => car.CarModel).AutoInclude();
-            entity.Navigation(car => car.CarStatus).AutoInclude();
-            entity.Navigation(car => car.CarColor).AutoInclude();
-
             entity.Property(car => car.Description).IsRequired();
             entity.Property(car => car.Year).IsRequired().HasMaxLength(4);
             entity.Property(car => car.VIN).IsRequired().HasMaxLength(17);

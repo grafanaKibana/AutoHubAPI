@@ -22,7 +22,8 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<LotResponseDTO> GetAll()
         {
-            var lots = _unitOfWork.Lots.Include(lot => lot.Car, lot => lot.Creator, lot => lot.Winner);
+            var lots = _unitOfWork.Lots.GetAll(lot => lot.Car, lot => lot.Creator, lot => lot.Winner,
+                lot => lot.LotStatus);
             var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
             return mappedLots;
         }

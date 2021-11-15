@@ -22,6 +22,12 @@ namespace AutoHub.DAL.Repositories
             return _context.Set<T>();
         }
 
+        public IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includes)
+        {
+            var query = _context.Set<T>().AsNoTracking();
+            return includes.Aggregate(query, (current, include) => current.Include(include)).ToList();
+        }
+
         public T GetById(int id)
         {
             return _context.Set<T>().Find(id);
@@ -30,6 +36,12 @@ namespace AutoHub.DAL.Repositories
         public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().Where(predicate);
+        }
+
+        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            var query = GetAll(includes);
+            return query.Where(predicate.Compile());
         }
 
         public bool Any(Expression<Func<T, bool>> predicate)
@@ -67,18 +79,6 @@ namespace AutoHub.DAL.Repositories
 
             _context.Remove(toRemove);
             return true;
-        }
-
-        public IEnumerable<T> Include(params Expression<Func<T, object>>[] includes)
-        {
-            var query = _context.Set<T>().AsNoTracking();
-            return includes.Aggregate(query, (current, include) => current.Include(include)).ToList();
-        }
-
-        public IEnumerable<T> Include(Func<T, bool> predicate, params Expression<Func<T, object>>[] includes)
-        {
-            var query = Include(includes);
-            return query.Where(predicate);
         }
     }
 }

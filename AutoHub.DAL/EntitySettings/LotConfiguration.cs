@@ -10,8 +10,6 @@ namespace AutoHub.DAL.EntitySettings
         {
             entity.ToTable("Lot").HasKey(lot => lot.LotId);
 
-            entity.Navigation(lot => lot.LotStatus).AutoInclude();
-
             entity.Property(lot => lot.StartTime).IsRequired();
 
             entity.HasOne(lot => lot.Creator)

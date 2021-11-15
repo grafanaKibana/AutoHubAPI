@@ -25,7 +25,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<UserResponseDTO> GetAll()
         {
-            var users = _unitOfWork.Users.GetAll();
+            var users = _unitOfWork.Users.GetAll(user => user.UserRole);
             var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
             return mappedUsers;
         }
@@ -46,10 +46,15 @@ namespace AutoHub.BLL.Services
 
         public UserLoginResponseDTO Login(UserLoginRequestDTO userModel)
         {
-            var user = _unitOfWork.Users.Find(user1 =>
-                user1.Email == userModel.Email).FirstOrDefault();
+            var user = _unitOfWork.Users.Find(user =>
+                user.Email == userModel.Email).FirstOrDefault();
 
-            if (user == null || !_authService.VerifyPassword(userModel.Password, user.Password)) return null;
+            if (user == null)
+                throw new Exception("User with that Email not found");
+
+            var isPasswordVerified = _authService.VerifyPassword(userModel.Password, user.Password);
+
+            if (!isPasswordVerified) throw new Exception("Wrong password");
 
             var mappedUser = new UserLoginResponseDTO
             {

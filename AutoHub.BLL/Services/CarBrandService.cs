@@ -18,7 +18,6 @@ namespace AutoHub.BLL.Services
             _mapper = mapper;
         }
 
-
         public IEnumerable<CarBrandResponseDTO> GetAll()
         {
             var brands = _unitOfWork.CarBrands.GetAll();

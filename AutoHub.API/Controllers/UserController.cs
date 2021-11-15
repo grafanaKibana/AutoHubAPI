@@ -94,6 +94,7 @@ namespace AutoHub.API.Controllers
             {
                 if (model == null)
                     return BadRequest();
+
                 var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
                 _userService.Register(mappedUser);
 
@@ -137,6 +138,7 @@ namespace AutoHub.API.Controllers
             {
                 if (_userService.GetById(userId) == null)
                     return NotFound();
+
                 _userService.Delete(userId);
                 return NoContent();
             }

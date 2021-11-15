@@ -21,7 +21,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<BidResponseDTO> GetUserBids(int userId)
         {
-            var bids = _unitOfWork.Bids.Include(bid => bid.UserId == userId,
+            var bids = _unitOfWork.Bids.GetAll(bid => bid.UserId == userId,
                 bid => bid.User, bid => bid.Lot, bid => bid.Lot.Creator, bid => bid.Lot.Car, bid => bid.Lot.Winner);
             var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
             return mappedBids;
@@ -29,7 +29,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<BidResponseDTO> GetLotBids(int lotId)
         {
-            var bids = _unitOfWork.Bids.Include(bid => bid.LotId == lotId,
+            var bids = _unitOfWork.Bids.GetAll(bid => bid.LotId == lotId,
                 bid => bid.User, bid => bid.Lot, bid => bid.Lot.Creator, bid => bid.Lot.Car, bid => bid.Lot.Winner);
             var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
             return mappedBids;

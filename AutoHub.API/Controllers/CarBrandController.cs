@@ -65,6 +65,7 @@ namespace AutoHub.API.Controllers
             {
                 if (model == null)
                     return BadRequest();
+
                 if (_carBrandService.GetById(carBrandId) == null)
                     return NotFound();
 
@@ -86,6 +87,7 @@ namespace AutoHub.API.Controllers
             {
                 if (_carBrandService.GetById(carBrandId) == null)
                     return NotFound();
+
                 _carBrandService.Delete(carBrandId);
                 return NoContent();
             }

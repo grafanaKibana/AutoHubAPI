@@ -77,28 +77,6 @@ namespace AutoHub.API.Controllers
             }
         }
 
-        /*
-        [HttpGet("{lotId}/Bids")]
-        [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
-        public IActionResult GetLotBids(int id)
-        {
-            try
-            {
-                if (_lotService.GetById(id) == null)
-                    return NotFound();
-
-                var bids = _lotService.GetBids(id);
-                var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
-                return Ok(mappedBids);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }
-        */
-
-
         [HttpPost]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
