@@ -50,11 +50,12 @@ namespace AutoHub.BLL.Services
                 user.Email == userModel.Email).FirstOrDefault();
 
             if (user == null)
-                throw new Exception("User with that Email not found");
+                throw new NotFoundException($"User with Email {userModel.Email} not found");
 
             var isPasswordVerified = _authService.VerifyPassword(userModel.Password, user.Password);
 
-            if (!isPasswordVerified) throw new Exception("Wrong password");
+            if (!isPasswordVerified)
+                throw new LoginFailedException("Wrong password");
 
             var mappedUser = new UserLoginResponseDTO
             {
@@ -66,13 +67,19 @@ namespace AutoHub.BLL.Services
 
         public void Register(UserRegisterRequestDTO registerUserDTO)
         {
-            var user = _mapper.Map<User>(registerUserDTO);
+            var user = _unitOfWork.Users.Find(user =>
+                user.Email == registerUserDTO.Email).FirstOrDefault();
 
-            user.UserRoleId = UserRoleEnum.Regular;
-            user.RegistrationTime = DateTime.UtcNow;
-            user.Password = _authService.HashPassword(user.Password);
+            if (user != null)
+                throw new RegistrationFailedException($"User with Email {registerUserDTO.Email} already exist");
 
-            _unitOfWork.Users.Add(user);
+            var newUser = _mapper.Map<User>(registerUserDTO);
+
+            newUser.UserRoleId = UserRoleEnum.Regular;
+            newUser.RegistrationTime = DateTime.UtcNow;
+            newUser.Password = _authService.HashPassword(newUser.Password);
+
+            _unitOfWork.Users.Add(newUser);
             _unitOfWork.Commit();
         }
 

@@ -37,6 +37,11 @@ namespace AutoHub.BLL.Services
 
         public void Create(int lotId, BidCreateRequestDTO createBidDTO)
         {
+            var lot = _context.Lots.GetById(lotId);
+
+            if (lot == null)
+                throw new NotFoundException($"Lot with ID {lotId} not exist");
+
             var bid = _mapper.Map<Bid>(createBidDTO);
             bid.LotId = lotId;
             bid.BidTime = DateTime.UtcNow;

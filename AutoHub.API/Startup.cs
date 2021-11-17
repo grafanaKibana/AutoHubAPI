@@ -1,4 +1,5 @@
 using AutoHub.API.Extensions;
+using AutoHub.API.Middlewares;
 using AutoHub.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,8 @@ namespace AutoHub.API
                 app.UseDeveloperExceptionPage();
                 app.UseSwaggerDocumentation();
             }
+
+            app.UseMiddleware<ApplicationExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using AutoHub.BLL.DTOs.CarBrandDTOs;
+using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
-using AutoHub.DAL.Interfaces;
 using AutoMapper;
 
 namespace AutoHub.BLL.Services
@@ -27,6 +27,11 @@ namespace AutoHub.BLL.Services
 
         public CarBrandResponseDTO GetById(int carBrandId)
         {
+            var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
+
+            if (carBrand == null)
+                throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
+
             var brand = _unitOfWork.CarBrands.GetById(carBrandId);
             var mappedBrand = _mapper.Map<CarBrandResponseDTO>(brand);
             return mappedBrand;
@@ -42,6 +47,10 @@ namespace AutoHub.BLL.Services
         public void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO)
         {
             var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
+
+            if (carBrand == null)
+                throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
+
             carBrand.CarBrandName = updateBrandDTO.CarBrandName;
 
             _unitOfWork.CarBrands.Update(carBrand);
@@ -50,6 +59,11 @@ namespace AutoHub.BLL.Services
 
         public void Delete(int carBrandId)
         {
+            var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
+
+            if (carBrand == null)
+                throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
+
             _unitOfWork.CarBrands.Delete(carBrandId);
             _unitOfWork.Commit();
         }
