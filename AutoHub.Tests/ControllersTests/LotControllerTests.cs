@@ -65,6 +65,7 @@ namespace AutoHub.Tests.ControllersTests
         {
             //Arrange
             var lot = _fixture.Create<LotResponseDTO>();
+
             _lotServiceMock.Setup(service => service.GetById(lot.LotId)).Returns(lot);
 
             //Act
@@ -73,6 +74,7 @@ namespace AutoHub.Tests.ControllersTests
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
+            //TODO: result.Should().BeEquivalentTo(expectation: mappedModel);
         }
 
         [Fact]
@@ -102,6 +104,7 @@ namespace AutoHub.Tests.ControllersTests
                 .Create();
 
             _lotServiceMock.Setup(service => service.Create(mappedLot));
+
 
             //Act
             var result = _lotController.CreateLot(lot);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using AutoHub.API.Common;
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
@@ -27,7 +28,7 @@ namespace AutoHub.API.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<UserResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllUsers()
@@ -45,7 +46,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{userId}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(UserResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -122,7 +123,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{userId}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -153,7 +154,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{userId}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

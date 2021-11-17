@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using AutoHub.API.Common;
 using AutoHub.API.Models.BidModels;
 using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.Interfaces;
@@ -27,7 +28,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
