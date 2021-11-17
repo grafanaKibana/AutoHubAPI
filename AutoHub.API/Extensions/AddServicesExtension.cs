@@ -1,7 +1,5 @@
 using AutoHub.BLL.Interfaces;
 using AutoHub.BLL.Services;
-using AutoHub.DAL.Interfaces;
-using AutoHub.DAL.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoHub.API.Extensions
@@ -18,7 +16,6 @@ namespace AutoHub.API.Extensions
             services.AddScoped<ICarModelService, CarModelService>();
             services.AddScoped<ICarColorService, CarColorService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

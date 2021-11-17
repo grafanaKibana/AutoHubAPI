@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
+using AutoHub.DAL;
 using AutoHub.DAL.Entities;
 using AutoMapper;
 
@@ -9,30 +11,29 @@ namespace AutoHub.BLL.Services
 {
     public class CarBrandService : ICarBrandService
     {
+        private readonly AutoHubContext _context;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CarBrandService(IUnitOfWork unitOfWork, IMapper mapper)
+        public CarBrandService(AutoHubContext context, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _context = context;
             _mapper = mapper;
         }
 
         public IEnumerable<CarBrandResponseDTO> GetAll()
         {
-            var brands = _unitOfWork.CarBrands.GetAll();
+            var brands = _context.CarBrands.ToList();
             var mappedBrands = _mapper.Map<IEnumerable<CarBrandResponseDTO>>(brands);
             return mappedBrands;
         }
 
         public CarBrandResponseDTO GetById(int carBrandId)
         {
-            var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
+            var brand = _context.CarBrands.Find(carBrandId);
 
-            if (carBrand == null)
+            if (brand == null)
                 throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
 
-            var brand = _unitOfWork.CarBrands.GetById(carBrandId);
             var mappedBrand = _mapper.Map<CarBrandResponseDTO>(brand);
             return mappedBrand;
         }
@@ -40,32 +41,32 @@ namespace AutoHub.BLL.Services
         public void Create(CarBrandCreateRequestDTO createBrandDTO)
         {
             var brand = _mapper.Map<CarBrand>(createBrandDTO);
-            _unitOfWork.CarBrands.Add(brand);
-            _unitOfWork.Commit();
+            _context.CarBrands.Add(brand);
+            _context.SaveChanges();
         }
 
         public void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO)
         {
-            var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
+            var carBrand = _context.CarBrands.Find(carBrandId);
 
             if (carBrand == null)
                 throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
 
             carBrand.CarBrandName = updateBrandDTO.CarBrandName;
 
-            _unitOfWork.CarBrands.Update(carBrand);
-            _unitOfWork.Commit();
+            _context.CarBrands.Update(carBrand);
+            _context.SaveChanges();
         }
 
         public void Delete(int carBrandId)
         {
-            var carBrand = _unitOfWork.CarBrands.GetById(carBrandId);
+            var carBrand = _context.CarBrands.Find(carBrandId);
 
             if (carBrand == null)
                 throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
 
-            _unitOfWork.CarBrands.Delete(carBrandId);
-            _unitOfWork.Commit();
+            _context.CarBrands.Remove(carBrand);
+            _context.SaveChanges();
         }
     }
 }
