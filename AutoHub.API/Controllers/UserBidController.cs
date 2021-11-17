@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoHub.API.Models.BidModels;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetUserBids(int userId)
         {
             try

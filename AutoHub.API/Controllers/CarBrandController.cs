@@ -25,6 +25,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarBrandResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarBrands()
         {
             try
@@ -40,6 +41,9 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarBrand([FromBody] CarBrandCreateRequestModel model)
         {
             try
@@ -59,6 +63,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{carBrandId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequestModel model)
         {
             try
@@ -81,6 +89,9 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{carBrandId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarBrand(int carBrandId)
         {
             try

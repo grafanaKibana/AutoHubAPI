@@ -22,10 +22,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<CarResponseDTO> GetAll()
         {
-            var cars = _unitOfWork.Cars.GetAll(car => car.CarBrand,
-                car => car.CarModel,
-                car => car.CarColor,
-                car => car.CarStatus);
+            var cars = _unitOfWork.Cars.GetAll();
             var mappedCars = _mapper.Map<IEnumerable<CarResponseDTO>>(cars);
             return mappedCars;
         }

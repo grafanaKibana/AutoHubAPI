@@ -25,7 +25,7 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<UserResponseDTO> GetAll()
         {
-            var users = _unitOfWork.Users.GetAll(user => user.UserRole);
+            var users = _unitOfWork.Users.GetAll();
             var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
             return mappedUsers;
         }

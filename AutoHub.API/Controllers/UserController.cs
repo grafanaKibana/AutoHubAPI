@@ -6,6 +6,7 @@ using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Enums;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,8 +25,11 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(typeof(IEnumerable<UserResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllUsers()
         {
             try
@@ -41,7 +45,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet("{userId}")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(typeof(UserResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetUserById(int userId)
         {
             try
@@ -49,6 +56,7 @@ namespace AutoHub.API.Controllers
                 var user = _userService.GetById(userId);
                 if (user == null)
                     return NotFound();
+
                 var mappedUser = _mapper.Map<UserResponseModel>(user);
                 return Ok(mappedUser);
             }
@@ -59,6 +67,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost("Login")]
+        [ProducesResponseType(typeof(UserLoginResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
         {
             try
@@ -88,6 +100,9 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost("Register")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
         {
             try
@@ -107,6 +122,12 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{userId}")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateUser(int userId, [FromBody] UserUpdateRequestModel model)
         {
             try
@@ -132,6 +153,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{userId}")]
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteUser(int userId)
         {
             try

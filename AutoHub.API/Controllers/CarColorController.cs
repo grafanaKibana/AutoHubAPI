@@ -25,6 +25,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarColorResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarColors()
         {
             try
@@ -40,6 +41,9 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarColor([FromBody] CarColorCreateRequestModel model)
         {
             try
@@ -59,6 +63,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{carColorId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequestModel model)
         {
             try
@@ -80,12 +88,16 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{carColorId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarColor(int carColorId)
         {
             try
             {
                 if (_carColorService.GetById(carColorId) == null)
                     return NotFound();
+
                 _carColorService.Delete(carColorId);
                 return NoContent();
             }

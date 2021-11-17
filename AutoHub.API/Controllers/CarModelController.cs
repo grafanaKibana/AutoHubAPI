@@ -25,6 +25,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarModelResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarModels()
         {
             try
@@ -40,6 +41,9 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarModel([FromBody] CarModelCreateRequestModel model)
         {
             try
@@ -58,12 +62,17 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{carModelId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarModel(int carModelId, [FromBody] CarModelUpdateRequestModel model)
         {
             try
             {
                 if (model == null)
                     return BadRequest();
+
                 if (_carModelService.GetById(carModelId) == null)
                     return NotFound();
 
@@ -79,12 +88,16 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{carModelId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarModel(int carModelId)
         {
             try
             {
                 if (_carModelService.GetById(carModelId) == null)
                     return NotFound();
+
                 _carModelService.Delete(carModelId);
                 return NoContent();
             }

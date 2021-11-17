@@ -28,6 +28,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllLots()
         {
             try
@@ -44,6 +45,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet("Active")]
         [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetActiveLots()
         {
             try
@@ -60,6 +62,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet("{lotId}")]
         [ProducesResponseType(typeof(LotResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetLotById(int lotId)
         {
             try
@@ -78,6 +81,8 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
             try
@@ -97,6 +102,11 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{lotId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateLot(int lotId, [FromBody] LotUpdateRequestModel model)
         {
             try
@@ -122,12 +132,16 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{lotId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteLot(int lotId)
         {
             try
             {
                 if (_lotService.GetById(lotId) == null)
                     return NotFound();
+
                 _lotService.Delete(lotId);
                 return NoContent();
             }

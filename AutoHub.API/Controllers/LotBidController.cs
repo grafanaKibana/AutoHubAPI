@@ -5,6 +5,7 @@ using AutoHub.API.Models.BidModels;
 using AutoHub.BLL.DTOs.BidDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetLotBids(int lotId)
         {
             try
@@ -48,6 +52,10 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateBid(int lotId, [FromBody] BidCreateRequestModel model)
         {
             try

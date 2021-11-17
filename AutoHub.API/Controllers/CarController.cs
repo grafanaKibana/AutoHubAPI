@@ -26,6 +26,7 @@ namespace AutoHub.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCars()
         {
             try
@@ -42,6 +43,8 @@ namespace AutoHub.API.Controllers
 
         [HttpGet("{carId}")]
         [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetCarById(int carId)
         {
             try
@@ -59,6 +62,9 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCar([FromBody] CarCreateRequestModel model)
         {
             try
@@ -78,6 +84,11 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{carId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCar(int carId, [FromBody] CarUpdateRequestModel model)
         {
             try
@@ -102,12 +113,16 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{carId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCar(int carId)
         {
             try
             {
                 if (_carService.GetById(carId) == null)
                     return NotFound();
+
                 _carService.Delete(carId);
                 return NoContent();
             }
