@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Common;
@@ -17,13 +16,11 @@ namespace AutoHub.API.Controllers
     public class LotBidController : Controller
     {
         private readonly IBidService _bidService;
-        private readonly ILotService _lotService;
         private readonly IMapper _mapper;
 
         public LotBidController(IBidService bidService, ILotService lotService, IMapper mapper)
         {
             _bidService = bidService;
-            _lotService = lotService;
             _mapper = mapper;
         }
 
@@ -34,22 +31,10 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetLotBids(int lotId)
         {
-            try
-            {
-                var lot = _lotService.GetById(lotId);
+            var bids = _bidService.GetLotBids(lotId);
 
-                if (lot == null)
-                    return NotFound();
-
-                var bids = _bidService.GetLotBids(lotId);
-
-                var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
-                return Ok(mappedBids);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
+            return Ok(mappedBids);
         }
 
         [HttpPost]
@@ -59,25 +44,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateBid(int lotId, [FromBody] BidCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                var lot = _lotService.GetById(lotId);
+            var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
+            _bidService.Create(lotId, mappedBid);
 
-                if (lot == null)
-                    return NotFound();
-
-                var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
-                _bidService.Create(lotId, mappedBid);
-
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return StatusCode((int)HttpStatusCode.Created);
         }
     }
 }

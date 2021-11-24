@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Models.CarColorModels;
@@ -28,16 +27,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarColors()
         {
-            try
-            {
-                var carColors = _carColorService.GetAll();
-                var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponseModel>>(carColors);
-                return Ok(mappedCarColors);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var carColors = _carColorService.GetAll();
+            var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponseModel>>(carColors);
+            return Ok(mappedCarColors);
         }
 
         [HttpPost]
@@ -46,20 +38,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarColor([FromBody] CarColorCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
-                _carColorService.Create(mappedCarColor);
+            var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
+            _carColorService.Create(mappedCarColor);
 
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         [HttpPut("{carColorId}")]
@@ -69,22 +54,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
-                if (_carColorService.GetById(carColorId) == null)
-                    return NotFound();
+            if (model == null)
+                return BadRequest();
 
-                var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
+            var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
 
-                _carColorService.Update(carColorId, mappedCarColor);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carColorService.Update(carColorId, mappedCarColor);
+            return NoContent();
         }
 
         [HttpDelete("{carColorId}")]
@@ -93,18 +69,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarColor(int carColorId)
         {
-            try
-            {
-                if (_carColorService.GetById(carColorId) == null)
-                    return NotFound();
-
-                _carColorService.Delete(carColorId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carColorService.Delete(carColorId);
+            return NoContent();
         }
     }
 }

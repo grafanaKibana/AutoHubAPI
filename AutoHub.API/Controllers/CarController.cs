@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Models.CarModels;
 using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,16 +27,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCars()
         {
-            try
-            {
-                var cars = _carService.GetAll();
-                var mappedCars = _mapper.Map<IEnumerable<CarResponseModel>>(cars);
-                return Ok(mappedCars);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var cars = _carService.GetAll();
+            var mappedCars = _mapper.Map<IEnumerable<CarResponseModel>>(cars);
+            return Ok(mappedCars);
         }
 
         [HttpGet("{carId}")]
@@ -47,18 +38,10 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetCarById(int carId)
         {
-            try
-            {
-                var car = _carService.GetById(carId);
-                if (car == null)
-                    return NotFound();
-                var mappedCar = _mapper.Map<CarResponseModel>(car);
-                return Ok(mappedCar);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var car = _carService.GetById(carId);
+
+            var mappedCar = _mapper.Map<CarResponseModel>(car);
+            return Ok(mappedCar);
         }
 
         [HttpPost]
@@ -67,20 +50,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCar([FromBody] CarCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
-                _carService.Create(mappedCar);
+            var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
+            _carService.Create(mappedCar);
 
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         [HttpPut("{carId}")]
@@ -91,25 +67,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCar(int carId, [FromBody] CarUpdateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                if (_carService.GetById(carId) == null)
-                    return NotFound();
-                if (!Enum.IsDefined(typeof(CarStatusEnum), model.CarStatusId))
-                    return UnprocessableEntity("Incorrect car status ID");
+            var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
 
-                var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
-
-                _carService.Update(carId, mappedCar);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carService.Update(carId, mappedCar);
+            return NoContent();
         }
 
         [HttpDelete("{carId}")]
@@ -118,18 +82,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCar(int carId)
         {
-            try
-            {
-                if (_carService.GetById(carId) == null)
-                    return NotFound();
-
-                _carService.Delete(carId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carService.Delete(carId);
+            return NoContent();
         }
     }
 }

@@ -1,8 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.BidModels;
 using AutoHub.BLL.DTOs.BidDTOs;
-using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
 using FluentAssertions;
@@ -34,20 +35,26 @@ namespace AutoHub.Tests.ControllersTests
         public void GetLotBids_LotExists_ReturnsOk()
         {
             //Arrange
-            var lot = _fixture.Create<LotResponseDTO>();
+            var lotId = _fixture.Create<int>();
             var bids = _fixture.CreateMany<BidResponseDTO>();
+            var mappedBids = bids.Select(bidDTO => _fixture.Build<BidResponseModel>()
+                .With(x => x.BidId, bidDTO.BidId)
+                .With(x => x.BidTime, bidDTO.BidTime)
+                .With(x => x.BidValue, bidDTO.BidValue)
+                .Create());
 
-            _lotServiceMock.Setup(service => service.GetById(lot.LotId)).Returns(lot);
-            _bidServiceMock.Setup(service => service.GetLotBids(lot.LotId)).Returns(bids);
+            _mapperMock.Setup(mapper => mapper.Map<IEnumerable<BidResponseModel>>(bids)).Returns(mappedBids);
+            _bidServiceMock.Setup(service => service.GetLotBids(lotId)).Returns(bids);
 
             //Act
-            var result = _lotBidController.GetLotBids(lot.LotId);
+            var result = _lotBidController.GetLotBids(lotId);
 
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
         }
 
+        /*
         [Fact]
         public void GetLotBids_LotNotExists_ReturnsNotFound()
         {
@@ -62,27 +69,29 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<NotFoundResult>();
         }
+        */
 
         [Fact]
         public void CreateBid_ValidData_ReturnsCreated()
         {
             //Arrange
-            var lot = _fixture.Create<LotResponseDTO>();
+            var lotId = _fixture.Create<int>();
             var requestModel = _fixture.Create<BidCreateRequestModel>();
             var mappedBid = _fixture.Build<BidCreateRequestDTO>()
                 .With(x => x.UserId, requestModel.UserId)
                 .With(x => x.BidValue, requestModel.BidValue)
                 .Create();
 
-            _lotServiceMock.Setup(service => service.GetById(lot.LotId)).Returns(lot);
-            _bidServiceMock.Setup(service => service.Create(lot.LotId, mappedBid));
+            _mapperMock.Setup(mapper => mapper.Map<BidCreateRequestDTO>(requestModel)).Returns(mappedBid);
 
             //Act
-            var result = _lotBidController.CreateBid(lot.LotId, requestModel);
+            var result = _lotBidController.CreateBid(lotId, requestModel);
 
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<StatusCodeResult>().And.BeEquivalentTo(new StatusCodeResult(201));
+
+            _bidServiceMock.Verify(service => service.Create(lotId, mappedBid));
         }
 
         [Fact]
@@ -100,6 +109,7 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<BadRequestResult>();
         }
 
+        /*
         [Fact]
         public void CreateBid_LotNotExists_ReturnsNotFound()
         {
@@ -115,6 +125,6 @@ namespace AutoHub.Tests.ControllersTests
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<NotFoundResult>();
-        }
+        }*/
     }
 }

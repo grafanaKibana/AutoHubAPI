@@ -24,6 +24,11 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<BidResponseDTO> GetUserBids(int userId)
         {
+            var userExist = _context.Users.Any(user => user.UserId == userId);
+
+            if (!userExist)
+                throw new NotFoundException($"User with ID {userId} not exist");
+
             var bids = _context.Bids
                 .Include(bid => bid.User.UserRole)
                 .Include(bid => bid.Lot.Creator.UserRole)
@@ -42,6 +47,11 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<BidResponseDTO> GetLotBids(int lotId)
         {
+            var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
+
+            if (!lotExist)
+                throw new NotFoundException($"Lot with ID {lotId} not exist");
+
             var bids = _context.Bids
                 .Include(bid => bid.User.UserRole)
                 .Include(bid => bid.Lot.Creator.UserRole)
@@ -60,9 +70,9 @@ namespace AutoHub.BLL.Services
 
         public void Create(int lotId, BidCreateRequestDTO createBidDTO)
         {
-            var isLotExist = _context.Lots.Any(lot => lot.LotId == lotId);
+            var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
 
-            if (!isLotExist)
+            if (!lotExist)
                 throw new NotFoundException($"Lot with ID {lotId} not exist");
 
             var bid = _mapper.Map<Bid>(createBidDTO);

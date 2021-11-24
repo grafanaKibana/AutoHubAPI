@@ -24,7 +24,7 @@ namespace AutoHub.API.Middlewares
             }
             catch (NotFoundException nfEx)
             {
-                await HandleExceptionAsync(httpContext, HttpStatusCode.Unauthorized, nfEx.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.NotFound, nfEx.Message);
             }
             catch (LoginFailedException lfEx)
             {
@@ -37,6 +37,10 @@ namespace AutoHub.API.Middlewares
             catch (ApplicationException aEx)
             {
                 await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, aEx.Message);
+            }
+            catch (Exception ex)
+            {
+                await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 

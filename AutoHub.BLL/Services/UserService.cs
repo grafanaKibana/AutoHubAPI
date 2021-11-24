@@ -41,6 +41,9 @@ namespace AutoHub.BLL.Services
                 .Include(user => user.UserRole)
                 .FirstOrDefault(user => user.UserId == userId);
 
+            if (user == null)
+                throw new NotFoundException($"User with ID {userId} not exist");
+
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
             return mappedUser;
         }
@@ -50,6 +53,9 @@ namespace AutoHub.BLL.Services
             var user = _context.Users
                 .Include(user => user.UserRole)
                 .FirstOrDefault(user => user.Email == email);
+
+            if (user == null)
+                throw new NotFoundException($"User with E-Mail {email} not exist");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
             return mappedUser;

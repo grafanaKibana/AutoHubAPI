@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using AutoHub.API.Common;
 using AutoHub.API.Models.BidModels;
@@ -16,12 +15,10 @@ namespace AutoHub.API.Controllers
     {
         private readonly IBidService _bidService;
         private readonly IMapper _mapper;
-        private readonly IUserService _userService;
 
-        public UserBidController(IBidService bidService, IUserService userService, IMapper mapper)
+        public UserBidController(IBidService bidService, IMapper mapper)
         {
             _bidService = bidService;
-            _userService = userService;
             _mapper = mapper;
         }
 
@@ -32,22 +29,10 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetUserBids(int userId)
         {
-            try
-            {
-                var user = _userService.GetById(userId);
+            var bids = _bidService.GetUserBids(userId);
 
-                if (user == null)
-                    return NotFound();
-
-                var bids = _bidService.GetUserBids(userId);
-
-                var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
-                return Ok(mappedBids);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
+            return Ok(mappedBids);
         }
     }
 }
