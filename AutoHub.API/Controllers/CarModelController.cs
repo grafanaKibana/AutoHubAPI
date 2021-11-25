@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Models.CarModelModels;
@@ -28,16 +27,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarModels()
         {
-            try
-            {
-                var carModels = _carModelService.GetAll();
-                var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
-                return Ok(mappedCarModels);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var carModels = _carModelService.GetAll();
+            var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
+            return Ok(mappedCarModels);
         }
 
         [HttpPost]
