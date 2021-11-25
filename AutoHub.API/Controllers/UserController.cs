@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Common;
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -33,16 +31,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllUsers()
         {
-            try
-            {
-                var users = _userService.GetAll();
-                var mappedUsers = _mapper.Map<IEnumerable<UserResponseModel>>(users);
-                return Ok(mappedUsers);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var users = _userService.GetAll();
+            var mappedUsers = _mapper.Map<IEnumerable<UserResponseModel>>(users);
+            return Ok(mappedUsers);
         }
 
         [HttpGet("{userId}")]
@@ -52,19 +43,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetUserById(int userId)
         {
-            try
-            {
-                var user = _userService.GetById(userId);
-                if (user == null)
-                    return NotFound();
-
-                var mappedUser = _mapper.Map<UserResponseModel>(user);
-                return Ok(mappedUser);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var user = _userService.GetById(userId);
+            var mappedUser = _mapper.Map<UserResponseModel>(user);
+            return Ok(mappedUser);
         }
 
         [HttpPost("Login")]
@@ -74,30 +55,15 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                var user = _userService.GetByEmail(model.Email);
+            var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
+            var authModel = _userService.Login(mappedUser);
 
-                if (user == null)
-                    return NotFound("User not found");
+            var mappedAuthModel = _mapper.Map<UserLoginResponseModel>(authModel);
 
-                var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
-                var authModel = _userService.Login(mappedUser);
-
-                if (authModel == null)
-                    return BadRequest();
-
-                var mappedAuthModel = _mapper.Map<UserLoginResponseModel>(authModel);
-
-                return Ok(mappedAuthModel);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return Ok(mappedAuthModel);
         }
 
         [HttpPost("Register")]
@@ -106,20 +72,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
-                _userService.Register(mappedUser);
+            var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
+            _userService.Register(mappedUser);
 
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         [HttpPut("{userId}")]
@@ -131,26 +90,14 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateUser(int userId, [FromBody] UserUpdateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                if (_userService.GetById(userId) == null)
-                    return NotFound("User not found");
 
-                if (!Enum.IsDefined(typeof(UserRoleEnum), model.UserRoleId))
-                    return UnprocessableEntity("Incorrect user role ID");
+            var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
 
-                var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
-
-                _userService.Update(userId, mappedUser);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _userService.Update(userId, mappedUser);
+            return NoContent();
         }
 
         [HttpDelete("{userId}")]
@@ -160,18 +107,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteUser(int userId)
         {
-            try
-            {
-                if (_userService.GetById(userId) == null)
-                    return NotFound();
-
-                _userService.Delete(userId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _userService.Delete(userId);
+            return NoContent();
         }
     }
 }

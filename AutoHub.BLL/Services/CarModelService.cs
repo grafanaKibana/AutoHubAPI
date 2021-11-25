@@ -1,33 +1,39 @@
 using System.Collections.Generic;
+using System.Linq;
 using AutoHub.BLL.DTOs.CarModelDTOs;
+using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
+using AutoHub.DAL;
 using AutoHub.DAL.Entities;
-using AutoHub.DAL.Interfaces;
 using AutoMapper;
 
 namespace AutoHub.BLL.Services
 {
     public class CarModelService : ICarModelService
     {
+        private readonly AutoHubContext _context;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CarModelService(IUnitOfWork unitOfWork, IMapper mapper)
+        public CarModelService(AutoHubContext context, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _context = context;
             _mapper = mapper;
         }
 
         public IEnumerable<CarModelResponseDTO> GetAll()
         {
-            var models = _unitOfWork.CarModels.GetAll();
+            var models = _context.CarModels.ToList();
             var mappedModels = _mapper.Map<IEnumerable<CarModelResponseDTO>>(models);
             return mappedModels;
         }
 
-        public CarModelResponseDTO GetById(int carBrandId)
+        public CarModelResponseDTO GetById(int carModelId)
         {
-            var model = _unitOfWork.CarModels.GetById(carBrandId);
+            var model = _context.CarModels.Find(carModelId);
+
+            if (model == null)
+                throw new NotFoundException($"Car model with ID {carModelId} not exist");
+
             var mappedModels = _mapper.Map<CarModelResponseDTO>(model);
             return mappedModels;
         }
@@ -35,23 +41,32 @@ namespace AutoHub.BLL.Services
         public void Create(CarModelCreateRequestDTO createModelDTO)
         {
             var model = _mapper.Map<CarModel>(createModelDTO);
-            _unitOfWork.CarModels.Add(model);
-            _unitOfWork.Commit();
+            _context.CarModels.Add(model);
+            _context.SaveChanges();
         }
 
         public void Update(int carModelId, CarModelUpdateRequestDTO updateModelDTO)
         {
-            var carModel = _unitOfWork.CarModels.GetById(carModelId);
+            var carModel = _context.CarModels.Find(carModelId);
+
+            if (carModel == null)
+                throw new NotFoundException($"Car model with ID {carModelId} not exist");
+
             carModel.CarModelName = updateModelDTO.CarModelName;
 
-            _unitOfWork.CarModels.Update(carModel);
-            _unitOfWork.Commit();
+            _context.CarModels.Update(carModel);
+            _context.SaveChanges();
         }
 
         public void Delete(int carModelId)
         {
-            _unitOfWork.CarModels.Delete(carModelId);
-            _unitOfWork.Commit();
+            var carModel = _context.CarModels.Find(carModelId);
+
+            if (carModel == null)
+                throw new NotFoundException($"Car model with ID {carModelId} not exist");
+
+            _context.CarModels.Remove(carModel);
+            _context.SaveChanges();
         }
     }
 }

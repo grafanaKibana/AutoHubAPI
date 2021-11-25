@@ -1,35 +1,31 @@
 ﻿using AutoHub.DAL.Entities;
 using AutoHub.DAL.EntitySettings;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace AutoHub.DAL
 {
     public class AutoHubContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-
         public AutoHubContext()
         {
         }
 
-        public AutoHubContext(DbContextOptions<AutoHubContext> options, IConfiguration configuration)
+        public AutoHubContext(DbContextOptions<AutoHubContext> options)
             : base(options)
         {
-            _configuration = configuration;
         }
 
         //DbSets [Entities]
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<CarBrand> CarBrands { get; set; }
-        public DbSet<CarModel> CarModels { get; set; }
-        public DbSet<CarColor> CarColors { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Lot> Lots { get; set; }
-        public DbSet<Bid> Bids { get; set; }
-        public DbSet<CarStatus> CarStatus { get; set; }
-        public DbSet<LotStatus> LotStatus { get; set; }
-        public DbSet<UserRole> UserRole { get; set; }
+        public virtual DbSet<Car> Cars { get; set; }
+        public virtual DbSet<CarBrand> CarBrands { get; set; }
+        public virtual DbSet<CarModel> CarModels { get; set; }
+        public virtual DbSet<CarColor> CarColors { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Lot> Lots { get; set; }
+        public virtual DbSet<Bid> Bids { get; set; }
+        public virtual DbSet<CarStatus> CarStatus { get; set; }
+        public virtual DbSet<LotStatus> LotStatus { get; set; }
+        public virtual DbSet<UserRole> UserRole { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Models.CarModelModels;
@@ -28,16 +27,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarModels()
         {
-            try
-            {
-                var carModels = _carModelService.GetAll();
-                var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
-                return Ok(mappedCarModels);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var carModels = _carModelService.GetAll();
+            var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
+            return Ok(mappedCarModels);
         }
 
         [HttpPost]
@@ -46,19 +38,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarModel([FromBody] CarModelCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                var mappedCarModel = _mapper.Map<CarModelCreateRequestDTO>(model);
-                _carModelService.Create(mappedCarModel);
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var mappedCarModel = _mapper.Map<CarModelCreateRequestDTO>(model);
+
+            _carModelService.Create(mappedCarModel);
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         [HttpPut("{carModelId}")]
@@ -68,23 +54,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarModel(int carModelId, [FromBody] CarModelUpdateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                if (_carModelService.GetById(carModelId) == null)
-                    return NotFound();
+            var mappedCarModel = _mapper.Map<CarModelUpdateRequestDTO>(model);
 
-                var mappedCarModel = _mapper.Map<CarModelUpdateRequestDTO>(model);
-
-                _carModelService.Update(carModelId, mappedCarModel);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carModelService.Update(carModelId, mappedCarModel);
+            return NoContent();
         }
 
         [HttpDelete("{carModelId}")]
@@ -93,18 +69,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarModel(int carModelId)
         {
-            try
-            {
-                if (_carModelService.GetById(carModelId) == null)
-                    return NotFound();
-
-                _carModelService.Delete(carModelId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carModelService.Delete(carModelId);
+            return NoContent();
         }
     }
 }

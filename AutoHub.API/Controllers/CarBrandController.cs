@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Models.CarBrandModels;
@@ -28,16 +27,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarBrands()
         {
-            try
-            {
-                var carBrands = _carBrandService.GetAll();
-                var mappedCarBrands = _mapper.Map<IEnumerable<CarBrandResponseModel>>(carBrands);
-                return Ok(mappedCarBrands);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var carBrands = _carBrandService.GetAll();
+            var mappedCarBrands = _mapper.Map<IEnumerable<CarBrandResponseModel>>(carBrands);
+            return Ok(mappedCarBrands);
         }
 
         [HttpPost]
@@ -46,20 +38,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarBrand([FromBody] CarBrandCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                var mappedCarBrand = _mapper.Map<CarBrandCreateRequestDTO>(model);
-                _carBrandService.Create(mappedCarBrand);
+            var mappedCarBrand = _mapper.Map<CarBrandCreateRequestDTO>(model);
+            _carBrandService.Create(mappedCarBrand);
 
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         [HttpPut("{carBrandId}")]
@@ -69,23 +54,13 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            if (model == null)
+                return BadRequest();
 
-                if (_carBrandService.GetById(carBrandId) == null)
-                    return NotFound();
+            var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
 
-                var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
-
-                _carBrandService.Update(carBrandId, mappedCarBrand);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carBrandService.Update(carBrandId, mappedCarBrand);
+            return NoContent();
         }
 
         [HttpDelete("{carBrandId}")]
@@ -94,18 +69,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarBrand(int carBrandId)
         {
-            try
-            {
-                if (_carBrandService.GetById(carBrandId) == null)
-                    return NotFound();
-
-                _carBrandService.Delete(carBrandId);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            _carBrandService.Delete(carBrandId);
+            return NoContent();
         }
     }
 }
