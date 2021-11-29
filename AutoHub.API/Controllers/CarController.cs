@@ -50,8 +50,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCar([FromBody] CarCreateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
             _carService.Create(mappedCar);
@@ -67,8 +66,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCar(int carId, [FromBody] CarUpdateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
 

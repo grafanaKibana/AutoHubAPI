@@ -38,8 +38,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarColor([FromBody] CarColorCreateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
             _carColorService.Create(mappedCarColor);
@@ -54,8 +53,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
 

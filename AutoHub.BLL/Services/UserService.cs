@@ -41,8 +41,7 @@ namespace AutoHub.BLL.Services
                 .Include(user => user.UserRole)
                 .FirstOrDefault(user => user.UserId == userId);
 
-            if (user == null)
-                throw new NotFoundException($"User with ID {userId} not exist");
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
             return mappedUser;
@@ -54,8 +53,7 @@ namespace AutoHub.BLL.Services
                 .Include(user => user.UserRole)
                 .FirstOrDefault(user => user.Email == email);
 
-            if (user == null)
-                throw new NotFoundException($"User with E-Mail {email} not exist");
+            if (user == null) throw new NotFoundException($"User with E-Mail {email} not exist");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
             return mappedUser;
@@ -67,13 +65,11 @@ namespace AutoHub.BLL.Services
                 .Include(user => user.UserRole)
                 .FirstOrDefault(user => user.Email == userModel.Email);
 
-            if (user == null)
-                throw new NotFoundException($"User with Email {userModel.Email} not found");
+            if (user == null) throw new NotFoundException($"User with Email {userModel.Email} not found");
 
             var isPasswordVerified = _authService.VerifyPassword(userModel.Password, user.Password);
 
-            if (!isPasswordVerified)
-                throw new LoginFailedException("Wrong password");
+            if (!isPasswordVerified) throw new LoginFailedException("Wrong password");
 
             var mappedUser = new UserLoginResponseDTO
             {
@@ -111,8 +107,7 @@ namespace AutoHub.BLL.Services
                 .Include(user => user.UserRole)
                 .FirstOrDefault(user => user.UserId == userId);
 
-            if (user == null)
-                throw new NotFoundException($"User with ID {userId} not exist");
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
 
             user.UserRoleId = (UserRoleEnum)updateUserDTO.UserRoleId;
             user.FirstName = updateUserDTO.FirstName;

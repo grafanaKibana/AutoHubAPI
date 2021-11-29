@@ -26,8 +26,7 @@ namespace AutoHub.BLL.Services
         {
             var userExist = _context.Users.Any(user => user.UserId == userId);
 
-            if (!userExist)
-                throw new NotFoundException($"User with ID {userId} not exist");
+            if (!userExist) throw new NotFoundException($"User with ID {userId} not exist");
 
             var bids = _context.Bids
                 .Include(bid => bid.User.UserRole)
@@ -49,8 +48,7 @@ namespace AutoHub.BLL.Services
         {
             var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
 
-            if (!lotExist)
-                throw new NotFoundException($"Lot with ID {lotId} not exist");
+            if (!lotExist) throw new NotFoundException($"Lot with ID {lotId} not exist");
 
             var bids = _context.Bids
                 .Include(bid => bid.User.UserRole)
@@ -72,8 +70,7 @@ namespace AutoHub.BLL.Services
         {
             var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
 
-            if (!lotExist)
-                throw new NotFoundException($"Lot with ID {lotId} not exist");
+            if (!lotExist) throw new NotFoundException($"Lot with ID {lotId} not exist");
 
             var bid = _mapper.Map<Bid>(createBidDTO);
             bid.LotId = lotId;

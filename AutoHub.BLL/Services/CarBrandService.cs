@@ -31,8 +31,7 @@ namespace AutoHub.BLL.Services
         {
             var brand = _context.CarBrands.Find(carBrandId);
 
-            if (brand == null)
-                throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
+            if (brand == null) throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
 
             var mappedBrand = _mapper.Map<CarBrandResponseDTO>(brand);
             return mappedBrand;
@@ -49,8 +48,7 @@ namespace AutoHub.BLL.Services
         {
             var carBrand = _context.CarBrands.Find(carBrandId);
 
-            if (carBrand == null)
-                throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
+            if (carBrand == null) throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
 
             carBrand.CarBrandName = updateBrandDTO.CarBrandName;
 
@@ -62,8 +60,7 @@ namespace AutoHub.BLL.Services
         {
             var carBrand = _context.CarBrands.Find(carBrandId);
 
-            if (carBrand == null)
-                throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
+            if (carBrand == null) throw new NotFoundException($"Car brand with ID {carBrandId} not exist");
 
             _context.CarBrands.Remove(carBrand);
             _context.SaveChanges();

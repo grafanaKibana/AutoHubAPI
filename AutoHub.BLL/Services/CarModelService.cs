@@ -31,8 +31,7 @@ namespace AutoHub.BLL.Services
         {
             var model = _context.CarModels.Find(carModelId);
 
-            if (model == null)
-                throw new NotFoundException($"Car model with ID {carModelId} not exist");
+            if (model == null) throw new NotFoundException($"Car model with ID {carModelId} not exist");
 
             var mappedModels = _mapper.Map<CarModelResponseDTO>(model);
             return mappedModels;
@@ -49,8 +48,7 @@ namespace AutoHub.BLL.Services
         {
             var carModel = _context.CarModels.Find(carModelId);
 
-            if (carModel == null)
-                throw new NotFoundException($"Car model with ID {carModelId} not exist");
+            if (carModel == null) throw new NotFoundException($"Car model with ID {carModelId} not exist");
 
             carModel.CarModelName = updateModelDTO.CarModelName;
 
@@ -62,8 +60,7 @@ namespace AutoHub.BLL.Services
         {
             var carModel = _context.CarModels.Find(carModelId);
 
-            if (carModel == null)
-                throw new NotFoundException($"Car model with ID {carModelId} not exist");
+            if (carModel == null) throw new NotFoundException($"Car model with ID {carModelId} not exist");
 
             _context.CarModels.Remove(carModel);
             _context.SaveChanges();

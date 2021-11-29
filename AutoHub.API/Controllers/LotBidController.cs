@@ -44,8 +44,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateBid(int lotId, [FromBody] BidCreateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
             _bidService.Create(lotId, mappedBid);

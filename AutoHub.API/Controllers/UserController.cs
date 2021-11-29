@@ -55,8 +55,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
             var authModel = _userService.Login(mappedUser);
@@ -72,8 +71,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
             _userService.Register(mappedUser);
@@ -90,9 +88,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateUser(int userId, [FromBody] UserUpdateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
-
+            if (model == null) return BadRequest();
 
             var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
 

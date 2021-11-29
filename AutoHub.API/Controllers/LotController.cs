@@ -60,8 +60,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
             _lotService.Create(mappedLot);
@@ -77,8 +76,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateLot(int lotId, [FromBody] LotUpdateRequestModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (model == null) return BadRequest();
 
             var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
 

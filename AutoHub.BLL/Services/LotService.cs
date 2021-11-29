@@ -65,8 +65,7 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.LotStatus)
                 .FirstOrDefault(lot => lot.LotId == lotId);
 
-            if (lot == null)
-                throw new NotFoundException($"Lot with ID {lotId} not exist");
+            if (lot == null) throw new NotFoundException($"Lot with ID {lotId} not exist");
 
             var mappedLot = _mapper.Map<LotResponseDTO>(lot);
             return mappedLot;
@@ -98,8 +97,7 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.LotStatus)
                 .FirstOrDefault(lot => lot.LotId == lotId);
 
-            if (lot == null)
-                throw new NotFoundException($"Lot with ID {lotId} not exist");
+            if (lot == null) throw new NotFoundException($"Lot with ID {lotId} not exist");
 
             if (updateLotDTO.WinnerId.HasValue)
             {
@@ -122,8 +120,7 @@ namespace AutoHub.BLL.Services
         {
             var lot = _context.Lots.Find(lotId);
 
-            if (lot == null)
-                throw new NotFoundException($"Lot with ID {lotId} not exist");
+            if (lot == null) throw new NotFoundException($"Lot with ID {lotId} not exist");
 
             _context.Lots.Remove(lot);
             _context.SaveChanges();
