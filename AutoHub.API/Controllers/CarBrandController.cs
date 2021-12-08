@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Net;
+using AutoHub.API.Filters;
 using AutoHub.API.Models.CarBrandModels;
 using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Interfaces;
@@ -47,13 +48,14 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{carBrandId}")]
+        [ValidModelFilter]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequestModel model)
         {
-            if (model == null) return BadRequest();
+            /*if (model == null) return BadRequest();*/
 
             var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
 
