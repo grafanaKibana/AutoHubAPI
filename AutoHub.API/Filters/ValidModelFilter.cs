@@ -5,7 +5,7 @@ namespace AutoHub.API.Filters
 {
     public class ValidModelFilter : ActionFilterAttribute
     {
-        public override async void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             /*var actionArgument = context.ActionDescriptor.Parameters.Last().ParameterType;
 
