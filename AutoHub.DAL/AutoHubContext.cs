@@ -30,7 +30,7 @@ namespace AutoHub.DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Data Source=DESKTOP-CUS63EG\\SQLMACHINE; Initial Catalog=AutoHubDb; Integrated Security=True");
+                "Data Source=SQL5101.site4now.net;Initial Catalog=db_a7d938_autohubdb;User Id=db_a7d938_autohubdb_admin;Password=db_a7d938");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
