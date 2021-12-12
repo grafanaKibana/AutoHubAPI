@@ -38,6 +38,10 @@ namespace AutoHub.API.Middlewares
             {
                 await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, aEx.Message);
             }
+            catch (DublicateException dEx)
+            {
+                await HandleExceptionAsync(httpContext, HttpStatusCode.Conflict, dEx.Message);
+            }
             catch (Exception ex)
             {
                 await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, ex.Message);
