@@ -1,14 +1,15 @@
-using System;
-using System.Collections.Generic;
+using AutoHub.API.Models.CarModelModels;
+using AutoHub.BLL.DTOs.CarModelDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarModelModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class CarModelController : Controller
     {
@@ -22,37 +23,50 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        [ProducesResponseType(typeof(IEnumerable<CarModelResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetAllCarModels()
         {
-            try
-            {
-                var carModels = _carModelService.GetAll();
-                var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
-                return Ok(mappedCarModels);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var carModels = _carModelService.GetAll();
+            var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
+
+            return Ok(mappedCarModels);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarModel([FromBody] CarModelCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            var mappedCarModel = _mapper.Map<CarModelCreateRequestDTO>(model);
+            _carModelService.Create(mappedCarModel);
 
-                var mappedCarModel = _mapper.Map<CarModel>(model);
-                _carModelService.CreateCarModel(mappedCarModel);
+            return StatusCode((int)HttpStatusCode.Created);
+        }
 
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+        [HttpPut("{carModelId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateCarModel(int carModelId, [FromBody] CarModelUpdateRequestModel model)
+        {
+            var mappedCarModel = _mapper.Map<CarModelUpdateRequestDTO>(model);
+            _carModelService.Update(carModelId, mappedCarModel);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{carModelId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteCarModel(int carModelId)
+        {
+            _carModelService.Delete(carModelId);
+
+            return NoContent();
         }
     }
 }

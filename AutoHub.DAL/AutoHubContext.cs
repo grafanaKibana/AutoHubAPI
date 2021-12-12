@@ -1,8 +1,6 @@
-﻿using System;
-using AutoHub.DAL.Entities;
+﻿using AutoHub.DAL.Entities;
 using AutoHub.DAL.EntitySettings;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace AutoHub.DAL
 {
@@ -18,26 +16,21 @@ namespace AutoHub.DAL
         }
 
         //DbSets [Entities]
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<CarBrand> CarBrands { get; set; }
-        public DbSet<CarModel> CarModels { get; set; }
-        public DbSet<CarColor> CarColors { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Lot> Lots { get; set; }
-        public DbSet<Bid> Bids { get; set; }
-        public DbSet<CarStatus> CarStatus { get; set; }
-        public DbSet<LotStatus> LotStatus { get; set; }
-        public DbSet<UserRole> UserRole { get; set; }
+        public virtual DbSet<Car> Cars { get; set; }
+        public virtual DbSet<CarBrand> CarBrands { get; set; }
+        public virtual DbSet<CarModel> CarModels { get; set; }
+        public virtual DbSet<CarColor> CarColors { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Lot> Lots { get; set; }
+        public virtual DbSet<Bid> Bids { get; set; }
+        public virtual DbSet<CarStatus> CarStatus { get; set; }
+        public virtual DbSet<LotStatus> LotStatus { get; set; }
+        public virtual DbSet<UserRole> UserRole { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            IConfigurationRoot configurationRoot = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-            
             optionsBuilder.UseSqlServer(
-                configurationRoot.GetConnectionString("LocalConnectionString"));
+                "Data Source=SQL5101.site4now.net;Initial Catalog=db_a7d938_autohubdb;User Id=db_a7d938_autohubdb_admin;Password=db_a7d938");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

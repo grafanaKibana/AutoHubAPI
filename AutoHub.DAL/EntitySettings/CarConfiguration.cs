@@ -12,8 +12,8 @@ namespace AutoHub.DAL.EntitySettings
 
             entity.Navigation(car => car.CarBrand).AutoInclude();
             entity.Navigation(car => car.CarModel).AutoInclude();
-            entity.Navigation(car => car.CarStatus).AutoInclude();
             entity.Navigation(car => car.CarColor).AutoInclude();
+            entity.Navigation(car => car.CarStatus).AutoInclude();
 
             entity.Property(car => car.Description).IsRequired();
             entity.Property(car => car.Year).IsRequired().HasMaxLength(4);

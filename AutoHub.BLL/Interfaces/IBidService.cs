@@ -1,13 +1,12 @@
+using AutoHub.BLL.DTOs.BidDTOs;
 using System.Collections.Generic;
-using AutoHub.DAL.Entities;
 
 namespace AutoHub.BLL.Interfaces
 {
     public interface IBidService
     {
-        IEnumerable<Bid> GetAllUserBids(int userId);
-        IEnumerable<Bid> GetAllLotBids(int lotId);
-        Bid GetById(int id);
-        Bid CreateBid(Bid bidModel);
+        IEnumerable<BidResponseDTO> GetUserBids(int userId);
+        IEnumerable<BidResponseDTO> GetLotBids(int lotId);
+        void Create(int lotId, BidCreateRequestDTO createBidDTO);
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using AutoHub.DAL.Entities;
+﻿using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Linq;
 
 namespace AutoHub.DAL.EntitySettings
 {
@@ -21,6 +21,10 @@ namespace AutoHub.DAL.EntitySettings
                         LotStatusId = s,
                         LotStatusName = s.ToString()
                     }));
+
+            entity.HasMany(status => status.Lots)
+                .WithOne(lot => lot.LotStatus)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

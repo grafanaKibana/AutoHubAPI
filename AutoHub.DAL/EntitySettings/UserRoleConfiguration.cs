@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using AutoHub.DAL.Entities;
+﻿using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Linq;
 
 namespace AutoHub.DAL.EntitySettings
 {
@@ -21,6 +21,10 @@ namespace AutoHub.DAL.EntitySettings
                         UserRoleId = u,
                         UserRoleName = u.ToString()
                     }));
+
+            entity.HasMany(role => role.Users)
+                .WithOne(user => user.UserRole)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace AutoHub.DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AutoHub.DAL.Entities.Bid", b =>
@@ -227,9 +227,7 @@ namespace AutoHub.DAL.Migrations
 
                     b.HasIndex("LotStatusId");
 
-                    b.HasIndex("WinnerId")
-                        .IsUnique()
-                        .HasFilter("[WinnerId] IS NOT NULL");
+                    b.HasIndex("WinnerId");
 
                     b.ToTable("Lot");
                 });
@@ -315,41 +313,6 @@ namespace AutoHub.DAL.Migrations
                     b.HasIndex("UserRoleId");
 
                     b.ToTable("User");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Email = "reshetnik.nikita@gmail.com",
-                            FirstName = "Nikita",
-                            LastName = "Reshetnik",
-                            Password = "75K3eLr+dx6JJFuJ7LwIpEpOFmwGZZkRiB84PURz6U8=",
-                            Phone = "+380698632559",
-                            RegistrationTime = new DateTime(2021, 10, 15, 13, 47, 42, 232, DateTimeKind.Utc).AddTicks(8185),
-                            UserRoleId = 3
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            Email = "julia.clifford@hotmail.com",
-                            FirstName = "Julia",
-                            LastName = "Clifford",
-                            Password = "gGm/YLoNuYebABCXGzuvBeXKptnMGFfobCfPXBgsTRU=",
-                            Phone = "+380501449999",
-                            RegistrationTime = new DateTime(2021, 10, 15, 13, 47, 42, 232, DateTimeKind.Utc).AddTicks(9966),
-                            UserRoleId = 2
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Email = "emusk@paypal.com",
-                            FirstName = "Elon",
-                            LastName = "Musk",
-                            Password = "ZwSQald1A8FIwjNFQ8xhsITfYxHkPomsLFKFa448oWI=",
-                            Phone = "+380991449999",
-                            RegistrationTime = new DateTime(2021, 10, 15, 13, 47, 42, 233, DateTimeKind.Utc).AddTicks(37),
-                            UserRoleId = 2
-                        });
                 });
 
             modelBuilder.Entity("AutoHub.DAL.Entities.UserRole", b =>
@@ -387,7 +350,7 @@ namespace AutoHub.DAL.Migrations
                     b.HasOne("AutoHub.DAL.Entities.Lot", "Lot")
                         .WithMany("Bids")
                         .HasForeignKey("LotId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AutoHub.DAL.Entities.User", "User")
@@ -424,7 +387,7 @@ namespace AutoHub.DAL.Migrations
                     b.HasOne("AutoHub.DAL.Entities.CarStatus", "CarStatus")
                         .WithMany("Cars")
                         .HasForeignKey("CarStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("CarBrand");
@@ -453,12 +416,12 @@ namespace AutoHub.DAL.Migrations
                     b.HasOne("AutoHub.DAL.Entities.LotStatus", "LotStatus")
                         .WithMany("Lots")
                         .HasForeignKey("LotStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AutoHub.DAL.Entities.User", "Winner")
-                        .WithOne()
-                        .HasForeignKey("AutoHub.DAL.Entities.Lot", "WinnerId")
+                        .WithMany("VictoryLots")
+                        .HasForeignKey("WinnerId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Car");
@@ -475,7 +438,7 @@ namespace AutoHub.DAL.Migrations
                     b.HasOne("AutoHub.DAL.Entities.UserRole", "UserRole")
                         .WithMany("Users")
                         .HasForeignKey("UserRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("UserRole");
@@ -516,6 +479,8 @@ namespace AutoHub.DAL.Migrations
                     b.Navigation("UserBids");
 
                     b.Navigation("UserLots");
+
+                    b.Navigation("VictoryLots");
                 });
 
             modelBuilder.Entity("AutoHub.DAL.Entities.UserRole", b =>

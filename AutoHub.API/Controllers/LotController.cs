@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutoHub.API.Models.LotModels;
+using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.LotModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class LotController : Controller
     {
         private readonly ILotService _lotService;
         private readonly IMapper _mapper;
+
 
         public LotController(ILotService lotService, IMapper mapper)
         {
@@ -21,70 +23,73 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllLots()
         {
-            try
-            {
-                var lots = _lotService.GetAll();
-                var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
-                return Ok(mappedLots);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var lots = _lotService.GetAll();
+            var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
+
+            return Ok(mappedLots);
         }
 
         [HttpGet("Active")]
+        [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetActiveLots()
         {
-            try
-            {
-                var lots = _lotService.GetActiveLots();
-                var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
-                return Ok(mappedLots);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var lots = _lotService.GetActive();
+            var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
+
+            return Ok(mappedLots);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetLotById(int id)
+        [HttpGet("{lotId}")]
+        [ProducesResponseType(typeof(LotResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetLotById(int lotId)
         {
-            try
-            {
-                var lot = _lotService.GetById(id);
-                if (lot == null)
-                    return NotFound();
-                var mappedLot = _mapper.Map<LotResponseModel>(lot);
-                return Ok(mappedLot);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var lot = _lotService.GetById(lotId);
+            var mappedLot = _mapper.Map<LotResponseModel>(lot);
+
+            return Ok(mappedLot);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
+            _lotService.Create(mappedLot);
 
-                var mappedLot = _mapper.Map<Lot>(model);
-                _lotService.CreateLot(mappedLot);
+            return StatusCode((int)HttpStatusCode.Created);
+        }
 
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+        [HttpPut("{lotId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateLot(int lotId, [FromBody] LotUpdateRequestModel model)
+        {
+            var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
+            _lotService.Update(lotId, mappedLot);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{lotId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteLot(int lotId)
+        {
+            _lotService.Delete(lotId);
+            return NoContent();
         }
     }
 }

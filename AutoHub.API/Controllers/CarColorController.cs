@@ -1,14 +1,15 @@
-using System;
-using System.Collections.Generic;
+using AutoHub.API.Models.CarColorModels;
+using AutoHub.BLL.DTOs.CarColorDTOs;
 using AutoHub.BLL.Interfaces;
-using AutoHub.BLL.Models.CarColorModels;
-using AutoHub.DAL.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class CarColorController : Controller
     {
@@ -22,37 +23,50 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        [ProducesResponseType(typeof(IEnumerable<CarColorResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetAllCarColors()
         {
-            try
-            {
-                var carColors = _carColorService.GetAll();
-                var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponseModel>>(carColors);
-                return Ok(mappedCarColors);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            var carColors = _carColorService.GetAll();
+            var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponseModel>>(carColors);
+
+            return Ok(mappedCarColors);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarColor([FromBody] CarColorCreateRequestModel model)
         {
-            try
-            {
-                if (model == null)
-                    return BadRequest();
+            var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
+            _carColorService.Create(mappedCarColor);
 
-                var mappedCarColor = _mapper.Map<CarColor>(model);
-                _carColorService.CreateCarColor(mappedCarColor);
+            return StatusCode((int)HttpStatusCode.Created);
+        }
 
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+        [HttpPut("{carColorId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequestModel model)
+        {
+            var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
+            _carColorService.Update(carColorId, mappedCarColor);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{carColorId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteCarColor(int carColorId)
+        {
+            _carColorService.Delete(carColorId);
+
+            return NoContent();
         }
     }
 }

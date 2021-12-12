@@ -1,40 +1,73 @@
-using System.Collections.Generic;
+using AutoHub.BLL.DTOs.CarColorDTOs;
+using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
+using AutoHub.DAL;
 using AutoHub.DAL.Entities;
-using AutoHub.DAL.Interfaces;
+using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoHub.BLL.Services
 {
     public class CarColorService : ICarColorService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly AutoHubContext _context;
+        private readonly IMapper _mapper;
 
-        public CarColorService(IUnitOfWork unitOfWork)
+        public CarColorService(AutoHubContext context, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _context = context;
+            _mapper = mapper;
         }
 
-        public IEnumerable<CarColor> GetAll()
+        public IEnumerable<CarColorResponseDTO> GetAll()
         {
-            return _unitOfWork.CarColors.GetAll();
+            var colors = _context.CarColors.ToList();
+            var mappedColors = _mapper.Map<IEnumerable<CarColorResponseDTO>>(colors);
+            return mappedColors;
         }
 
-        public CarColor GetById(int id)
+        public CarColorResponseDTO GetById(int carColorId)
         {
-            var carColor = _unitOfWork.CarColors.GetById(id);
-            return carColor;
+            var color = _context.CarColors.Find(carColorId);
+
+            if (color == null) throw new NotFoundException($"Car color with ID {carColorId} not exist");
+
+            var mappedColor = _mapper.Map<CarColorResponseDTO>(color);
+            return mappedColor;
         }
 
-        public CarColor CreateCarColor(CarColor carColorModel)
+        public void Create(CarColorCreateRequestDTO createColorDTO)
         {
-            _unitOfWork.CarColors.Add(carColorModel);
-            _unitOfWork.Commit();
-            return carColorModel;
+            var isDuplicate = _context.CarColors.Any(carColor => carColor.CarColorName == createColorDTO.CarColorName);
+
+            if (isDuplicate) throw new DublicateException($"{createColorDTO.CarColorName} already exists");
+
+            var color = _mapper.Map<CarColor>(createColorDTO);
+            _context.CarColors.Add(color);
+            _context.SaveChanges();
         }
 
-        public bool Exist(string carColorName)
+        public void Update(int carColorId, CarColorUpdateRequestDTO updateColorDTO)
         {
-            return _unitOfWork.CarColors.Any(color => color.CarColorName == carColorName);
+            var carColor = _context.CarColors.Find(carColorId);
+
+            if (carColor == null) throw new NotFoundException($"Car color with ID {carColorId} not exist");
+
+            carColor.CarColorName = updateColorDTO.CarColorName;
+
+            _context.CarColors.Update(carColor);
+            _context.SaveChanges();
+        }
+
+        public void Delete(int carColorId)
+        {
+            var carColor = _context.CarColors.Find(carColorId);
+
+            if (carColor == null) throw new NotFoundException($"Car color with ID {carColorId} not exist");
+
+            _context.CarColors.Remove(carColor);
+            _context.SaveChanges();
         }
     }
 }
