@@ -53,21 +53,5 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
         }
-
-        /*
-        [Fact]
-        public void GetUserBids_UserNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var userId = _fixture.Create<int>();
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(null as UserResponseDTO);
-
-            //Act
-            var result = _userBidController.GetUserBids(userId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }*/
     }
 }

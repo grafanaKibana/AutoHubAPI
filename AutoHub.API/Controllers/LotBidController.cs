@@ -18,7 +18,7 @@ namespace AutoHub.API.Controllers
         private readonly IBidService _bidService;
         private readonly IMapper _mapper;
 
-        public LotBidController(IBidService bidService, ILotService lotService, IMapper mapper)
+        public LotBidController(IBidService bidService, IMapper mapper)
         {
             _bidService = bidService;
             _mapper = mapper;
@@ -27,6 +27,7 @@ namespace AutoHub.API.Controllers
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetLotBids(int lotId)

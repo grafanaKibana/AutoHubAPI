@@ -39,6 +39,10 @@ namespace AutoHub.BLL.Services
 
         public void Create(CarColorCreateRequestDTO createColorDTO)
         {
+            var isDuplicate = _context.CarColors.Any(carColor => carColor.CarColorName == createColorDTO.CarColorName);
+
+            if (isDuplicate) throw new DublicateException($"{createColorDTO.CarColorName} already exists");
+
             var color = _mapper.Map<CarColor>(createColorDTO);
             _context.CarColors.Add(color);
             _context.SaveChanges();

@@ -39,6 +39,10 @@ namespace AutoHub.BLL.Services
 
         public void Create(CarModelCreateRequestDTO createModelDTO)
         {
+            var isDuplicate = _context.CarModels.Any(carModel => carModel.CarModelName == createModelDTO.CarModelName);
+
+            if (isDuplicate) throw new DublicateException($"{createModelDTO.CarModelName} already exists");
+
             var model = _mapper.Map<CarModel>(createModelDTO);
             _context.CarModels.Add(model);
             _context.SaveChanges();

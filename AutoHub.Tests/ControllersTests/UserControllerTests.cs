@@ -81,22 +81,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<OkObjectResult>();
         }
 
-        /*
-        [Fact]
-        public void GetByUserById_UserNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var userId = _fixture.Create<int>();
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(null as UserResponseDTO);
-
-            //Act
-            var result = _userController.GetUserById(userId);
-
-            //Assert
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
         [Fact]
         public void LoginUser_ValidData_ReturnsOk()
         {
@@ -127,16 +111,11 @@ namespace AutoHub.Tests.ControllersTests
             _mapperMock.Setup(mapper => mapper.Map<UserLoginResponseModel>(authModel)).Returns(mappedAuthModel);
 
             //Act
-            var result = _userController.LoginUser(requestModel) as OkObjectResult;
+            var result = _userController.LoginUser(requestModel);
 
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
-
-            //TODO: Assert.Equal( result.StatusCode, StatusCodes.Status200OK );
-            // Assert.Equal( result.Email, requestModel.Email );
-            //FluentAssertions Assert.AreEqual analog
-            //How to get from result its content
         }
 
         [Fact]
@@ -152,25 +131,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
         }
-
-        /*
-        [Fact]
-        public void LoginUser_UserNotExist_ReturnsNotFound()
-        {
-            //Arrange
-            var requestModel = _fixture.Create<UserLoginRequestModel>();
-
-            _userServiceMock.Setup(service => service.GetByEmail(requestModel.Email)).Returns(null as UserResponseDTO);
-
-            //Act
-            var result = _userController.LoginUser(requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should()
-                .BeOfType<NotFoundObjectResult>(); //What should it return? NotFoundResult or NotFoundObjectResult?
-        }
-        */
 
         [Fact]
         public void RegisterUser_ValidModel_ReturnsCreated()
@@ -256,52 +216,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<BadRequestResult>();
         }
 
-        /*
-        [Fact]
-        public void UpdateUser_UserNotExist_ReturnsNotFound()
-        {
-            //Arrange
-            var userId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<UserUpdateRequestModel>();
-
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(null as UserResponseDTO);
-
-            //Act
-            var result = _userController.UpdateUser(userId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundObjectResult>();
-        }
-        */
-
-        /*
-        [Fact]
-        public void UpdateUser_IncorrectUserRoleId_ReturnsUnprocessableEntity()
-        {
-            //Arrange
-            var userId = _fixture.Create<int>();
-            //var userRoleValues = Enum.GetValues(typeof(UserRoleEnum)) as int[];
-
-            var requestModel = _fixture.Build<UserUpdateRequestModel>()
-                .With(x => x.UserRoleId, int.MaxValue)
-                .Create();
-
-            var userResponseDTO = _fixture.Build<UserResponseDTO>()
-                .With(x => x.UserId, userId)
-                .Create();
-
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(userResponseDTO);
-
-            //Act
-            var result = _userController.UpdateUser(userId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<UnprocessableEntityObjectResult>();
-        }
-        */
-
         [Fact]
         public void DeleteUser_UserExist_ReturnsNoContent()
         {
@@ -317,22 +231,5 @@ namespace AutoHub.Tests.ControllersTests
 
             _userServiceMock.Verify(service => service.Delete(userId));
         }
-
-        /*
-        [Fact]
-        public void DeleteUser_UserNotExist_ReturnsNotFound()
-        {
-            //Arrange
-            var userId = _fixture.Create<int>();
-
-            _userServiceMock.Setup(service => service.GetById(userId)).Returns(null as UserResponseDTO);
-
-            //Act
-            var result = _userController.DeleteUser(userId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }*/
     }
 }

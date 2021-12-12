@@ -25,6 +25,7 @@ namespace AutoHub.API.Controllers
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetUserBids(int userId)

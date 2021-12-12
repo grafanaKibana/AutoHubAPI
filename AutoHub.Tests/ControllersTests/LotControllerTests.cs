@@ -94,23 +94,6 @@ namespace AutoHub.Tests.ControllersTests
             //TODO: result.Should().BeEquivalentTo(expectation: mappedModel);
         }
 
-        /*
-        [Fact]
-        public void GetLotById_LotNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotController.GetLotById(lotId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
         [Fact]
         public void CreateLot_ValidModel_ReturnsCreated()
         {
@@ -189,51 +172,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<BadRequestResult>();
         }
 
-        /*
-        [Fact]
-        public void UpdateLot_LotNotExist_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<LotUpdateRequestModel>();
-
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotController.UpdateLot(lotId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
-        /*
-        [Fact]
-        public void UpdateLot_IncorrectLotStatusId_ReturnsUnprocessableEntity()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-
-            var requestModel = _fixture.Build<LotUpdateRequestModel>()
-                .With(x => x.LotStatusId, int.MaxValue)
-                .Create();
-
-            var lotResponseDTO = _fixture.Build<LotResponseDTO>()
-                .With(x => x.LotId, lotId)
-                .Create();
-
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(lotResponseDTO);
-
-            //Act
-            var result = _lotController.UpdateLot(lotId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<UnprocessableEntityObjectResult>();
-        }
-        */
-
         [Fact]
         public void DeleteLot_LotExists_ReturnsNoContent()
         {
@@ -249,21 +187,5 @@ namespace AutoHub.Tests.ControllersTests
 
             _lotServiceMock.Verify(service => service.Delete(lotId));
         }
-
-        /*
-        [Fact]
-        public void DeleteLot_LotNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotController.DeleteLot(lotId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }*/
     }
 }

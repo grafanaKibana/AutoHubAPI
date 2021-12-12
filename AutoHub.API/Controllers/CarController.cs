@@ -65,8 +65,6 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCar(int carId, [FromBody] CarUpdateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
 
             _carService.Update(carId, mappedCar);
@@ -78,8 +76,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCar(int carId)
-        {
-            _carService.Delete(carId);
+        { 
+            _carService.Delete(carId); 
             return NoContent();
         }
     }
