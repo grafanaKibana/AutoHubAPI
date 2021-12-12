@@ -11,7 +11,7 @@ namespace AutoHub.API.Validators
         {
             RuleFor(x => x.CarId).NotEmpty();
             RuleFor(x => x.CreatorId).NotEmpty();
-            RuleFor(x => x.DurationInDays).GreaterThan(0);
+            RuleFor(x => x.DurationInDays).NotEmpty().GreaterThan(0);
         }
     }
 
@@ -20,7 +20,7 @@ namespace AutoHub.API.Validators
         public LotUpdateRequestModelValidator()
         {
             RuleFor(x => x.DurationInDays).GreaterThan(0);
-            RuleFor(x => x.LotStatusId).Must(x => Enum.IsDefined(typeof(LotStatusEnum), x));
+            RuleFor(x => x.LotStatusId).NotEmpty().Must(x => Enum.IsDefined(typeof(LotStatusEnum), x));
         }
     }
 }
