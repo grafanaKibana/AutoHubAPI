@@ -1,6 +1,6 @@
-using System;
 using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.DTOs.UserDTOs;
+using System;
 
 namespace AutoHub.BLL.DTOs.LotDTOs
 {

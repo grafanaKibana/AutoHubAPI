@@ -1,12 +1,11 @@
-using System.Collections.Generic;
-using System.Net;
-using AutoHub.API.Filters;
 using AutoHub.API.Models.CarBrandModels;
 using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
@@ -30,6 +29,7 @@ namespace AutoHub.API.Controllers
         {
             var carBrands = _carBrandService.GetAll();
             var mappedCarBrands = _mapper.Map<IEnumerable<CarBrandResponseModel>>(carBrands);
+
             return Ok(mappedCarBrands);
         }
 
@@ -39,8 +39,6 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarBrand([FromBody] CarBrandCreateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedCarBrand = _mapper.Map<CarBrandCreateRequestDTO>(model);
             _carBrandService.Create(mappedCarBrand);
 
@@ -54,11 +52,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequestModel model)
         {
-            /*if (model == null) return BadRequest();*/
-
             var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
-
             _carBrandService.Update(carBrandId, mappedCarBrand);
+
             return NoContent();
         }
 
@@ -69,6 +65,7 @@ namespace AutoHub.API.Controllers
         public IActionResult DeleteCarBrand(int carBrandId)
         {
             _carBrandService.Delete(carBrandId);
+
             return NoContent();
         }
     }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Data;
-using AutoHub.API.Models.CarModels;
+﻿using AutoHub.API.Models.CarModels;
 using AutoHub.DAL.Enums;
 using FluentValidation;
+using System;
 
 namespace AutoHub.API.Validators
 {
@@ -19,7 +18,7 @@ namespace AutoHub.API.Validators
             RuleFor(x => x.VIN).Must(vin => vin.Length.Equals(17))
                 .WithMessage("VIN length should be equal 17 letters");
             RuleFor(x => x.SellingPrice).GreaterThanOrEqualTo(y => y.CostPrice)
-                .WithMessage("Selling price must be greater than CostPrice"); ;
+                .WithMessage("Selling price must be greater than CostPrice");
             RuleFor(x => x.Year).GreaterThan(1900);
         }
     }

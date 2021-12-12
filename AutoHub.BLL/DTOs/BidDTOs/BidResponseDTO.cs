@@ -1,6 +1,6 @@
-using System;
 using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.DTOs.UserDTOs;
+using System;
 
 namespace AutoHub.BLL.DTOs.BidDTOs
 {

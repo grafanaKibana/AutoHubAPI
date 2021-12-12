@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.CarColorModels;
@@ -9,6 +7,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests

@@ -1,7 +1,7 @@
-﻿using System;
-using AutoHub.API.Models.LotModels;
+﻿using AutoHub.API.Models.LotModels;
 using AutoHub.DAL.Enums;
 using FluentValidation;
+using System;
 
 namespace AutoHub.API.Validators
 {

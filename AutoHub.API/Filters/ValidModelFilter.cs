@@ -12,9 +12,5 @@ namespace AutoHub.API.Filters
                 context.Result = new BadRequestObjectResult(context.ModelState);
             }
         }
-
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-        }
     }
 }

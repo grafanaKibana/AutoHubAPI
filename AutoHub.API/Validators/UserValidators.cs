@@ -1,8 +1,7 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
-using AutoHub.API.Models.UserModels;
+﻿using AutoHub.API.Models.UserModels;
 using AutoHub.DAL.Enums;
 using FluentValidation;
+using System;
 
 namespace AutoHub.API.Validators
 {

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using AutoHub.API.Models.LotModels;
+﻿using AutoHub.API.Models.LotModels;
 using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
@@ -31,6 +31,7 @@ namespace AutoHub.API.Controllers
         {
             var lots = _lotService.GetAll();
             var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
+
             return Ok(mappedLots);
         }
 
@@ -41,6 +42,7 @@ namespace AutoHub.API.Controllers
         {
             var lots = _lotService.GetActive();
             var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
+
             return Ok(mappedLots);
         }
 
@@ -50,8 +52,8 @@ namespace AutoHub.API.Controllers
         public IActionResult GetLotById(int lotId)
         {
             var lot = _lotService.GetById(lotId);
-
             var mappedLot = _mapper.Map<LotResponseModel>(lot);
+
             return Ok(mappedLot);
         }
 
@@ -60,8 +62,6 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
             _lotService.Create(mappedLot);
 
@@ -76,11 +76,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateLot(int lotId, [FromBody] LotUpdateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
-
             _lotService.Update(lotId, mappedLot);
+
             return NoContent();
         }
 

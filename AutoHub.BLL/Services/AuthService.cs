@@ -1,12 +1,12 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using AutoHub.BLL.Configuration;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Crypto = BCrypt.Net.BCrypt;
 
 namespace AutoHub.BLL.Services

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoHub.BLL.DTOs.CarDTOs;
+﻿using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL;
@@ -9,6 +6,9 @@ using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoHub.BLL.Services
 {

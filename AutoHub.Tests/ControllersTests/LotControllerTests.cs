@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.LotModels;
@@ -10,6 +8,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -156,7 +156,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.LotStatusId,
                     _fixture.Create<int>() % (4 - 1 + 1) + 1) //Defines range of generating to match enum values
                 .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
-            
+
             var mappedLot = _fixture.Build<LotUpdateRequestDTO>()
                 .With(x => x.LotStatusId, requestModel.LotStatusId)
                 .With(x => x.WinnerId, requestModel.DurationInDays)

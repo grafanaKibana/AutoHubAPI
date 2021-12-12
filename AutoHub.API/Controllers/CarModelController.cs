@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Net;
 using AutoHub.API.Models.CarModelModels;
 using AutoHub.BLL.DTOs.CarModelDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
@@ -29,6 +29,7 @@ namespace AutoHub.API.Controllers
         {
             var carModels = _carModelService.GetAll();
             var mappedCarModels = _mapper.Map<IEnumerable<CarModelResponseModel>>(carModels);
+
             return Ok(mappedCarModels);
         }
 
@@ -38,11 +39,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarModel([FromBody] CarModelCreateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedCarModel = _mapper.Map<CarModelCreateRequestDTO>(model);
-
             _carModelService.Create(mappedCarModel);
+
             return StatusCode((int)HttpStatusCode.Created);
         }
 
@@ -53,11 +52,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarModel(int carModelId, [FromBody] CarModelUpdateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedCarModel = _mapper.Map<CarModelUpdateRequestDTO>(model);
-
             _carModelService.Update(carModelId, mappedCarModel);
+
             return NoContent();
         }
 
@@ -68,6 +65,7 @@ namespace AutoHub.API.Controllers
         public IActionResult DeleteCarModel(int carModelId)
         {
             _carModelService.Delete(carModelId);
+
             return NoContent();
         }
     }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using AutoHub.API.Common;
+﻿using AutoHub.API.Common;
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
@@ -8,6 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
@@ -33,6 +33,7 @@ namespace AutoHub.API.Controllers
         {
             var users = _userService.GetAll();
             var mappedUsers = _mapper.Map<IEnumerable<UserResponseModel>>(users);
+
             return Ok(mappedUsers);
         }
 
@@ -45,6 +46,7 @@ namespace AutoHub.API.Controllers
         {
             var user = _userService.GetById(userId);
             var mappedUser = _mapper.Map<UserResponseModel>(user);
+
             return Ok(mappedUser);
         }
 
@@ -55,11 +57,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
             var authModel = _userService.Login(mappedUser);
-
             var mappedAuthModel = _mapper.Map<UserLoginResponseModel>(authModel);
 
             return Ok(mappedAuthModel);
@@ -71,8 +70,6 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
             _userService.Register(mappedUser);
 
@@ -88,11 +85,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateUser(int userId, [FromBody] UserUpdateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
-
             _userService.Update(userId, mappedUser);
+
             return NoContent();
         }
 
@@ -104,6 +99,7 @@ namespace AutoHub.API.Controllers
         public IActionResult DeleteUser(int userId)
         {
             _userService.Delete(userId);
+
             return NoContent();
         }
     }

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.CarModels;
@@ -9,6 +7,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -76,7 +76,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.SellingPrice, car.SellingPrice)
                 .With(x => x.CarStatus, car.CarStatus)
                 .Create();
-            
+
             _carServiceMock.Setup(service => service.GetById(car.CarId)).Returns(car);
             _mapperMock.Setup(mapper => mapper.Map<CarResponseModel>(car)).Returns(mappedCar);
 
@@ -86,7 +86,7 @@ namespace AutoHub.Tests.ControllersTests
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
-            
+
         }
 
         /*

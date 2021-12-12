@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Net;
 using AutoHub.API.Models.CarColorModels;
 using AutoHub.BLL.DTOs.CarColorDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
@@ -29,6 +29,7 @@ namespace AutoHub.API.Controllers
         {
             var carColors = _carColorService.GetAll();
             var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponseModel>>(carColors);
+
             return Ok(mappedCarColors);
         }
 
@@ -38,8 +39,6 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarColor([FromBody] CarColorCreateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
             _carColorService.Create(mappedCarColor);
 
@@ -53,11 +52,9 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
-
             _carColorService.Update(carColorId, mappedCarColor);
+
             return NoContent();
         }
 
@@ -68,6 +65,7 @@ namespace AutoHub.API.Controllers
         public IActionResult DeleteCarColor(int carColorId)
         {
             _carColorService.Delete(carColorId);
+
             return NoContent();
         }
     }

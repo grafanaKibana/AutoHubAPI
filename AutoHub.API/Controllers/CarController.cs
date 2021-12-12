@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using AutoHub.API.Models.CarModels;
+﻿using AutoHub.API.Models.CarModels;
 using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
@@ -29,6 +29,7 @@ namespace AutoHub.API.Controllers
         {
             var cars = _carService.GetAll();
             var mappedCars = _mapper.Map<IEnumerable<CarResponseModel>>(cars);
+
             return Ok(mappedCars);
         }
 
@@ -39,8 +40,8 @@ namespace AutoHub.API.Controllers
         public IActionResult GetCarById(int carId)
         {
             var car = _carService.GetById(carId);
-
             var mappedCar = _mapper.Map<CarResponseModel>(car);
+
             return Ok(mappedCar);
         }
 
@@ -50,8 +51,6 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCar([FromBody] CarCreateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
             _carService.Create(mappedCar);
 

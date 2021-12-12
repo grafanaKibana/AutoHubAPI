@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.UserModels;
@@ -9,6 +7,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -307,7 +307,7 @@ namespace AutoHub.Tests.ControllersTests
         {
             //Arrange
             var userId = _fixture.Create<int>();
-            
+
             //Act
             var result = _userController.DeleteUser(userId);
 
