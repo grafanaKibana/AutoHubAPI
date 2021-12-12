@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Net;
 using AutoHub.API.Common;
 using AutoHub.API.Models.BidModels;
 using AutoHub.BLL.DTOs.BidDTOs;
@@ -8,6 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
 
 namespace AutoHub.API.Controllers
 {
@@ -18,7 +18,7 @@ namespace AutoHub.API.Controllers
         private readonly IBidService _bidService;
         private readonly IMapper _mapper;
 
-        public LotBidController(IBidService bidService, ILotService lotService, IMapper mapper)
+        public LotBidController(IBidService bidService, IMapper mapper)
         {
             _bidService = bidService;
             _mapper = mapper;
@@ -27,13 +27,14 @@ namespace AutoHub.API.Controllers
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetLotBids(int lotId)
         {
             var bids = _bidService.GetLotBids(lotId);
-
             var mappedBids = _mapper.Map<IEnumerable<BidResponseModel>>(bids);
+
             return Ok(mappedBids);
         }
 
@@ -44,8 +45,6 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateBid(int lotId, [FromBody] BidCreateRequestModel model)
         {
-            if (model == null) return BadRequest();
-
             var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
             _bidService.Create(lotId, mappedBid);
 

@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoHub.BLL.DTOs.CarColorDTOs;
 using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL;
 using AutoHub.DAL.Entities;
 using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoHub.BLL.Services
 {
@@ -39,6 +39,10 @@ namespace AutoHub.BLL.Services
 
         public void Create(CarColorCreateRequestDTO createColorDTO)
         {
+            var isDuplicate = _context.CarColors.Any(carColor => carColor.CarColorName == createColorDTO.CarColorName);
+
+            if (isDuplicate) throw new DublicateException($"{createColorDTO.CarColorName} already exists");
+
             var color = _mapper.Map<CarColor>(createColorDTO);
             _context.CarColors.Add(color);
             _context.SaveChanges();

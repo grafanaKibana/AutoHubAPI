@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.CarModels;
@@ -9,6 +7,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -76,7 +76,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.SellingPrice, car.SellingPrice)
                 .With(x => x.CarStatus, car.CarStatus)
                 .Create();
-            
+
             _carServiceMock.Setup(service => service.GetById(car.CarId)).Returns(car);
             _mapperMock.Setup(mapper => mapper.Map<CarResponseModel>(car)).Returns(mappedCar);
 
@@ -86,24 +86,8 @@ namespace AutoHub.Tests.ControllersTests
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
-            
+
         }
-
-        /*
-        [Fact]
-        public void GetCarById_CarNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var carId = _fixture.Create<int>();
-            _carServiceMock.Setup(service => service.GetById(carId)).Returns(null as CarResponseDTO);
-
-            //Act
-            var result = _carController.GetCarById(carId);
-
-            //Assert
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
 
         [Fact]
         public void CreateCar_ValidModel_ReturnsCreated()
@@ -200,49 +184,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<BadRequestResult>();
         }
 
-        /*
-        [Fact]
-        public void UpdateCar_CarNotExist_ReturnsNotFound()
-        {
-            //Arrange
-            var carId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<CarUpdateRequestModel>();
-
-            _carServiceMock.Setup(service => service.GetById(carId)).Returns(null as CarResponseDTO);
-
-            //Act
-            var result = _carController.UpdateCar(carId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
-        /*
-        [Fact]
-        public void UpdateCar_IncorrectCarStatusId_ReturnsUnprocessableEntity()
-        {
-            //Arrange
-            var carId = _fixture.Create<int>();
-            var requestModel = _fixture.Build<CarUpdateRequestModel>()
-                .With(x => x.CarStatusId, int.MaxValue)
-                .Create();
-            var responseDTO = _fixture.Build<CarResponseDTO>()
-                .With(x => x.CarId, carId)
-                .Create();
-
-            _carServiceMock.Setup(service => service.GetById(carId)).Returns(responseDTO);
-
-            //Act
-            var result = _carController.UpdateCar(carId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<UnprocessableEntityObjectResult>();
-        }
-        */
-
         [Fact]
         public void DeleteCar_CarExists_ReturnsNoContent()
         {
@@ -258,23 +199,5 @@ namespace AutoHub.Tests.ControllersTests
 
             _carServiceMock.Verify(service => service.Delete(carId));
         }
-
-        /*
-        [Fact]
-        public void DeleteCar_CarNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var carId = _fixture.Create<int>();
-
-            _carServiceMock.Setup(service => service.GetById(carId)).Returns(null as CarResponseDTO);
-
-            //Act
-            var result = _carController.DeleteCar(carId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
     }
 }

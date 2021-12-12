@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL;
 using AutoHub.DAL.Entities;
 using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoHub.BLL.Services
 {
@@ -39,6 +39,10 @@ namespace AutoHub.BLL.Services
 
         public void Create(CarBrandCreateRequestDTO createBrandDTO)
         {
+            var isDuplicate = _context.CarBrands.Any(carBrand => carBrand.CarBrandName == createBrandDTO.CarBrandName);
+
+            if (isDuplicate) throw new DublicateException($"{createBrandDTO.CarBrandName} already exists");
+
             var brand = _mapper.Map<CarBrand>(createBrandDTO);
             _context.CarBrands.Add(brand);
             _context.SaveChanges();

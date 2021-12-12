@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.CarColorModels;
@@ -9,6 +7,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -123,25 +123,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<BadRequestResult>();
         }
 
-        /*
-        [Fact]
-        public void UpdateCarColor_CarColorNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var carColorId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<CarColorUpdateRequestModel>();
-
-            _carColorServiceMock.Setup(service => service.GetById(carColorId)).Returns(null as CarColorResponseDTO);
-
-            //Act
-            var result = _carColorController.UpdateCarColor(carColorId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
         [Fact]
         public void DeleteCarColor_CarColorExists_ReturnsNoContent()
         {
@@ -157,23 +138,5 @@ namespace AutoHub.Tests.ControllersTests
 
             _carColorServiceMock.Verify(service => service.Delete(carColorId));
         }
-
-        /*
-        [Fact]
-        public void DeleteCarColor_CarColorNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var carColorId = _fixture.Create<int>();
-
-            _carColorServiceMock.Setup(service => service.GetById(carColorId)).Returns(null as CarColorResponseDTO);
-
-            //Act
-            var result = _carColorController.DeleteCarColor(carColorId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
     }
 }

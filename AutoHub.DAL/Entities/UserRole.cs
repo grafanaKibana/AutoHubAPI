@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using AutoHub.DAL.Enums;
+﻿using AutoHub.DAL.Enums;
+using System.Collections.Generic;
 
 namespace AutoHub.DAL.Entities
 {

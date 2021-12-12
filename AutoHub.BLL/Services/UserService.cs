@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
@@ -9,6 +6,9 @@ using AutoHub.DAL.Entities;
 using AutoHub.DAL.Enums;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoHub.BLL.Services
 {
@@ -81,12 +81,9 @@ namespace AutoHub.BLL.Services
 
         public void Register(UserRegisterRequestDTO registerUserDTO)
         {
-            var user = _context.Users
-                .Include(user => user.UserRole)
-                .FirstOrDefault(user => user.Email == registerUserDTO.Email);
+            var isDuplicate = _context.Users.Any(user => user.Email == registerUserDTO.Email);
 
-            if (user != null)
-                throw new RegistrationFailedException($"User with Email {registerUserDTO.Email} already exist");
+            if (isDuplicate) throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists");
 
             var newUser = _mapper.Map<User>(registerUserDTO);
 

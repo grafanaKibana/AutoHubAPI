@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using AutoHub.BLL.DTOs.LotDTOs;
+﻿using AutoHub.BLL.DTOs.LotDTOs;
+using System.Collections.Generic;
 
 namespace AutoHub.BLL.Interfaces
 {

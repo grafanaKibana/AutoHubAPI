@@ -1,6 +1,6 @@
-using System;
 using AutoHub.API.Models.CarModels;
 using AutoHub.API.Models.UserModels;
+using System;
 
 namespace AutoHub.API.Models.LotModels
 {

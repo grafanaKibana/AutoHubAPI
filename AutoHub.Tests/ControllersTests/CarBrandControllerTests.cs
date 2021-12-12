@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.CarBrandModels;
@@ -9,6 +7,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -123,25 +123,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<BadRequestResult>();
         }
 
-        /*
-        [Fact]
-        public void UpdateCarBrand_CarBrandNotExist_ReturnsNotFound()
-        {
-            //Arrange
-            var carBrandId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<CarBrandUpdateRequestModel>();
-
-            _carBrandServiceMock.Setup(service => service.GetById(carBrandId)).Returns(null as CarBrandResponseDTO);
-
-            //Act
-            var result = _carBrandController.UpdateCarBrand(carBrandId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
         [Fact]
         public void DeleteCarBrand_CarBrandExists_ReturnsNoContent()
         {
@@ -157,20 +138,5 @@ namespace AutoHub.Tests.ControllersTests
 
             _carBrandServiceMock.Verify(service => service.Delete(carBrandId));
         }
-
-        /*
-        [Fact]
-        public void DeleteCarBrand_CarBrandNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var carBrandId = _fixture.Create<int>();
-            
-            //Act
-            var result = _carBrandController.DeleteCarBrand(carBrandId) as NotFoundResult;
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>().Which.StatusCode.Equals(StatusCodes.Status404NotFound);
-        }*/
     }
 }

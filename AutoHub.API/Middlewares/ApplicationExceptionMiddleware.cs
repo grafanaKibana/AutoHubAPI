@@ -1,9 +1,9 @@
-using System;
-using System.Net;
-using System.Threading.Tasks;
 using AutoHub.API.Models;
 using AutoHub.BLL.Exceptions;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Middlewares
 {

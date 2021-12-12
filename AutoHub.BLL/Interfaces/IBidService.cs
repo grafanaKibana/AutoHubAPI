@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using AutoHub.BLL.DTOs.BidDTOs;
+using System.Collections.Generic;
 
 namespace AutoHub.BLL.Interfaces
 {

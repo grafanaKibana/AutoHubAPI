@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.LotModels;
@@ -10,6 +8,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -94,23 +94,6 @@ namespace AutoHub.Tests.ControllersTests
             //TODO: result.Should().BeEquivalentTo(expectation: mappedModel);
         }
 
-        /*
-        [Fact]
-        public void GetLotById_LotNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotController.GetLotById(lotId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
         [Fact]
         public void CreateLot_ValidModel_ReturnsCreated()
         {
@@ -156,7 +139,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.LotStatusId,
                     _fixture.Create<int>() % (4 - 1 + 1) + 1) //Defines range of generating to match enum values
                 .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
-            
+
             var mappedLot = _fixture.Build<LotUpdateRequestDTO>()
                 .With(x => x.LotStatusId, requestModel.LotStatusId)
                 .With(x => x.WinnerId, requestModel.DurationInDays)
@@ -189,51 +172,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<BadRequestResult>();
         }
 
-        /*
-        [Fact]
-        public void UpdateLot_LotNotExist_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<LotUpdateRequestModel>();
-
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotController.UpdateLot(lotId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
-
-        /*
-        [Fact]
-        public void UpdateLot_IncorrectLotStatusId_ReturnsUnprocessableEntity()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-
-            var requestModel = _fixture.Build<LotUpdateRequestModel>()
-                .With(x => x.LotStatusId, int.MaxValue)
-                .Create();
-
-            var lotResponseDTO = _fixture.Build<LotResponseDTO>()
-                .With(x => x.LotId, lotId)
-                .Create();
-
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(lotResponseDTO);
-
-            //Act
-            var result = _lotController.UpdateLot(lotId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<UnprocessableEntityObjectResult>();
-        }
-        */
-
         [Fact]
         public void DeleteLot_LotExists_ReturnsNoContent()
         {
@@ -249,21 +187,5 @@ namespace AutoHub.Tests.ControllersTests
 
             _lotServiceMock.Verify(service => service.Delete(lotId));
         }
-
-        /*
-        [Fact]
-        public void DeleteLot_LotNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotController.DeleteLot(lotId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }*/
     }
 }

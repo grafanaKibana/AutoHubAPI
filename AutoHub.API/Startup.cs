@@ -1,6 +1,8 @@
 using AutoHub.API.Extensions;
+using AutoHub.API.Filters;
 using AutoHub.API.Middlewares;
 using AutoHub.DAL;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,15 @@ namespace AutoHub.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+                {
+                    options.Filters.Add(new ValidModelFilter());
+                })
+                .AddFluentValidation(options =>
+                {
+                    options.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
+            services.AddValidators();
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddRouting();
             services.AddSingleton(_ => Configuration);

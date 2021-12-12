@@ -11,8 +11,5 @@ namespace AutoHub.BLL.Exceptions
         public ApplicationErrorException(string errorMessage) : base(errorMessage)
         {
         }
-
-        // public ApplicationErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
-        // { }
     }
 }

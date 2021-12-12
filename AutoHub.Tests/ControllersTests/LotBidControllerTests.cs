@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using AutoHub.API.Controllers;
 using AutoHub.API.Models.BidModels;
@@ -9,6 +7,8 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests
@@ -28,7 +28,7 @@ namespace AutoHub.Tests.ControllersTests
             _bidServiceMock = new Mock<IBidService>();
             _lotServiceMock = new Mock<ILotService>();
             _lotBidController =
-                new LotBidController(_bidServiceMock.Object, _lotServiceMock.Object, _mapperMock.Object);
+                new LotBidController(_bidServiceMock.Object, _mapperMock.Object);
         }
 
         [Fact]
@@ -53,23 +53,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
         }
-
-        /*
-        [Fact]
-        public void GetLotBids_LotNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotBidController.GetLotBids(lotId);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }
-        */
 
         [Fact]
         public void CreateBid_ValidData_ReturnsCreated()
@@ -108,23 +91,5 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
         }
-
-        /*
-        [Fact]
-        public void CreateBid_LotNotExists_ReturnsNotFound()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<BidCreateRequestModel>();
-
-            _lotServiceMock.Setup(service => service.GetById(lotId)).Returns(null as LotResponseDTO);
-
-            //Act
-            var result = _lotBidController.CreateBid(lotId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<NotFoundResult>();
-        }*/
     }
 }
