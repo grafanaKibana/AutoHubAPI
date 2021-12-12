@@ -48,7 +48,6 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{carBrandId}")]
-        [ValidModelFilter]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
