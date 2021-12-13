@@ -39,6 +39,8 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AuthorizationRoles.Regular)]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

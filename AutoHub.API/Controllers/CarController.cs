@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
+using AutoHub.API.Common;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoHub.API.Controllers
 {
@@ -46,6 +48,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -58,6 +61,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpPut("{carId}")]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -72,6 +76,7 @@ namespace AutoHub.API.Controllers
         }
 
         [HttpDelete("{carId}")]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
