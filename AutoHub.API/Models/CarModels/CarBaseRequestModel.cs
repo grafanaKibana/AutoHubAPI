@@ -13,3 +13,8 @@ namespace AutoHub.API.Models.CarModels
         public decimal SellingPrice { get; set; }
     }
 }
+
+
+
+
+

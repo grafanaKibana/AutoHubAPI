@@ -119,6 +119,7 @@ namespace AutoHub.Tests.ControllersTests
             _carServiceMock.Verify(service => service.Create(mappedCar));
         }
 
+        /*
         [Fact]
         public void CreateCar_InvalidModel_ReturnsBadRequest()
         {
@@ -131,6 +132,7 @@ namespace AutoHub.Tests.ControllersTests
             //Assert
             result.Should().BeOfType<BadRequestResult>();
         }
+        */
 
         [Fact]
         public void UpdateCar_ValidData_ReturnsNoContent()
@@ -169,6 +171,7 @@ namespace AutoHub.Tests.ControllersTests
             _carServiceMock.Verify(service => service.Update(carId, mappedCar));
         }
 
+        /*
         [Fact]
         public void UpdateCar_InvalidModel_ReturnsBadRequest()
         {
@@ -183,6 +186,7 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
         }
+        */
 
         [Fact]
         public void DeleteCar_CarExists_ReturnsNoContent()

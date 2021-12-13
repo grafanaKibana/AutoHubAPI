@@ -9,8 +9,8 @@ namespace AutoHub.API.Validators
     {
         public LotCreateRequestModelValidator()
         {
-            RuleFor(x => x.CarId).NotEmpty();
-            RuleFor(x => x.CreatorId).NotEmpty();
+            RuleFor(x => x.CarId).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.CreatorId).NotEmpty().GreaterThan(0);
             RuleFor(x => x.DurationInDays).NotEmpty().GreaterThan(0);
         }
     }

@@ -41,7 +41,7 @@ namespace AutoHub.API.Validators
             RuleFor(x => x.FirstName).NotEmpty();
             RuleFor(x => x.LastName).NotEmpty();
             RuleFor(x => x.Phone).NotEmpty().Matches(UniversalPhoneRegex); //Most universal phone regex
-            RuleFor(x => x.UserRoleId).NotEmpty().Must(x => !Enum.IsDefined(typeof(UserRoleEnum), x));
+            RuleFor(x => x.UserRoleId).NotEmpty().Must(x => Enum.IsDefined(typeof(UserRoleEnum), x));
 
         }
     }

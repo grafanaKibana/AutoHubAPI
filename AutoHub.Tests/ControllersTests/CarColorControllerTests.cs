@@ -72,6 +72,7 @@ namespace AutoHub.Tests.ControllersTests
             _carColorServiceMock.Verify(service => service.Create(mappedCarColor));
         }
 
+        /*
         [Fact]
         public void CreateCarColor_InvalidModel_ReturnsBadRequest()
         {
@@ -85,6 +86,7 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
         }
+        */
 
         [Fact]
         public void UpdateCarColor_ValidData_ReturnsNoContent()
@@ -108,6 +110,7 @@ namespace AutoHub.Tests.ControllersTests
             _carColorServiceMock.Verify(service => service.Update(carColorId, mappedCarColor));
         }
 
+        /*
         [Fact]
         public void UpdateCarColor_InvalidModel_ReturnsBadRequest()
         {
@@ -122,6 +125,7 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
         }
+        */
 
         [Fact]
         public void DeleteCarColor_CarColorExists_ReturnsNoContent()

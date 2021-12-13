@@ -116,6 +116,7 @@ namespace AutoHub.Tests.ControllersTests
             _lotServiceMock.Verify(service => service.Create(mappedLot));
         }
 
+        /*
         [Fact]
         public void CreateLot_InvalidModel_ReturnsBadRequest()
         {
@@ -129,6 +130,7 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
         }
+        */
 
         [Fact]
         public void UpdateCar_ValidData_ReturnsNoContent()
@@ -157,6 +159,7 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<NoContentResult>();
         }
 
+        /*
         [Fact]
         public void UpdateLot_InvalidModel_ReturnsBadRequest()
         {
@@ -171,6 +174,7 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
         }
+        */
 
         [Fact]
         public void DeleteLot_LotExists_ReturnsNoContent()

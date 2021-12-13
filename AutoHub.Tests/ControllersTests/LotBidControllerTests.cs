@@ -77,6 +77,7 @@ namespace AutoHub.Tests.ControllersTests
             _bidServiceMock.Verify(service => service.Create(lotId, mappedBid));
         }
 
+        /*
         [Fact]
         public void CreateBid_InvalidModel_ReturnsBadRequest()
         {
@@ -90,6 +91,6 @@ namespace AutoHub.Tests.ControllersTests
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<BadRequestResult>();
-        }
+        }*/
     }
 }
