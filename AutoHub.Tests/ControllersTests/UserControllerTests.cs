@@ -118,22 +118,6 @@ namespace AutoHub.Tests.ControllersTests
             result.Should().BeOfType<OkObjectResult>();
         }
 
-        /*
-        [Fact]
-        public void LoginUser_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var invalidModel = _fixture.Create<object>() as UserLoginRequestModel;
-
-            //Act
-            var result = _userController.LoginUser(invalidModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<BadRequestResult>();
-        }
-        */
-
         [Fact]
         public void RegisterUser_ValidModel_ReturnsCreated()
         {
@@ -158,21 +142,6 @@ namespace AutoHub.Tests.ControllersTests
 
             _userServiceMock.Verify(service => service.Register(mappedUser));
         }
-
-        /*
-        [Fact]
-        public void RegisterUser_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var requestModel = _fixture.Create<object>() as UserRegisterRequestModel;
-
-            //Act
-            var result = _userController.RegisterUser(requestModel);
-
-            //Assert
-            result.Should().BeOfType<BadRequestResult>();
-        }
-        */
 
         [Fact]
         public void UpdateUser_ValidData_ReturnsNoContent()
@@ -204,23 +173,6 @@ namespace AutoHub.Tests.ControllersTests
 
             _userServiceMock.Verify(service => service.Update(userId, mappedUser));
         }
-
-        /*
-        [Fact]
-        public void UpdateUser_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var userId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<object>() as UserUpdateRequestModel;
-
-            //Act
-            var result = _userController.UpdateUser(userId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<BadRequestResult>();
-        }
-        */
 
         [Fact]
         public void DeleteUser_UserExist_ReturnsNoContent()

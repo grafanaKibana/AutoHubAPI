@@ -19,14 +19,12 @@ namespace AutoHub.Tests.ControllersTests
         private readonly Fixture _fixture;
         private readonly Mock<IMapper> _mapperMock;
         private readonly UserBidController _userBidController;
-        private readonly Mock<IUserService> _userServiceMock;
 
         public UserBidControllerTests()
         {
             _fixture = new Fixture();
             _mapperMock = new Mock<IMapper>();
             _bidServiceMock = new Mock<IBidService>();
-            _userServiceMock = new Mock<IUserService>();
             _userBidController =
                 new UserBidController(_bidServiceMock.Object, _mapperMock.Object);
         }

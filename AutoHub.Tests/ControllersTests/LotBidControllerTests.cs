@@ -76,21 +76,5 @@ namespace AutoHub.Tests.ControllersTests
 
             _bidServiceMock.Verify(service => service.Create(lotId, mappedBid));
         }
-
-        /*
-        [Fact]
-        public void CreateBid_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var lotId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<object>() as BidCreateRequestModel;
-
-            //Act
-            var result = _lotBidController.CreateBid(lotId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<BadRequestResult>();
-        }*/
     }
 }

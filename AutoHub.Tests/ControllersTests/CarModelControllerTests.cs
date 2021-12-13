@@ -71,22 +71,6 @@ namespace AutoHub.Tests.ControllersTests
             _carModelServiceMock.Verify(service => service.Create(mappedCarModel));
         }
 
-        /*
-        [Fact]
-        public void CreateCarModel_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var requestModel = _fixture.Create<object>() as CarModelCreateRequestModel;
-
-            //Act
-            var result = _carModelController.CreateCarModel(requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<BadRequestResult>();
-        }
-        */
-
         [Fact]
         public void UpdateCarModel_ValidData_ReturnsNoContent()
         {
@@ -108,23 +92,6 @@ namespace AutoHub.Tests.ControllersTests
 
             _carModelServiceMock.Verify(service => service.Update(carModelId, mappedCarModel));
         }
-
-        /*
-        [Fact]
-        public void UpdateCarModel_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var carModelId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<object>() as CarModelUpdateRequestModel;
-
-            //Act
-            var result = _carModelController.UpdateCarModel(carModelId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<BadRequestResult>();
-        }
-        */
 
         [Fact]
         public void DeleteCarModel_CarModelExists_ReturnsNoContent()

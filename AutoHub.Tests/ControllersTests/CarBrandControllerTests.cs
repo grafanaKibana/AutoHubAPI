@@ -72,22 +72,6 @@ namespace AutoHub.Tests.ControllersTests
             _carBrandServiceMock.Verify(service => service.Create(mappedCarBrand));
         }
 
-        /*
-         [Fact]
-        public void CreateCarBrand_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var requestModel = _fixture.Create<object>() as CarBrandCreateRequestModel;
-
-            //Act
-            var result = _carBrandController.CreateCarBrand(requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<BadRequestResult>();
-        }
-        */
-
         [Fact]
         public void UpdateCarBrand_ValidData_ReturnsNoContent()
         {
@@ -109,23 +93,6 @@ namespace AutoHub.Tests.ControllersTests
 
             _carBrandServiceMock.Verify(service => service.Update(carBrandId, mappedCarBrand));
         }
-
-        /*
-        [Fact]
-        public void UpdateCarBrand_InvalidModel_ReturnsBadRequest()
-        {
-            //Arrange
-            var carBrandId = _fixture.Create<int>();
-            var requestModel = _fixture.Create<object>() as CarBrandUpdateRequestModel;
-
-            //Act
-            var result = _carBrandController.UpdateCarBrand(carBrandId, requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<BadRequestResult>();
-        }
-        */
 
         [Fact]
         public void DeleteCarBrand_CarBrandExists_ReturnsNoContent()
