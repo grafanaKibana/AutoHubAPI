@@ -77,6 +77,9 @@ namespace AutoHub.BLL.Services
             bid.BidTime = DateTime.UtcNow;
 
             _context.Bids.Add(bid);
+            //TODO: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Bid_User_UserId".
+            //TODO: The conflict occurred in database "db_a7d938_autohubdb", table "dbo.User", column 'UserId'.
+            //TODO: The statement has been terminated.
             _context.SaveChanges();
         }
     }
