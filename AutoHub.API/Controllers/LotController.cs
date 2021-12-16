@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]s")]
     [ApiController]
+    [Route("api/[controller]s")]
+    [Produces("application/json")]
     public class LotController : Controller
     {
         private readonly ILotService _lotService;
@@ -25,7 +26,10 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
-
+        /// <summary>
+        /// Get all lots.
+        /// </summary>
+        /// <returns>Returns list of lots.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,17 +41,26 @@ namespace AutoHub.API.Controllers
             return Ok(mappedLots);
         }
 
+        /// <summary>
+        /// Get all lots with status "In progress".
+        /// </summary>
+        /// <returns>Returns list of lots with status "In progress".</returns>
         [HttpGet("Active")]
         [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetActiveLots()
+        public IActionResult GetLotsInProgress()
         {
-            var lots = _lotService.GetActive();
+            var lots = _lotService.GetInProgress();
             var mappedLots = _mapper.Map<IEnumerable<LotResponseModel>>(lots);
 
             return Ok(mappedLots);
         }
 
+        /// <summary>
+        /// Get a lot by ID.
+        /// </summary>
+        /// <param name="lotId"></param>
+        /// <returns>Returns lot</returns>
         [HttpGet("{lotId}")]
         [ProducesResponseType(typeof(LotResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -59,8 +72,28 @@ namespace AutoHub.API.Controllers
             return Ok(mappedLot);
         }
 
+
+        /// <summary>
+        /// Create lot.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Lots
+        ///     {
+        ///         "creatorId": 1,
+        ///         "carId": 1,
+        ///         "durationInDays": 7
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Lot was created successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
@@ -68,9 +101,30 @@ namespace AutoHub.API.Controllers
             var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
             _lotService.Create(mappedLot);
 
-            return StatusCode((int)HttpStatusCode.Created);
+            return StatusCode((int) HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Update lot.
+        /// </summary>
+        /// <param name="lotId"></param>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /Lots/1
+        ///     {
+        ///         "lotStatusId": 3,
+        ///         "winnerId": 1,
+        ///         "durationInDays": 7
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">Lot was updated successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <response code="404">Lot not found.</response>
+        /// <response code="422">Invalid status ID.</response>
+        /// <returns></returns>
         [HttpPut("{lotId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -86,6 +140,13 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete lot.
+        /// </summary>
+        /// <param name="lotId"></param>
+        /// <response code="204">Lot was deleted successfully.</response>
+        /// <response code="404">Lot not found.</response>
+        /// <returns></returns>
         [HttpDelete("{lotId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

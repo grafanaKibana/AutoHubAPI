@@ -67,10 +67,10 @@ namespace AutoHub.Tests.ControllersTests
                 .Create());
 
             _mapperMock.Setup(mapper => mapper.Map<IEnumerable<LotResponseModel>>(activeLots)).Returns(mappedLots);
-            _lotServiceMock.Setup(service => service.GetActive()).Returns(activeLots);
+            _lotServiceMock.Setup(service => service.GetInProgress()).Returns(activeLots);
 
             //Act
-            var result = _lotController.GetActiveLots();
+            var result = _lotController.GetLotsInProgress();
 
             //Assert
             result.Should().NotBeNull();

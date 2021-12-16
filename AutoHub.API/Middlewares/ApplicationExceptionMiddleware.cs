@@ -24,31 +24,31 @@ namespace AutoHub.API.Middlewares
             }
             catch (NotFoundException nfEx)
             {
-                await HandleExceptionAsync(httpContext, HttpStatusCode.NotFound, nfEx.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.NotFound, nfEx);
             }
             catch (LoginFailedException lfEx)
             {
-                await HandleExceptionAsync(httpContext, HttpStatusCode.Unauthorized, lfEx.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.Unauthorized, lfEx);
             }
             catch (RegistrationFailedException efEx)
             {
-                await HandleExceptionAsync(httpContext, HttpStatusCode.Conflict, efEx.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.Conflict, efEx);
             }
             catch (ApplicationException aEx)
             {
-                await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, aEx.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, aEx);
             }
             catch (DublicateException dEx)
             {
-                await HandleExceptionAsync(httpContext, HttpStatusCode.Conflict, dEx.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.Conflict, dEx);
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, ex.Message);
+                await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, HttpStatusCode httpStatusCode, string message)
+        private static Task HandleExceptionAsync(HttpContext context, HttpStatusCode httpStatusCode, Exception ex)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)httpStatusCode;
@@ -56,8 +56,10 @@ namespace AutoHub.API.Middlewares
             return context.Response.WriteAsync(new ErrorDetails
             {
                 StatusCode = (int)httpStatusCode,
-                Message = message,
-                Instance = context.Request.Path
+                Instance = context.Request.Path,
+                Type = ex.GetType().ToString(),
+                Message = ex.Message,
+                Details = ex.GetBaseException().Message
             }.ToString());
         }
     }

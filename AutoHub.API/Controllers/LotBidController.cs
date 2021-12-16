@@ -11,8 +11,9 @@ using System.Net;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/Lots/{lotId}/Bids")]
     [ApiController]
+    [Route("api/Lots/{lotId}/Bids")]
+    [Produces("application/json")]
     public class LotBidController : Controller
     {
         private readonly IBidService _bidService;
@@ -24,6 +25,13 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all bids of specific lot.
+        /// </summary>
+        /// <param name="lotId"></param>
+        /// <response code="403">Admin access only.</response>
+        /// <response code="404">Lot not found.</response>
+        /// <returns>List of bids of lot.</returns>
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
@@ -38,9 +46,27 @@ namespace AutoHub.API.Controllers
             return Ok(mappedBids);
         }
 
+        /// <summary>
+        /// Create lot bid.
+        /// </summary>
+        /// <param name="lotId"></param>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Lots/1
+        ///     {
+        ///         "userId": 1,
+        ///         "bidValue": 50000
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="201">Bid was created successfully</response>
+        /// <response code="400">Invalid model</response>
+        /// <response code="404">Lot not found</response>
+        /// <returns></returns>
         [HttpPost]
-        [Authorize(Roles = AuthorizationRoles.Regular)]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

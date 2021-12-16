@@ -2,11 +2,13 @@ using System.Text.Json;
 
 namespace AutoHub.API.Models
 {
-    public class ErrorDetails
+    public record ErrorDetails
     {
-        public int StatusCode { get; set; }
-        public string Message { get; set; }
         public string Instance { get; set; }
+        public string Message { get; set; }
+        public string Type { get; set; }
+        public string Details { get; set; }
+        public int StatusCode { get; set; }
 
         public override string ToString()
         {

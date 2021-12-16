@@ -9,8 +9,9 @@ using System.Collections.Generic;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/Users/{userId}/Bids")]
     [ApiController]
+    [Route("api/Users/{userId}/Bids")]
+    [Produces("application/json")]
     public class UserBidController : Controller
     {
         private readonly IBidService _bidService;
@@ -22,6 +23,13 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Returns all bids created by user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <response code="403">Admin access only</response>
+        /// <response code="404">User not found</response>
+        /// <returns>List of bids of user</returns>
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]

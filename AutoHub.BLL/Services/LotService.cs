@@ -38,7 +38,7 @@ namespace AutoHub.BLL.Services
             return mappedLots;
         }
 
-        public IEnumerable<LotResponseDTO> GetActive()
+        public IEnumerable<LotResponseDTO> GetInProgress()
         {
             var lots = _context.Lots
                 .Include(lot => lot.Car.CarBrand)

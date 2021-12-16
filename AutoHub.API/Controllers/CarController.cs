@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]s")]
     [ApiController]
+    [Route("api/[controller]s")]
+    [Produces("application/json")]
     public class CarController : Controller
     {
         private readonly ICarService _carService;
@@ -24,6 +25,10 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all cars.
+        /// </summary>
+        /// <returns>Returns list of cars</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -35,6 +40,12 @@ namespace AutoHub.API.Controllers
             return Ok(mappedCars);
         }
 
+        /// <summary>
+        /// Get a car by ID.
+        /// </summary>
+        /// <param name="carId"></param>
+        /// <response code="404">Car not found</response>
+        /// <returns>Returns car</returns>
         [HttpGet("{carId}")]
         [ProducesResponseType(typeof(IEnumerable<CarResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,6 +58,31 @@ namespace AutoHub.API.Controllers
             return Ok(mappedCar);
         }
 
+        /// <summary>
+        /// Create car.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Cars
+        ///     {
+        ///         "carBrand": "Audi",
+        ///         "carModel": "RS6 Avant",
+        ///         "carColor": "Magenta",
+        ///         "imgUrl": "shorturl.at/oyCFN",
+        ///         "description": "Audi endows the RS6 Avant with a twin-turbocharged 4.0-liter V-8, which generates 591 horsepower and 590 pound-feet of torque",
+        ///         "year": 2021,
+        ///         "vin": "WAUFMBFC0GN059183",
+        ///         "mileage": 15550,
+        ///         "sellingPrice": 137000,
+        ///         "costPrice": 129500
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Car was created successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -60,6 +96,35 @@ namespace AutoHub.API.Controllers
             return StatusCode((int)HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Update car.
+        /// </summary>
+        /// <param name="carId"></param>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /Cars/1
+        ///     {
+        ///         "carBrand": "Audi",
+        ///         "carModel": "RS6 Avant",
+        ///         "carColor": "Magenta",
+        ///         "imgUrl": "shorturl.at/oyCFN",
+        ///         "description": "Audi endows the RS6 Avant with a twin-turbocharged 4.0-liter V-8, which generates 591 horsepower and 590 pound-feet of torque",
+        ///         "year": 2021,
+        ///         "vin": "WAUFMBFC0GN059183",
+        ///         "mileage": 15550,
+        ///         "sellingPrice": 137000,
+        ///         "costPrice": 129500,
+        ///         "carStatusId": 2
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="204">Car was updated successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <response code="404">Car not found.</response>
+        /// <response code="422">Invalid status ID.</response>
+        /// <returns></returns>
         [HttpPut("{carId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -75,6 +140,13 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete car.
+        /// </summary>
+        /// <param name="carId"></param>
+        /// <response code="204">Car was deleted successfully.</response>
+        /// <response code="404">Car not found.</response>
+        /// <returns></returns>
         [HttpDelete("{carId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

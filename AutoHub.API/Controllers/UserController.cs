@@ -11,8 +11,9 @@ using System.Net;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]s")]
     [ApiController]
+    [Route("api/[controller]s")]
+    [Produces("application/json")]
     public class UserController : Controller
     {
         private readonly IMapper _mapper;
@@ -24,7 +25,11 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
-
+        /// <summary>
+        /// Get all users.
+        /// </summary>
+        /// <response code="403">Admin access only.</response>
+        /// <returns>Returns list of users</returns>
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<UserResponseModel>), StatusCodes.Status200OK)]
@@ -38,6 +43,13 @@ namespace AutoHub.API.Controllers
             return Ok(mappedUsers);
         }
 
+        /// <summary>
+        /// Get a user by ID.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <response code="403">Admin access only.</response>
+        /// <response code="404">User not found.</response>
+        /// <returns>Returns user.</returns>
         [HttpGet("{userId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(UserResponseModel), StatusCodes.Status200OK)]
@@ -52,6 +64,24 @@ namespace AutoHub.API.Controllers
             return Ok(mappedUser);
         }
 
+        /// <summary>
+        /// Log-in with credentials.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /User/Login
+        ///     {
+        ///         "email": "user@mail.com",
+        ///         "password": "PasSw0Rd666"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="200">Logged in successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <response code="404">User not found.</response>
+        /// <returns>Returns E-mail and JWT Token.</returns>
         [HttpPost("Login")]
         [ProducesResponseType(typeof(UserLoginResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,6 +96,26 @@ namespace AutoHub.API.Controllers
             return Ok(mappedAuthModel);
         }
 
+        /// <summary>
+        /// Register new user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /User/Register
+        ///     {
+        ///         "firstName": "John",
+        ///         "lastName": "Walker",
+        ///         "email": "user@mail.com",
+        ///         "phone": "+380000000000",
+        ///         "password": "PasSw0Rd666"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="201">Successfully registered.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <returns></returns>
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,9 +125,34 @@ namespace AutoHub.API.Controllers
             var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
             _userService.Register(mappedUser);
 
-            return StatusCode((int)HttpStatusCode.Created);
+            return StatusCode((int) HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Update user.
+        /// </summary>
+        /// /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT /User
+        ///     {
+        ///         "userRoleId": 3
+        ///         "firstName": "John",
+        ///         "lastName": "Walker",
+        ///         "email": "user@mail.com",
+        ///         "phone": "+380000000000",
+        ///         "password": "PasSw0Rd666"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <param name="userId"></param>
+        /// <param name="model"></param>
+        /// <response code="204">User was updated successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <response code="403">Admin access only.</response>
+        /// <response code="422">Invalid user role ID.</response>
+        /// <response code="404">User not found.</response>
+        /// <returns></returns>
         [HttpPut("{userId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -94,6 +169,14 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete user.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <response code="204">User was deleted successfully.</response>
+        /// <response code="403">Admin access only.</response>
+        /// <response code="404">User not found.</response>
+        /// <returns></returns>
         [HttpDelete("{userId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

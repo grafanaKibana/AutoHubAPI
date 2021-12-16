@@ -6,7 +6,7 @@ namespace AutoHub.BLL.Interfaces
     public interface ILotService
     {
         IEnumerable<LotResponseDTO> GetAll();
-        IEnumerable<LotResponseDTO> GetActive();
+        IEnumerable<LotResponseDTO> GetInProgress();
         LotResponseDTO GetById(int lotId);
         void Create(LotCreateRequestDTO createLotDTO);
         void Update(int lotId, LotUpdateRequestDTO updateLotDTO);

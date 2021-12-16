@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]s")]
     [ApiController]
+    [Route("api/[controller]s")]
+    [Produces("application/json")]
     public class CarBrandController : Controller
     {
         private readonly ICarBrandService _carBrandService;
@@ -24,6 +25,11 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+
+        /// <summary>
+        /// Get all car brands.
+        /// </summary>
+        /// <returns>Returns list of car brands</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarBrandResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -35,6 +41,22 @@ namespace AutoHub.API.Controllers
             return Ok(mappedCarBrands);
         }
 
+        /// <summary>
+        /// Create car brand.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /CarBrands
+        ///     {
+        ///         "carBrandName": "Audi"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="201">Brand was created successfully</response>
+        /// <response code="400">Invalid model</response>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -48,6 +70,24 @@ namespace AutoHub.API.Controllers
             return StatusCode((int)HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Update car brand.
+        /// </summary>
+        /// <param name="carBrandId"></param>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /CarBrands
+        ///     {
+        ///         "carBrandName": "Audi"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="204">Brand was updated successfully</response>
+        /// <response code="400">Invalid model</response>
+        /// <response code="404">Brand not found</response>
+        /// <returns></returns>
         [HttpPut("{carBrandId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -62,6 +102,14 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
+
+        /// <summary>
+        /// Delete car brand.
+        /// </summary>
+        /// <param name="carBrandId"></param>
+        /// <response code="204">Brand was deleted successfully</response>
+        /// <response code="404">Brand not found</response>
+        /// <returns></returns>
         [HttpDelete("{carBrandId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

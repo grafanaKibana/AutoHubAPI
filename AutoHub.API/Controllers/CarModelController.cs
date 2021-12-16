@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]s")]
     [ApiController]
+    [Route("api/[controller]s")]
+    [Produces("application/json")]
     public class CarModelController : Controller
     {
         private readonly ICarModelService _carModelService;
@@ -24,6 +25,10 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all car models.
+        /// </summary>
+        /// <returns>Returns list of car models</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarModelResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -35,6 +40,22 @@ namespace AutoHub.API.Controllers
             return Ok(mappedCarModels);
         }
 
+        /// <summary>
+        /// Create car model.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /CarModels
+        ///     {
+        ///         "carModelName": "RS6 Avant"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="201">Model was created successfully</response>
+        /// <response code="400">Invalid model</response>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -48,6 +69,24 @@ namespace AutoHub.API.Controllers
             return StatusCode((int)HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Updates car model
+        /// </summary>
+        /// <param name="carModelId"></param>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /CarModels
+        ///     {
+        ///         "carModelName": "RS6 Avant"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="204">Model was updated successfully</response>
+        /// <response code="400">Invalid model</response>
+        /// <response code="404">Model not found</response>
+        /// <returns></returns>
         [HttpPut("{carModelId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -62,6 +101,13 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes car model
+        /// </summary>
+        /// <param name="carModelId"></param>
+        /// <response code="204">Model was deleted successfully</response>
+        /// <response code="404">Model not found</response>
+        /// <returns></returns>
         [HttpDelete("{carModelId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

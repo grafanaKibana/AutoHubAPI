@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AutoHub.API.Controllers
 {
-    [Route("api/[controller]s")]
     [ApiController]
+    [Route("api/[controller]s")]
+    [Produces("application/json")]
     public class CarColorController : Controller
     {
         private readonly ICarColorService _carColorService;
@@ -24,6 +25,10 @@ namespace AutoHub.API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all car colors.
+        /// </summary>
+        /// <returns>Returns list of car colors.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarColorResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -35,6 +40,22 @@ namespace AutoHub.API.Controllers
             return Ok(mappedCarColors);
         }
 
+        /// <summary>
+        /// Create car color.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /CarColors
+        ///     {
+        ///         "carColorName": "Magenta"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="201">Color was created successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -48,6 +69,24 @@ namespace AutoHub.API.Controllers
             return StatusCode((int)HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Update car color.
+        /// </summary>
+        /// <param name="carColorId"></param>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /CarColors
+        ///     {
+        ///         "carColorName": "Magenta"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <response code="204">Color was updated successfully.</response>
+        /// <response code="400">Invalid model.</response>
+        /// <response code="404">Color not found.</response>
+        /// <returns></returns>
         [HttpPut("{carColorId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -62,6 +101,13 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete car color.
+        /// </summary>
+        /// <param name="carColorId"></param>
+        /// <response code="204">Color was deleted successfully.</response>
+        /// <response code="404">Color not found.</response>
+        /// <returns></returns>
         [HttpDelete("{carColorId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

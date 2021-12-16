@@ -1,7 +1,10 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace AutoHub.API.Extensions
 {
@@ -44,7 +47,11 @@ namespace AutoHub.API.Extensions
                         new List<string>()
                     }
                 });
+                
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
+
         }
 
         public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
