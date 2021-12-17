@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AutoHub.API.Extensions
 {
@@ -28,10 +29,11 @@ namespace AutoHub.API.Extensions
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please insert JWT with Bearer into field",
+                    Description = "Please insert JWT token into field (without \"Bearer\")",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                    Type = SecuritySchemeType.Http,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -40,8 +42,8 @@ namespace AutoHub.API.Extensions
                         {
                             Reference = new OpenApiReference
                             {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Id = JwtBearerDefaults.AuthenticationScheme,
+                                Type = ReferenceType.SecurityScheme
                             }
                         },
                         new List<string>()

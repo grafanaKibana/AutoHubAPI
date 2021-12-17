@@ -117,6 +117,20 @@ namespace AutoHub.BLL.Services
             _context.SaveChanges();
         }
 
+        public void UpdateRole(int userId, int roleId)
+        {
+            if (!Enum.IsDefined(typeof(UserRoleEnum), roleId))
+                throw new EntityValidationException("Incorrect user role ID");
+
+            var user = _context.Users.Find(userId);
+
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
+
+            user.UserRoleId = (UserRoleEnum)roleId;
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
         public void Delete(int userId)
         {
             var user = _context.Users.Find(userId);

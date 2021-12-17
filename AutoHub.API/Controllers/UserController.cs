@@ -170,6 +170,28 @@ namespace AutoHub.API.Controllers
         }
 
         /// <summary>
+        /// Update user role.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roleId"></param>
+        /// <response code="204">User role was updated successfully.</response>
+        /// <response code="404">User not found.</response>
+        /// <response code="422">Invalid role ID.</response>
+        /// <returns></returns>
+        [HttpPatch]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateUserRole(int userId, int roleId)
+        {
+            _userService.UpdateRole(userId, roleId);
+
+            return NoContent();
+        }
+
+        /// <summary>
         /// Delete user.
         /// </summary>
         /// <param name="userId"></param>

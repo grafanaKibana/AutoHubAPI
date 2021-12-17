@@ -140,6 +140,29 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
+
+        /// <summary>
+        /// Update car status.
+        /// </summary>
+        /// <param name="carId"></param>
+        /// <param name="statusId"></param>
+        /// <response code="204">Car status was updated successfully.</response>
+        /// <response code="404">Car not found.</response>
+        /// <response code="422">Invalid status ID.</response>
+        /// <returns></returns>
+        [HttpPatch]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateCarStatus(int carId, int statusId)
+        {
+            _carService.UpdateStatus(carId, statusId);
+
+            return NoContent();
+        }
+
         /// <summary>
         /// Delete car.
         /// </summary>

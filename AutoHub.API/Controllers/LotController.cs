@@ -141,6 +141,28 @@ namespace AutoHub.API.Controllers
         }
 
         /// <summary>
+        /// Update lot status.
+        /// </summary>
+        /// <param name="lotId"></param>
+        /// <param name="statusId"></param>
+        /// <response code="204">Lot status was updated successfully.</response>
+        /// <response code="404">Lot not found.</response>
+        /// <response code="422">Invalid status ID.</response>
+        /// <returns></returns>
+        [HttpPatch]
+        [Authorize(Roles = AuthorizationRoles.Administrator)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateLotStatus(int lotId, int statusId)
+        {
+            _lotService.UpdateStatus(lotId, statusId);
+
+            return NoContent();
+        }
+
+        /// <summary>
         /// Delete lot.
         /// </summary>
         /// <param name="lotId"></param>
