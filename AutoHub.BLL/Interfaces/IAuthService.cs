@@ -6,6 +6,6 @@ namespace AutoHub.BLL.Interfaces
     {
         string GenerateWebTokenForUser(User user);
         string HashPassword(string password);
-        bool VerifyPassword(string hashedPassword, string password);
+        bool VerifyPassword(string password, string hashedPassword);
     }
 }

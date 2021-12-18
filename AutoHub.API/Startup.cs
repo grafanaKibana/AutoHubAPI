@@ -26,7 +26,7 @@ namespace AutoHub.API
         {
             services.AddControllers(options =>
                 {
-                    options.Filters.Add(new ValidModelFilter());
+                    options.Filters.Add(new ValidModelAttribute());
                 })
                 .AddFluentValidation(options =>
                 {
