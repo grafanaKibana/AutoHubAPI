@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AutoHub.API.Filters
 {
-    public class ValidModelFilter : ActionFilterAttribute
+    public class ValidModelAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
