@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    public class CarStatusConfiguration
+    public class CarStatusConfiguration : IEntityTypeConfiguration<CarStatus>
     {
-        public CarStatusConfiguration(EntityTypeBuilder<CarStatus> entity)
+        public void Configure(EntityTypeBuilder<CarStatus> builder)
         {
-            entity.ToTable("CarStatus").HasKey(status => status.CarStatusId);
+            builder.ToTable("CarStatus").HasKey(status => status.CarStatusId);
 
-            entity.HasData(
+            builder.HasData(
                 Enum.GetValues(typeof(CarStatusEnum))
                     .Cast<CarStatusEnum>()
                     .Select(s => new CarStatus
@@ -22,7 +22,7 @@ namespace AutoHub.DAL.EntitySettings
                         CarStatusName = s.ToString()
                     }));
 
-            entity.HasMany(status => status.Cars)
+            builder.HasMany(status => status.Cars)
                 .WithOne(car => car.CarStatus)
                 .OnDelete(DeleteBehavior.NoAction);
         }

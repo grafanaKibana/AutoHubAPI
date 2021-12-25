@@ -111,7 +111,6 @@ namespace AutoHub.BLL.Services
             user.LastName = updateUserDTO.LastName;
             user.Email = updateUserDTO.Email;
             user.Phone = updateUserDTO.Phone;
-            user.Password = _authService.HashPassword(updateUserDTO.Password);
 
             _context.Users.Update(user);
             _context.SaveChanges();

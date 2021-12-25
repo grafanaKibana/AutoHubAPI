@@ -155,7 +155,6 @@ namespace AutoHub.Tests.ControllersTests
 
             var mappedUser = _fixture.Build<UserUpdateRequestDTO>()
                 .With(x => x.Email, requestModel.Email)
-                .With(x => x.Password, requestModel.Password)
                 .With(x => x.Phone, requestModel.Phone)
                 .With(x => x.FirstName, requestModel.FirstName)
                 .With(x => x.LastName, requestModel.LastName)
