@@ -9,9 +9,8 @@ namespace AutoHub.API.Validators
     {
         public UserLoginRequestModelValidator()
         {
-            RuleFor(x => x.Email).NotEmpty().EmailAddress();
+            RuleFor(x => x.Username).NotEmpty();
             RuleFor(x => x.Password).NotEmpty().Must(y => y.Length >= 8);
-
         }
     }
 
@@ -25,7 +24,7 @@ namespace AutoHub.API.Validators
             RuleFor(x => x.Password).NotEmpty().Must(y => y.Length > 8);
             RuleFor(x => x.FirstName).NotEmpty();
             RuleFor(x => x.LastName).NotEmpty();
-            RuleFor(x => x.Phone).NotEmpty().Matches(UniversalPhoneRegex); //Most universal phone regex
+            RuleFor(x => x.PhoneNumber).NotEmpty().Matches(UniversalPhoneRegex); //Most universal phone regex
         }
     }
 
@@ -37,12 +36,9 @@ namespace AutoHub.API.Validators
         public UserUpdateRequestModelValidator()
         {
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
-            RuleFor(x => x.Password).NotEmpty().Must(y => y.Length > 8);
             RuleFor(x => x.FirstName).NotEmpty();
             RuleFor(x => x.LastName).NotEmpty();
-            RuleFor(x => x.Phone).NotEmpty().Matches(UniversalPhoneRegex); //Most universal phone regex
-            RuleFor(x => x.UserRoleId).NotEmpty().Must(x => Enum.IsDefined(typeof(UserRoleEnum), x));
-
+            RuleFor(x => x.PhoneNumber).NotEmpty().Matches(UniversalPhoneRegex); //Most universal phone regex
         }
     }
 }

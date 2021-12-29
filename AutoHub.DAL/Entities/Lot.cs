@@ -1,6 +1,7 @@
 ﻿using AutoHub.DAL.Enums;
 using System;
 using System.Collections.Generic;
+using AutoHub.DAL.Entities.Identity;
 
 namespace AutoHub.DAL.Entities
 {
@@ -17,13 +18,13 @@ namespace AutoHub.DAL.Entities
         public virtual LotStatus LotStatus { get; set; }
 
         public int CreatorId { get; set; }
-        public virtual User Creator { get; set; }
+        public virtual AppUser Creator { get; set; }
 
         public int CarId { get; set; }
         public virtual Car Car { get; set; }
 
         public int? WinnerId { get; set; }
-        public virtual User Winner { get; set; }
+        public virtual AppUser Winner { get; set; }
 
         public virtual IEnumerable<Bid> Bids { get; set; }
 

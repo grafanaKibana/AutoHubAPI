@@ -196,9 +196,10 @@ namespace AutoHub.DAL.Migrations
 
             modelBuilder.Entity("AutoHub.DAL.Entities.Identity.AppRole", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -224,9 +225,10 @@ namespace AutoHub.DAL.Migrations
 
             modelBuilder.Entity("AutoHub.DAL.Entities.Identity.AppUser", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -272,6 +274,9 @@ namespace AutoHub.DAL.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegistrationTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -369,85 +374,7 @@ namespace AutoHub.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AutoHub.DAL.Entities.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(24)
-                        .HasColumnType("nvarchar(24)");
-
-                    b.Property<DateTime>("RegistrationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserRoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("UserRoleId");
-
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("AutoHub.DAL.Entities.UserRole", b =>
-                {
-                    b.Property<int>("UserRoleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserRoleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserRoleId");
-
-                    b.ToTable("UserRole");
-
-                    b.HasData(
-                        new
-                        {
-                            UserRoleId = 1,
-                            UserRoleName = "Guest"
-                        },
-                        new
-                        {
-                            UserRoleId = 2,
-                            UserRoleName = "Regular"
-                        },
-                        new
-                        {
-                            UserRoleId = 3,
-                            UserRoleName = "Administrator"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -460,8 +387,8 @@ namespace AutoHub.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -470,7 +397,7 @@ namespace AutoHub.DAL.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -483,8 +410,8 @@ namespace AutoHub.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -493,7 +420,7 @@ namespace AutoHub.DAL.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -504,8 +431,8 @@ namespace AutoHub.DAL.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -514,13 +441,13 @@ namespace AutoHub.DAL.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -529,10 +456,10 @@ namespace AutoHub.DAL.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -556,7 +483,7 @@ namespace AutoHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AutoHub.DAL.Entities.User", "User")
+                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", "User")
                         .WithMany("UserBids")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -610,7 +537,7 @@ namespace AutoHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AutoHub.DAL.Entities.User", "Creator")
+                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", "Creator")
                         .WithMany("UserLots")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -622,7 +549,7 @@ namespace AutoHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AutoHub.DAL.Entities.User", "Winner")
+                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", "Winner")
                         .WithMany("VictoryLots")
                         .HasForeignKey("WinnerId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -636,18 +563,7 @@ namespace AutoHub.DAL.Migrations
                     b.Navigation("Winner");
                 });
 
-            modelBuilder.Entity("AutoHub.DAL.Entities.User", b =>
-                {
-                    b.HasOne("AutoHub.DAL.Entities.UserRole", "UserRole")
-                        .WithMany("Users")
-                        .HasForeignKey("UserRoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("UserRole");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("AutoHub.DAL.Entities.Identity.AppRole", null)
                         .WithMany()
@@ -656,7 +572,7 @@ namespace AutoHub.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", null)
                         .WithMany()
@@ -665,7 +581,7 @@ namespace AutoHub.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", null)
                         .WithMany()
@@ -674,7 +590,7 @@ namespace AutoHub.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
                     b.HasOne("AutoHub.DAL.Entities.Identity.AppRole", null)
                         .WithMany()
@@ -689,7 +605,7 @@ namespace AutoHub.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", null)
                         .WithMany()
@@ -718,17 +634,7 @@ namespace AutoHub.DAL.Migrations
                     b.Navigation("Cars");
                 });
 
-            modelBuilder.Entity("AutoHub.DAL.Entities.Lot", b =>
-                {
-                    b.Navigation("Bids");
-                });
-
-            modelBuilder.Entity("AutoHub.DAL.Entities.LotStatus", b =>
-                {
-                    b.Navigation("Lots");
-                });
-
-            modelBuilder.Entity("AutoHub.DAL.Entities.User", b =>
+            modelBuilder.Entity("AutoHub.DAL.Entities.Identity.AppUser", b =>
                 {
                     b.Navigation("UserBids");
 
@@ -737,9 +643,14 @@ namespace AutoHub.DAL.Migrations
                     b.Navigation("VictoryLots");
                 });
 
-            modelBuilder.Entity("AutoHub.DAL.Entities.UserRole", b =>
+            modelBuilder.Entity("AutoHub.DAL.Entities.Lot", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("Bids");
+                });
+
+            modelBuilder.Entity("AutoHub.DAL.Entities.LotStatus", b =>
+                {
+                    b.Navigation("Lots");
                 });
 #pragma warning restore 612, 618
         }

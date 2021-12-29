@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AutoHub.DAL.Entities.Identity
 {
-    public class AppUser : IdentityUser<Guid>
+    public class AppUser : IdentityUser<int>
     {
         public AppUser()
         {
@@ -22,6 +22,8 @@ namespace AutoHub.DAL.Entities.Identity
 
         [PersonalData, Required]
         public string LastName { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
 
         public DateTime RegistrationTime { get; set; }
 

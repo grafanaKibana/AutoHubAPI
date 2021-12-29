@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.API", "AutoHub.API\AutoHub.API.csproj", "{713919A6-4AB2-4DA3-9E0F-99FBF8710174}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.API", "AutoHub.API\AutoHub.API.csproj", "{713919A6-4AB2-4DA3-9E0F-99FBF8710174}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.DAL", "AutoHub.DAL\AutoHub.DAL.csproj", "{0681D150-7584-4BB8-8395-4A2860F5F2C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.BLL", "AutoHub.BLL\AutoHub.BLL.csproj", "{F920A5C8-BDA6-4C66-80EC-AE6F3FD5CEA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.BLL", "AutoHub.BLL\AutoHub.BLL.csproj", "{F920A5C8-BDA6-4C66-80EC-AE6F3FD5CEA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.Tests", "AutoHub.Tests\AutoHub.Tests.csproj", "{ADB87CF6-EDE2-4C66-A710-25DED6D0F290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.Tests", "AutoHub.Tests\AutoHub.Tests.csproj", "{ADB87CF6-EDE2-4C66-A710-25DED6D0F290}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.DAL", "AutoHub.DAL\AutoHub.DAL.csproj", "{FD8640AB-0CFD-4C2B-B1AE-26E50A9E3D29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +21,6 @@ Global
 		{713919A6-4AB2-4DA3-9E0F-99FBF8710174}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{713919A6-4AB2-4DA3-9E0F-99FBF8710174}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{713919A6-4AB2-4DA3-9E0F-99FBF8710174}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0681D150-7584-4BB8-8395-4A2860F5F2C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0681D150-7584-4BB8-8395-4A2860F5F2C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0681D150-7584-4BB8-8395-4A2860F5F2C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0681D150-7584-4BB8-8395-4A2860F5F2C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F920A5C8-BDA6-4C66-80EC-AE6F3FD5CEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F920A5C8-BDA6-4C66-80EC-AE6F3FD5CEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F920A5C8-BDA6-4C66-80EC-AE6F3FD5CEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -30,7 +29,15 @@ Global
 		{ADB87CF6-EDE2-4C66-A710-25DED6D0F290}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB87CF6-EDE2-4C66-A710-25DED6D0F290}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADB87CF6-EDE2-4C66-A710-25DED6D0F290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD8640AB-0CFD-4C2B-B1AE-26E50A9E3D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD8640AB-0CFD-4C2B-B1AE-26E50A9E3D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD8640AB-0CFD-4C2B-B1AE-26E50A9E3D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD8640AB-0CFD-4C2B-B1AE-26E50A9E3D29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {815F6CC8-04C5-41FF-8534-27CA559E924D}
 	EndGlobalSection
 EndGlobal

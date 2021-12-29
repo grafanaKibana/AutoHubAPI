@@ -9,27 +9,32 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.DAL.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutoHub.BLL.Services
 {
     public class UserService : IUserService
     {
         private readonly IAuthService _authService;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signManager;
         private readonly AutoHubContext _context;
         private readonly IMapper _mapper;
 
-        public UserService(AutoHubContext context, IMapper mapper, IAuthService authService)
+        public UserService(AutoHubContext context, IMapper mapper, IAuthService authService, UserManager<AppUser> userManager, SignInManager<AppUser> signManager)
         {
             _context = context;
             _mapper = mapper;
             _authService = authService;
+            _userManager = userManager;
+            _signManager = signManager;
         }
 
         public IEnumerable<UserResponseDTO> GetAll()
         {
-            var users = _context.Users
-                .Include(user => user.UserRole)
-                .ToList();
+            var users = _context.Users.ToList();
 
             var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
             return mappedUsers;
@@ -37,10 +42,7 @@ namespace AutoHub.BLL.Services
 
         public UserResponseDTO GetById(int userId)
         {
-            var user = _context.Users
-                .Include(user => user.UserRole)
-                .FirstOrDefault(user => user.UserId == userId);
-
+            var user = _context.Users.Find(userId);
             if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
@@ -49,9 +51,7 @@ namespace AutoHub.BLL.Services
 
         public UserResponseDTO GetByEmail(string email)
         {
-            var user = _context.Users
-                .Include(user => user.UserRole)
-                .FirstOrDefault(user => user.Email == email);
+            var user = _context.Users.FirstOrDefault(user => user.Email == email);
 
             if (user == null) throw new NotFoundException($"User with E-Mail {email} not exist");
 
@@ -59,74 +59,74 @@ namespace AutoHub.BLL.Services
             return mappedUser;
         }
 
-        public UserLoginResponseDTO Login(UserLoginRequestDTO userModel)
+        public async Task<UserLoginResponseDTO> LoginAsync(UserLoginRequestDTO userModel)
         {
-            var user = _context.Users
-                .Include(user => user.UserRole)
-                .FirstOrDefault(user => user.Email == userModel.Email);
+            var user = await _userManager.FindByNameAsync(userModel.Username);
 
-            if (user == null) throw new NotFoundException($"User with Email {userModel.Email} not found");
+            if (user == null) throw new NotFoundException($"User with username {userModel.Username} not found");
 
-            var isPasswordVerified = _authService.VerifyPassword(userModel.Password, user.Password);
+            var isPasswordVerified =
+                await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
 
-            if (!isPasswordVerified) throw new LoginFailedException("Wrong password");
+            if (!isPasswordVerified.Succeeded) throw new LoginFailedException("Wrong password");
 
             var mappedUser = new UserLoginResponseDTO
             {
+                FullName = user.FullName,
+                UserName = user.UserName,
                 Email = user.Email,
                 Token = _authService.GenerateWebTokenForUser(user)
             };
             return mappedUser;
         }
 
-        public void Register(UserRegisterRequestDTO registerUserDTO)
+        public async Task RegisterAsync(UserRegisterRequestDTO registerUserDTO)
         {
             var isDuplicate = _context.Users.Any(user => user.Email == registerUserDTO.Email);
 
             if (isDuplicate) throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists");
 
-            var newUser = _mapper.Map<User>(registerUserDTO);
+            var newUser = _mapper.Map<AppUser>(registerUserDTO);
 
-            newUser.UserRoleId = UserRoleEnum.Regular;
             newUser.RegistrationTime = DateTime.UtcNow;
-            newUser.Password = _authService.HashPassword(newUser.Password);
 
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
+
+            if (!result.Succeeded)
+            {
+                throw new RegistrationFailedException(string.Concat(result.Errors, " \n"));
+            }
+
+            await _signManager.SignInAsync(newUser, isPersistent: false);
         }
 
         public void Update(int userId, UserUpdateRequestDTO updateUserDTO)
         {
-            if (!Enum.IsDefined(typeof(UserRoleEnum), updateUserDTO.UserRoleId))
-                throw new EntityValidationException("Incorrect user role ID");
-
-            var user = _context.Users
-                .Include(user => user.UserRole)
-                .FirstOrDefault(user => user.UserId == userId);
-
-            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
-
-            user.UserRoleId = (UserRoleEnum)updateUserDTO.UserRoleId;
-            user.FirstName = updateUserDTO.FirstName;
-            user.LastName = updateUserDTO.LastName;
-            user.Email = updateUserDTO.Email;
-            user.Phone = updateUserDTO.Phone;
-
-            _context.Users.Update(user);
-            _context.SaveChanges();
-        }
-
-        public void UpdateRole(int userId, int roleId)
-        {
-            if (!Enum.IsDefined(typeof(UserRoleEnum), roleId))
-                throw new EntityValidationException("Incorrect user role ID");
-
             var user = _context.Users.Find(userId);
 
             if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
 
-            user.UserRoleId = (UserRoleEnum)roleId;
+            user.FirstName = updateUserDTO.FirstName;
+            user.LastName = updateUserDTO.LastName;
+            user.UserName = updateUserDTO.Username;
+            user.Email = updateUserDTO.Email;
+            user.PhoneNumber = updateUserDTO.PhoneNumber;
+            
             _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
+        public void UpdateRole(int userId, int roleId) //TODO: Change to "SetRole"
+        {
+            if (!Enum.IsDefined(typeof(UserRoleEnum), roleId))
+                throw new EntityValidationException("Incorrect user role ID");
+
+            var user = _context.UserRoles.Find(userId);
+            
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
+
+            user.RoleId = roleId;
+            _context.UserRoles.Update(user);
             _context.SaveChanges();
         }
 

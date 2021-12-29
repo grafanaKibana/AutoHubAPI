@@ -1,5 +1,6 @@
 ﻿using AutoHub.BLL.DTOs.UserDTOs;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoHub.BLL.Interfaces
 {
@@ -8,8 +9,8 @@ namespace AutoHub.BLL.Interfaces
         IEnumerable<UserResponseDTO> GetAll();
         UserResponseDTO GetById(int userId);
         UserResponseDTO GetByEmail(string email);
-        UserLoginResponseDTO Login(UserLoginRequestDTO userModel);
-        void Register(UserRegisterRequestDTO registerUserDTO);
+        Task<UserLoginResponseDTO> LoginAsync(UserLoginRequestDTO userModel);
+        Task RegisterAsync(UserRegisterRequestDTO registerUserDTO);
         void Update(int userId, UserUpdateRequestDTO updateUserDTO);
         void UpdateRole(int userId, int roleId);
         void Delete(int userId);

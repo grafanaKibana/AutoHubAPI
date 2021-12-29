@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using AutoHub.DAL.Entities;
 using AutoHub.DAL.Entities.Identity;
 using AutoHub.DAL.EntitySettings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoHub.DAL
 {
-    public class AutoHubContext : IdentityDbContext<AppUser, AppRole, Guid>
+    public class AutoHubContext : IdentityDbContext<AppUser, AppRole, int>
     {
         public AutoHubContext()
         {
@@ -17,18 +19,15 @@ namespace AutoHub.DAL
             : base(options)
         {
         }
-
         //DbSets [Entities]
         public virtual DbSet<Car> Cars { get; set; }
         public virtual DbSet<CarBrand> CarBrands { get; set; }
         public virtual DbSet<CarModel> CarModels { get; set; }
         public virtual DbSet<CarColor> CarColors { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Lot> Lots { get; set; }
         public virtual DbSet<Bid> Bids { get; set; }
         public virtual DbSet<CarStatus> CarStatus { get; set; }
         public virtual DbSet<LotStatus> LotStatus { get; set; }
-        public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -40,6 +39,8 @@ namespace AutoHub.DAL
         {
             base.OnModelCreating(builder);
 
+            new RoleConfiguration().Configure(builder.Entity<AppRole>());
+            new UserConfiguration().Configure(builder.Entity<AppUser>());
             new CarConfiguration().Configure(builder.Entity<Car>());
             new CarBrandConfiguration().Configure(builder.Entity<CarBrand>());
             new CarModelConfiguration().Configure(builder.Entity<CarModel>());

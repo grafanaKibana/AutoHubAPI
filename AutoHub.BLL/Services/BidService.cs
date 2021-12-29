@@ -24,18 +24,15 @@ namespace AutoHub.BLL.Services
 
         public IEnumerable<BidResponseDTO> GetUserBids(int userId)
         {
-            var userExist = _context.Users.Any(user => user.UserId == userId);
+            var userExist = _context.Users.Any(user => user.Id == userId);
 
             if (!userExist) throw new NotFoundException($"User with ID {userId} not exist");
 
             var bids = _context.Bids
-                .Include(bid => bid.User.UserRole)
-                .Include(bid => bid.Lot.Creator.UserRole)
                 .Include(bid => bid.Lot.Car.CarBrand)
                 .Include(bid => bid.Lot.Car.CarModel)
                 .Include(bid => bid.Lot.Car.CarColor)
                 .Include(bid => bid.Lot.Car.CarStatus)
-                .Include(bid => bid.Lot.Winner.UserRole)
                 .Include(bid => bid.Lot.LotStatus)
                 .Where(bid => bid.UserId == userId)
                 .ToList();
@@ -51,13 +48,10 @@ namespace AutoHub.BLL.Services
             if (!lotExist) throw new NotFoundException($"Lot with ID {lotId} not exist");
 
             var bids = _context.Bids
-                .Include(bid => bid.User.UserRole)
-                .Include(bid => bid.Lot.Creator.UserRole)
                 .Include(bid => bid.Lot.Car.CarBrand)
                 .Include(bid => bid.Lot.Car.CarModel)
                 .Include(bid => bid.Lot.Car.CarColor)
                 .Include(bid => bid.Lot.Car.CarStatus)
-                .Include(bid => bid.Lot.Winner.UserRole)
                 .Include(bid => bid.Lot.LotStatus)
                 .Where(bid => bid.LotId == lotId)
                 .ToList();
@@ -72,7 +66,7 @@ namespace AutoHub.BLL.Services
 
             if (!lotExist) throw new NotFoundException($"Lot with ID {lotId} not exist");
 
-            var userExist = _context.Users.Any(user => user.UserId == createBidDTO.UserId);
+            var userExist = _context.Users.Any(user => user.Id == createBidDTO.UserId);
 
             if (!userExist) throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist");
 
