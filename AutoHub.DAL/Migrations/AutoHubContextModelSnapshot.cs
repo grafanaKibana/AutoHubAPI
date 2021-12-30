@@ -221,6 +221,29 @@ namespace AutoHub.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "201e653b-c2e2-474e-b9f0-ec8559329736",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "a90cb7d7-7ab4-416b-83a0-7fab5ef0846b",
+                            Name = "Seller",
+                            NormalizedName = "SELLER"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConcurrencyStamp = "4c6ee1d4-2ed2-4105-a698-ef71ae2bb8a1",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
                 });
 
             modelBuilder.Entity("AutoHub.DAL.Entities.Identity.AppUser", b =>

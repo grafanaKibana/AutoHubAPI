@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace AutoHub.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]s")]
     [Produces("application/json")]
     public class CarController : Controller
@@ -84,6 +85,7 @@ namespace AutoHub.API.Controllers
         /// <response code="400">Invalid model.</response>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = AuthorizationRoles.Seller)]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

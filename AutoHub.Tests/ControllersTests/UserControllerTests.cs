@@ -40,7 +40,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.FirstName, userDTO.FirstName)
                 .With(x => x.LastName, userDTO.LastName)
                 .With(x => x.UserId, userDTO.UserId)
-                .With(x => x.UserRole, userDTO.UserRole)
+                .With(x => x.UserRoles, userDTO.UserRoles)
                 .With(x => x.RegistrationTime, userDTO.RegistrationTime)
                 .Create());
 
@@ -66,7 +66,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.FirstName, user.FirstName)
                 .With(x => x.LastName, user.LastName)
                 .With(x => x.UserId, user.UserId)
-                .With(x => x.UserRole, user.UserRole)
+                .With(x => x.UserRoles, user.UserRoles)
                 .With(x => x.RegistrationTime, user.RegistrationTime)
                 .Create();
 

@@ -23,7 +23,8 @@ namespace AutoHub.BLL.Services
         private readonly AutoHubContext _context;
         private readonly IMapper _mapper;
 
-        public UserService(AutoHubContext context, IMapper mapper, IAuthService authService, UserManager<AppUser> userManager, SignInManager<AppUser> signManager)
+        public UserService(AutoHubContext context, IMapper mapper, IAuthService authService,
+            UserManager<AppUser> userManager, SignInManager<AppUser> signManager)
         {
             _context = context;
             _mapper = mapper;
@@ -32,30 +33,36 @@ namespace AutoHub.BLL.Services
             _signManager = signManager;
         }
 
-        public IEnumerable<UserResponseDTO> GetAll()
+        public async Task<IEnumerable<UserResponseDTO>> GetAll()
         {
             var users = _context.Users.ToList();
 
             var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
+            foreach (var dto in mappedUsers)
+            {
+                dto.UserRoles = await _userManager.GetRolesAsync(users.FirstOrDefault(x => x.Id == dto.UserId));
+            }
             return mappedUsers;
         }
 
-        public UserResponseDTO GetById(int userId)
+        public async Task<UserResponseDTO> GetById(int userId)
         {
             var user = _context.Users.Find(userId);
             if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
+            mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
             return mappedUser;
         }
 
-        public UserResponseDTO GetByEmail(string email)
+        public async Task<UserResponseDTO> GetByEmail(string email)
         {
             var user = _context.Users.FirstOrDefault(user => user.Email == email);
 
             if (user == null) throw new NotFoundException($"User with E-Mail {email} not exist");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
+            mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
             return mappedUser;
         }
 
@@ -66,7 +73,8 @@ namespace AutoHub.BLL.Services
             if (user == null) throw new NotFoundException($"User with username {userModel.Username} not found");
 
             var isPasswordVerified =
-                await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
+                await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe,
+                    false);
 
             if (!isPasswordVerified.Succeeded) throw new LoginFailedException("Wrong password");
 
@@ -84,14 +92,14 @@ namespace AutoHub.BLL.Services
         {
             var isDuplicate = _context.Users.Any(user => user.Email == registerUserDTO.Email);
 
-            if (isDuplicate) throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists");
+            if (isDuplicate)
+                throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists");
 
             var newUser = _mapper.Map<AppUser>(registerUserDTO);
 
             newUser.RegistrationTime = DateTime.UtcNow;
-
             var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
-
+            await _userManager.AddToRoleAsync(newUser, "Customer");
             if (!result.Succeeded)
             {
                 throw new RegistrationFailedException(string.Concat(result.Errors, " \n"));
@@ -111,7 +119,7 @@ namespace AutoHub.BLL.Services
             user.UserName = updateUserDTO.Username;
             user.Email = updateUserDTO.Email;
             user.PhoneNumber = updateUserDTO.PhoneNumber;
-            
+
             _context.Users.Update(user);
             _context.SaveChanges();
         }
@@ -122,7 +130,7 @@ namespace AutoHub.BLL.Services
                 throw new EntityValidationException("Incorrect user role ID");
 
             var user = _context.UserRoles.Find(userId);
-            
+
             if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
 
             user.RoleId = roleId;

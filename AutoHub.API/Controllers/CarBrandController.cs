@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace AutoHub.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]s")]
     [Produces("application/json")]
     public class CarBrandController : Controller

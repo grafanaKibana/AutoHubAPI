@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace AutoHub.BLL.DTOs.UserDTOs
 {
@@ -6,7 +7,9 @@ namespace AutoHub.BLL.DTOs.UserDTOs
     {
         public int UserId { get; set; }
 
-        public string UserRole { get; set; }
+        public string Username { get; set; }
+
+        public IList<string> UserRoles { get; set; }
 
         public string FirstName { get; set; }
 

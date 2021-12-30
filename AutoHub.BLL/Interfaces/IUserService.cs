@@ -6,9 +6,9 @@ namespace AutoHub.BLL.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<UserResponseDTO> GetAll();
-        UserResponseDTO GetById(int userId);
-        UserResponseDTO GetByEmail(string email);
+        Task<IEnumerable<UserResponseDTO>> GetAll();
+        Task<UserResponseDTO> GetById(int userId);
+        Task<UserResponseDTO> GetByEmail(string email);
         Task<UserLoginResponseDTO> LoginAsync(UserLoginRequestDTO userModel);
         Task RegisterAsync(UserRegisterRequestDTO registerUserDTO);
         void Update(int userId, UserUpdateRequestDTO updateUserDTO);

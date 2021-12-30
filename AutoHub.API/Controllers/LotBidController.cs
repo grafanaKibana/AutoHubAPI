@@ -12,6 +12,7 @@ using System.Net;
 namespace AutoHub.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/Lots/{lotId}/Bids")]
     [Produces("application/json")]
     public class LotBidController : Controller
@@ -66,7 +67,6 @@ namespace AutoHub.API.Controllers
         /// <response code="404">Lot not found</response>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
