@@ -38,7 +38,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await _userService.GetAll();
+            var users = await _userService.GetAllAsync();
             var mappedUsers = _mapper.Map<IEnumerable<UserResponseModel>>(users);
 
             return Ok(mappedUsers);
@@ -58,7 +58,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetUserById(int userId)
         {
-            var user = _userService.GetById(userId);
+            var user = _userService.GetByIdAsync(userId);
             var mappedUser = _mapper.Map<UserResponseModel>(user);
 
             return Ok(mappedUser);

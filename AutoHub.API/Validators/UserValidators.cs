@@ -25,6 +25,7 @@ namespace AutoHub.API.Validators
             RuleFor(x => x.FirstName).NotEmpty();
             RuleFor(x => x.LastName).NotEmpty();
             RuleFor(x => x.PhoneNumber).NotEmpty().Matches(UniversalPhoneRegex); //Most universal phone regex
+            
         }
     }
 

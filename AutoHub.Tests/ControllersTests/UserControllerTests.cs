@@ -45,7 +45,7 @@ namespace AutoHub.Tests.ControllersTests
                 .Create());
 
             _mapperMock.Setup(mapper => mapper.Map<IEnumerable<UserResponseModel>>(users)).Returns(mappedUsers);
-            _userServiceMock.Setup(service => service.GetAll()).Returns(users);
+            _userServiceMock.Setup(service => service.GetAllAsync()).Returns(users);
 
             //Act
             var result = _userController.GetAllUsers();
@@ -71,7 +71,7 @@ namespace AutoHub.Tests.ControllersTests
                 .Create();
 
             _mapperMock.Setup(mapper => mapper.Map<UserResponseModel>(user)).Returns(mappedUser);
-            _userServiceMock.Setup(service => service.GetById(user.UserId)).Returns(user);
+            _userServiceMock.Setup(service => service.GetByIdAsync(user.UserId)).Returns(user);
 
             //Act
             var result = _userController.GetUserById(user.UserId);
@@ -105,7 +105,7 @@ namespace AutoHub.Tests.ControllersTests
                 .With(x => x.Token, authModel.Token)
                 .Create();
 
-            _userServiceMock.Setup(service => service.GetByEmail(requestModel.Username)).Returns(responseDTO);
+            _userServiceMock.Setup(service => service.GetByEmailAsync(requestModel.Username)).Returns(responseDTO);
             _mapperMock.Setup(mapper => mapper.Map<UserLoginRequestDTO>(requestModel)).Returns(mappedUser);
             _userServiceMock.Setup(service => service.LoginAsync(mappedUser)).Returns(authModel);
             _mapperMock.Setup(mapper => mapper.Map<UserLoginResponseModel>(authModel)).Returns(mappedAuthModel);

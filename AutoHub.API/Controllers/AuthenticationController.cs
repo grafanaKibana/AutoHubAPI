@@ -43,7 +43,7 @@ namespace AutoHub.API.Controllers
         /// <response code="200">Logged in successfully.</response>
         /// <response code="400">Invalid model.</response>
         /// <response code="404">User not found.</response>
-        /// <returns>Returns E-mail and JWT Token.</returns>
+        /// <returns>Returns user data and JWT Token.</returns>
         [HttpPost("Login")]
         [ProducesResponseType(typeof(UserLoginResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -51,6 +51,7 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> LoginUser([FromBody] UserLoginRequestModel model)
         {
+            await _userService.LogoutAsync();
             var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
             var authModel = await _userService.LoginAsync(mappedUser);
             var mappedAuthModel = _mapper.Map<UserLoginResponseModel>(authModel);
@@ -91,5 +92,15 @@ namespace AutoHub.API.Controllers
             return StatusCode((int) HttpStatusCode.Created);
         }
 
+        /// <summary>
+        /// Logout current user.
+        /// </summary>
+        /// <returns code="200">Successfully logged out.</returns>
+        [HttpPost("Logout")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task LogoutUser()
+        {
+            await _userService.LogoutAsync();
+        }
     }
 }

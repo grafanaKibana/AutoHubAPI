@@ -33,7 +33,7 @@ namespace AutoHub.BLL.Services
             _signManager = signManager;
         }
 
-        public async Task<IEnumerable<UserResponseDTO>> GetAll()
+        public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
         {
             var users = _context.Users.ToList();
 
@@ -45,7 +45,7 @@ namespace AutoHub.BLL.Services
             return mappedUsers;
         }
 
-        public async Task<UserResponseDTO> GetById(int userId)
+        public async Task<UserResponseDTO> GetByIdAsync(int userId)
         {
             var user = _context.Users.Find(userId);
             if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
@@ -55,7 +55,7 @@ namespace AutoHub.BLL.Services
             return mappedUser;
         }
 
-        public async Task<UserResponseDTO> GetByEmail(string email)
+        public async Task<UserResponseDTO> GetByEmailAsync(string email)
         {
             var user = _context.Users.FirstOrDefault(user => user.Email == email);
 
@@ -146,6 +146,11 @@ namespace AutoHub.BLL.Services
 
             _context.Users.Remove(user);
             _context.SaveChanges();
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _signManager.SignOutAsync();
         }
     }
 }
