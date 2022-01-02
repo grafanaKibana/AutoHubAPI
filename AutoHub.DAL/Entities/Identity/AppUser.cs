@@ -1,32 +1,29 @@
-﻿using AutoHub.DAL.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
-namespace AutoHub.DAL.Entities
+namespace AutoHub.DAL.Entities.Identity
 {
-    public class User
+    public class AppUser : IdentityUser<int>
     {
-        public User()
+        public AppUser()
         {
             UserBids = new List<Bid>();
             UserLots = new List<Lot>();
             VictoryLots = new List<Lot>();
         }
 
-        public int UserId { get; set; }
-
-        public UserRoleEnum UserRoleId { get; set; }
-        public virtual UserRole UserRole { get; set; }
-
+        [PersonalData, Required]
         public string FirstName { get; set; }
 
+        [PersonalData, Required]
         public string LastName { get; set; }
 
-        public string Email { get; set; }
-
-        public string Phone { get; set; }
-
-        public string Password { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
 
         public DateTime RegistrationTime { get; set; }
 

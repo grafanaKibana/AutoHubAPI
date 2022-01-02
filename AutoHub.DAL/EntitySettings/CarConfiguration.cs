@@ -4,23 +4,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    public class CarConfiguration
+    public class CarConfiguration : IEntityTypeConfiguration<Car>
     {
-        public CarConfiguration(EntityTypeBuilder<Car> entity)
+        
+        public void Configure(EntityTypeBuilder<Car> builder)
         {
-            entity.ToTable("Car").HasKey(car => car.CarId);
+            builder.ToTable("Car").HasKey(car => car.CarId);
 
-            entity.Navigation(car => car.CarBrand).AutoInclude();
-            entity.Navigation(car => car.CarModel).AutoInclude();
-            entity.Navigation(car => car.CarColor).AutoInclude();
-            entity.Navigation(car => car.CarStatus).AutoInclude();
+            builder.Navigation(car => car.CarBrand).AutoInclude();
+            builder.Navigation(car => car.CarModel).AutoInclude();
+            builder.Navigation(car => car.CarColor).AutoInclude();
+            builder.Navigation(car => car.CarStatus).AutoInclude();
 
-            entity.Property(car => car.Description).IsRequired();
-            entity.Property(car => car.Year).IsRequired().HasMaxLength(4);
-            entity.Property(car => car.VIN).IsRequired().HasMaxLength(17);
-            entity.Property(car => car.Mileage).IsRequired();
-            entity.Property(car => car.CostPrice).IsRequired();
-            entity.Property(car => car.SellingPrice).IsRequired();
+            builder.Property(car => car.Description).IsRequired();
+            builder.Property(car => car.Year).IsRequired().HasMaxLength(4);
+            builder.Property(car => car.VIN).IsRequired().HasMaxLength(17);
+            builder.Property(car => car.Mileage).IsRequired();
+            builder.Property(car => car.CostPrice).IsRequired();
+            builder.Property(car => car.SellingPrice).IsRequired();
         }
     }
 }

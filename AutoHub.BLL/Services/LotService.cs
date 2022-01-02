@@ -29,8 +29,6 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
                 .ToList();
 
@@ -44,8 +42,6 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
                 .Where(lot => lot.LotStatusId == LotStatusEnum.InProgress)
                 .ToList();
@@ -60,8 +56,6 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
                 .FirstOrDefault(lot => lot.LotId == lotId);
 
@@ -92,8 +86,6 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
                 .FirstOrDefault(lot => lot.LotId == lotId);
 
@@ -101,7 +93,7 @@ namespace AutoHub.BLL.Services
 
             if (updateLotDTO.WinnerId.HasValue)
             {
-                var winner = _context.Users.FirstOrDefault(user => user.UserId == updateLotDTO.WinnerId);
+                var winner = _context.Users.Find(updateLotDTO.WinnerId);
 
                 if (winner == null)
                     throw new NotFoundException($"User with ID {updateLotDTO.WinnerId} not exist");

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 namespace AutoHub.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = AuthorizationRoles.Administrator)]
     [Route("api/Users/{userId}/Bids")]
     [Produces("application/json")]
     public class UserBidController : Controller
@@ -31,7 +32,6 @@ namespace AutoHub.API.Controllers
         /// <response code="404">User not found</response>
         /// <returns>List of bids of user</returns>
         [HttpGet]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

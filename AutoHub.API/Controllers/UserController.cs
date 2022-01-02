@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = AuthorizationRoles.Administrator)]
     [Route("api/[controller]s")]
     [Produces("application/json")]
     public class UserController : Controller
@@ -31,13 +33,12 @@ namespace AutoHub.API.Controllers
         /// <response code="403">Admin access only.</response>
         /// <returns>Returns list of users</returns>
         [HttpGet]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<UserResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var users = _userService.GetAll();
+            var users = await _userService.GetAll();
             var mappedUsers = _mapper.Map<IEnumerable<UserResponseModel>>(users);
 
             return Ok(mappedUsers);
@@ -51,7 +52,6 @@ namespace AutoHub.API.Controllers
         /// <response code="404">User not found.</response>
         /// <returns>Returns user.</returns>
         [HttpGet("{userId}")]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(UserResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,71 +63,7 @@ namespace AutoHub.API.Controllers
 
             return Ok(mappedUser);
         }
-
-        /// <summary>
-        /// Log-in with credentials.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     POST /User/Login
-        ///     {
-        ///         "email": "user@mail.com",
-        ///         "password": "PasSw0Rd666"
-        ///     }
-        /// 
-        /// </remarks>
-        /// <response code="200">Logged in successfully.</response>
-        /// <response code="400">Invalid model.</response>
-        /// <response code="404">User not found.</response>
-        /// <returns>Returns E-mail and JWT Token.</returns>
-        [HttpPost("Login")]
-        [ProducesResponseType(typeof(UserLoginResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult LoginUser([FromBody] UserLoginRequestModel model)
-        {
-            var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
-            var authModel = _userService.Login(mappedUser);
-            var mappedAuthModel = _mapper.Map<UserLoginResponseModel>(authModel);
-
-            return Ok(mappedAuthModel);
-        }
-
-        /// <summary>
-        /// Register new user.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     POST /User/Register
-        ///     {
-        ///         "firstName": "John",
-        ///         "lastName": "Walker",
-        ///         "email": "user@mail.com",
-        ///         "phone": "+380000000000",
-        ///         "password": "PasSw0Rd666"
-        ///     }
-        /// 
-        /// </remarks>
-        /// <response code="201">Successfully registered.</response>
-        /// <response code="400">Invalid model.</response>
-        /// <returns></returns>
-        [HttpPost("Register")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult RegisterUser([FromBody] UserRegisterRequestModel model)
-        {
-            var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
-            _userService.Register(mappedUser);
-
-            return StatusCode((int) HttpStatusCode.Created);
-        }
-
+        
         /// <summary>
         /// Update user.
         /// </summary>
@@ -140,8 +76,7 @@ namespace AutoHub.API.Controllers
         ///         "firstName": "John",
         ///         "lastName": "Walker",
         ///         "email": "user@mail.com",
-        ///         "phone": "+380000000000",
-        ///         "password": "PasSw0Rd666"
+        ///         "phoneNumber": "+380000000000"
         ///     }
         /// 
         /// </remarks>
@@ -154,7 +89,6 @@ namespace AutoHub.API.Controllers
         /// <response code="404">User not found.</response>
         /// <returns></returns>
         [HttpPut("{userId}")]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -179,7 +113,6 @@ namespace AutoHub.API.Controllers
         /// <response code="422">Invalid role ID.</response>
         /// <returns></returns>
         [HttpPatch]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -200,7 +133,6 @@ namespace AutoHub.API.Controllers
         /// <response code="404">User not found.</response>
         /// <returns></returns>
         [HttpDelete("{userId}")]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
