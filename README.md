@@ -10,6 +10,7 @@ The project is being developed on the basis of a monolithic three-layer architec
 - ASP.NET Core 5
 - Entity Framework Core 5
 - C# 9
+- Identity
 - AutoMapper
 - Swagger + SwaggerUI
 - SwashBuckle
