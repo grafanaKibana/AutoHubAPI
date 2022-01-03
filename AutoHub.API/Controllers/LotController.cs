@@ -30,6 +30,7 @@ namespace AutoHub.API.Controllers
         /// <summary>
         /// Get all lots.
         /// </summary>
+        /// <response code="401">Unauthorized Access.</response>
         /// <returns>Returns list of lots.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
@@ -45,9 +46,11 @@ namespace AutoHub.API.Controllers
         /// <summary>
         /// Get all lots with status "In progress".
         /// </summary>
+        /// <response code="401">Unauthorized Access.</response>
         /// <returns>Returns list of lots with status "In progress".</returns>
         [HttpGet("Active")]
         [ProducesResponseType(typeof(IEnumerable<LotResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetLotsInProgress()
         {
@@ -61,9 +64,11 @@ namespace AutoHub.API.Controllers
         /// Get a lot by ID.
         /// </summary>
         /// <param name="lotId"></param>
+        /// <response code="401">Unauthorized Access.</response>
         /// <returns>Returns lot</returns>
         [HttpGet("{lotId}")]
         [ProducesResponseType(typeof(LotResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetLotById(int lotId)
         {
@@ -91,12 +96,16 @@ namespace AutoHub.API.Controllers
         /// </remarks>
         /// <response code="201">Lot was created successfully.</response>
         /// <response code="400">Invalid model.</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin and Seller access only.</response>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Seller)]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateLot([FromBody] LotCreateRequestModel model)
         {
@@ -124,6 +133,8 @@ namespace AutoHub.API.Controllers
         /// </remarks>
         /// <response code="204">Lot was updated successfully.</response>
         /// <response code="400">Invalid model.</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <response code="404">Lot not found.</response>
         /// <response code="422">Invalid status ID.</response>
         /// <returns></returns>
@@ -131,6 +142,8 @@ namespace AutoHub.API.Controllers
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -148,12 +161,16 @@ namespace AutoHub.API.Controllers
         /// <param name="lotId"></param>
         /// <param name="statusId"></param>
         /// <response code="204">Lot status was updated successfully.</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <response code="404">Lot not found.</response>
         /// <response code="422">Invalid status ID.</response>
         /// <returns></returns>
         [HttpPatch]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -169,11 +186,15 @@ namespace AutoHub.API.Controllers
         /// </summary>
         /// <param name="lotId"></param>
         /// <response code="204">Lot was deleted successfully.</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <response code="404">Lot not found.</response>
         /// <returns></returns>
         [HttpDelete("{lotId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteLot(int lotId)

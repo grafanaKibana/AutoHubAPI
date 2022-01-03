@@ -96,8 +96,11 @@ namespace AutoHub.API.Controllers
         /// Logout current user.
         /// </summary>
         /// <returns code="200">Successfully logged out.</returns>
+        /// <response code="401">Unauthorized Access.</response>
         [HttpPost("Logout")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task LogoutUser()
         {
             await _userService.LogoutAsync();

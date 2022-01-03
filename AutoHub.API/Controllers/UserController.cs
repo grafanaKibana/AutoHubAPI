@@ -30,10 +30,12 @@ namespace AutoHub.API.Controllers
         /// <summary>
         /// Get all users.
         /// </summary>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="403">Admin access only.</response>
-        /// <returns>Returns list of users</returns>
+        /// <returns>Returns list of users.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllUsers()
@@ -48,11 +50,13 @@ namespace AutoHub.API.Controllers
         /// Get a user by ID.
         /// </summary>
         /// <param name="userId"></param>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="403">Admin access only.</response>
         /// <response code="404">User not found.</response>
         /// <returns>Returns user.</returns>
         [HttpGet("{userId}")]
         [ProducesResponseType(typeof(UserResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -84,13 +88,15 @@ namespace AutoHub.API.Controllers
         /// <param name="model"></param>
         /// <response code="204">User was updated successfully.</response>
         /// <response code="400">Invalid model.</response>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="403">Admin access only.</response>
-        /// <response code="422">Invalid user role ID.</response>
         /// <response code="404">User not found.</response>
+        /// <response code="422">Invalid user role ID.</response>
         /// <returns></returns>
         [HttpPut("{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -109,11 +115,13 @@ namespace AutoHub.API.Controllers
         /// <param name="userId"></param>
         /// <param name="roleId"></param>
         /// <response code="204">User role was updated successfully.</response>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="404">User not found.</response>
         /// <response code="422">Invalid role ID.</response>
         /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -129,11 +137,13 @@ namespace AutoHub.API.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <response code="204">User was deleted successfully.</response>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="403">Admin access only.</response>
         /// <response code="404">User not found.</response>
         /// <returns></returns>
         [HttpDelete("{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

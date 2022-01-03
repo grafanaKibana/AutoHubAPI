@@ -29,9 +29,11 @@ namespace AutoHub.API.Controllers
         /// <summary>
         /// Get all car colors.
         /// </summary>
+        /// <response code="401">Unauthorized Access.</response>
         /// <returns>Returns list of car colors.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarColorResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarColors()
         {
@@ -56,11 +58,15 @@ namespace AutoHub.API.Controllers
         /// </remarks>
         /// <response code="201">Color was created successfully.</response>
         /// <response code="400">Invalid model.</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarColor([FromBody] CarColorCreateRequestModel model)
         {
@@ -86,12 +92,16 @@ namespace AutoHub.API.Controllers
         /// </remarks>
         /// <response code="204">Color was updated successfully.</response>
         /// <response code="400">Invalid model.</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <response code="404">Color not found.</response>
         /// <returns></returns>
         [HttpPut("{carColorId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequestModel model)
@@ -107,11 +117,15 @@ namespace AutoHub.API.Controllers
         /// </summary>
         /// <param name="carColorId"></param>
         /// <response code="204">Color was deleted successfully.</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <response code="404">Color not found.</response>
         /// <returns></returns>
         [HttpDelete("{carColorId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarColor(int carColorId)

@@ -30,12 +30,14 @@ namespace AutoHub.API.Controllers
         /// Get all bids of specific lot.
         /// </summary>
         /// <param name="lotId"></param>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="403">Admin access only.</response>
         /// <response code="404">Lot not found.</response>
         /// <returns>List of bids of lot.</returns>
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -64,11 +66,13 @@ namespace AutoHub.API.Controllers
         /// </remarks>
         /// <response code="201">Bid was created successfully</response>
         /// <response code="400">Invalid model</response>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="404">Lot not found</response>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateBid(int lotId, [FromBody] BidCreateRequestModel model)

@@ -28,11 +28,13 @@ namespace AutoHub.API.Controllers
         /// Returns all bids created by user
         /// </summary>
         /// <param name="userId"></param>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="403">Admin access only</response>
         /// <response code="404">User not found</response>
         /// <returns>List of bids of user</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
