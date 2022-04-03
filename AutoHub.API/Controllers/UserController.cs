@@ -6,8 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers
@@ -23,7 +23,7 @@ namespace AutoHub.API.Controllers
 
         public UserController(IUserService userService, IMapper mapper)
         {
-            _userService = userService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _mapper = mapper;
         }
 

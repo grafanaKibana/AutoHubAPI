@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -22,7 +23,7 @@ namespace AutoHub.API.Controllers
 
         public LotBidController(IBidService bidService, IMapper mapper)
         {
-            _bidService = bidService;
+            _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
             _mapper = mapper;
         }
 

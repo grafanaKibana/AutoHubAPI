@@ -7,8 +7,9 @@ namespace AutoHub.API.Validators
     {
         public BidCreateRequestModelValidator()
         {
-            RuleFor(x => x.BidValue).NotEmpty();
-            RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.BidValue).NotEmpty().GreaterThan(0);
+            
+            RuleFor(x => x.UserId).NotEmpty().GreaterThanOrEqualTo(0);
         }
     }
 }

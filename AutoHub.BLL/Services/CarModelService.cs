@@ -31,7 +31,7 @@ namespace AutoHub.BLL.Services
         {
             var model = _context.CarModels.Find(carModelId);
 
-            if (model == null) throw new NotFoundException($"Car model with ID {carModelId} not exist");
+            if (model == null) throw new NotFoundException($"Car model with ID {carModelId} not exist.");
 
             var mappedModels = _mapper.Map<CarModelResponseDTO>(model);
             return mappedModels;
@@ -41,7 +41,7 @@ namespace AutoHub.BLL.Services
         {
             var isDuplicate = _context.CarModels.Any(carModel => carModel.CarModelName == createModelDTO.CarModelName);
 
-            if (isDuplicate) throw new DublicateException($"{createModelDTO.CarModelName} already exists");
+            if (isDuplicate) throw new DublicateException($"\"{createModelDTO.CarModelName}\" already exists.");
 
             var model = _mapper.Map<CarModel>(createModelDTO);
             _context.CarModels.Add(model);
@@ -52,7 +52,7 @@ namespace AutoHub.BLL.Services
         {
             var carModel = _context.CarModels.Find(carModelId);
 
-            if (carModel == null) throw new NotFoundException($"Car model with ID {carModelId} not exist");
+            if (carModel == null) throw new NotFoundException($"Car model with ID {carModelId} not exist.");
 
             carModel.CarModelName = updateModelDTO.CarModelName;
 
@@ -64,7 +64,7 @@ namespace AutoHub.BLL.Services
         {
             var carModel = _context.CarModels.Find(carModelId);
 
-            if (carModel == null) throw new NotFoundException($"Car model with ID {carModelId} not exist");
+            if (carModel == null) throw new NotFoundException($"Car model with ID {carModelId} not exist.");
 
             _context.CarModels.Remove(carModel);
             _context.SaveChanges();

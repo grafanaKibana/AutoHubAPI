@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
@@ -21,7 +22,7 @@ namespace AutoHub.API.Controllers
 
         public AuthenticationController(IUserService userService, IMapper mapper)
         {
-            _userService = userService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _mapper = mapper;
         }
         

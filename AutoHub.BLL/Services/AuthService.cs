@@ -51,14 +51,8 @@ namespace AutoHub.BLL.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public string HashPassword(string password)
-        {
-            return Crypto.HashPassword(password);
-        }
+        public string HashPassword(string password) => Crypto.HashPassword(password);
 
-        public bool VerifyPassword(string password, string hashedPassword)
-        {
-            return Crypto.Verify(password, hashedPassword);
-        }
+        public bool VerifyPassword(string password, string hashedPassword) => Crypto.Verify(password, hashedPassword);
     }
 }

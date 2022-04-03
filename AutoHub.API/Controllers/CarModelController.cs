@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Common;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace AutoHub.API.Controllers
 {
@@ -22,7 +23,7 @@ namespace AutoHub.API.Controllers
 
         public CarModelController(ICarModelService carModelService, IMapper mapper)
         {
-            _carModelService = carModelService;
+            _carModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));
             _mapper = mapper;
         }
 

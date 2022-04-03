@@ -98,7 +98,7 @@ namespace AutoHub.Tests.ValidatorsTests
             //Arrange
             var model = new UserLoginRequestModel
             {
-                Username = "v.zelensky",
+                Username = string.Empty,
                 Password = "admin"
             };
 

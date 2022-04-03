@@ -31,7 +31,7 @@ namespace AutoHub.BLL.Services
         {
             var color = _context.CarColors.Find(carColorId);
 
-            if (color == null) throw new NotFoundException($"Car color with ID {carColorId} not exist");
+            if (color == null) throw new NotFoundException($"Car color with ID {carColorId} not exist.");
 
             var mappedColor = _mapper.Map<CarColorResponseDTO>(color);
             return mappedColor;
@@ -41,7 +41,7 @@ namespace AutoHub.BLL.Services
         {
             var isDuplicate = _context.CarColors.Any(carColor => carColor.CarColorName == createColorDTO.CarColorName);
 
-            if (isDuplicate) throw new DublicateException($"{createColorDTO.CarColorName} already exists");
+            if (isDuplicate) throw new DublicateException($"\"{createColorDTO.CarColorName}\" already exists.");
 
             var color = _mapper.Map<CarColor>(createColorDTO);
             _context.CarColors.Add(color);
@@ -52,7 +52,7 @@ namespace AutoHub.BLL.Services
         {
             var carColor = _context.CarColors.Find(carColorId);
 
-            if (carColor == null) throw new NotFoundException($"Car color with ID {carColorId} not exist");
+            if (carColor == null) throw new NotFoundException($"Car color with ID {carColorId} not exist.");
 
             carColor.CarColorName = updateColorDTO.CarColorName;
 
@@ -64,7 +64,7 @@ namespace AutoHub.BLL.Services
         {
             var carColor = _context.CarColors.Find(carColorId);
 
-            if (carColor == null) throw new NotFoundException($"Car color with ID {carColorId} not exist");
+            if (carColor == null) throw new NotFoundException($"Car color with ID {carColorId} not exist.");
 
             _context.CarColors.Remove(carColor);
             _context.SaveChanges();

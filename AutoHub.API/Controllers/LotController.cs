@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Common;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace AutoHub.API.Controllers
 {
@@ -23,7 +24,7 @@ namespace AutoHub.API.Controllers
 
         public LotController(ILotService lotService, IMapper mapper)
         {
-            _lotService = lotService;
+            _lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
             _mapper = mapper;
         }
 

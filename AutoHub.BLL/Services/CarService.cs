@@ -45,7 +45,7 @@ namespace AutoHub.BLL.Services
                 .Include(car => car.CarStatus)
                 .FirstOrDefault(car => car.CarId == carId);
 
-            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist");
+            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist.");
 
             var mappedCar = _mapper.Map<CarResponseDTO>(car);
             return mappedCar;
@@ -71,7 +71,7 @@ namespace AutoHub.BLL.Services
         public void Update(int carId, CarUpdateRequestDTO updateCarDTO)
         {
             if (!Enum.IsDefined(typeof(CarStatusEnum), updateCarDTO.CarStatusId))
-                throw new EntityValidationException("Incorrect car status ID");
+                throw new EntityValidationException($"Incorrect {nameof(CarStatus.CarStatusId)} value.");
 
             var car = _context.Cars
                 .Include(car => car.CarBrand)
@@ -80,7 +80,7 @@ namespace AutoHub.BLL.Services
                 .Include(car => car.CarStatus)
                 .FirstOrDefault(car => car.CarId == carId);
 
-            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist");
+            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist.");
 
             if (car.CarBrand.CarBrandName != updateCarDTO.CarBrand)
             {
@@ -119,11 +119,11 @@ namespace AutoHub.BLL.Services
         public void UpdateStatus(int carId, int statusId)
         {
             if (!Enum.IsDefined(typeof(CarStatusEnum), statusId))
-                throw new EntityValidationException("Incorrect car status ID");
+                throw new EntityValidationException($"Incorrect {nameof(CarStatus.CarStatusId)} value.");
 
             var car = _context.Cars.Find(carId);
 
-            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist");
+            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist.");
 
             car.CarStatusId = (CarStatusEnum)statusId;
 
@@ -135,7 +135,7 @@ namespace AutoHub.BLL.Services
         {
             var car = _context.Cars.Find(carId);
 
-            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist");
+            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist.");
 
             _context.Cars.Remove(car);
             _context.SaveChanges();

@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace AutoHub.API.Controllers
@@ -20,7 +21,7 @@ namespace AutoHub.API.Controllers
 
         public UserBidController(IBidService bidService, IMapper mapper)
         {
-            _bidService = bidService;
+            _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
             _mapper = mapper;
         }
 

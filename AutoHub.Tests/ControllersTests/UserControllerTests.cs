@@ -30,7 +30,7 @@ namespace AutoHub.Tests.ControllersTests
         }
 
         [Fact]
-        public void GetAllUsers_ReturnsOk()
+        public async void GetAllUsers_ReturnsOk()
         {
             //Arrange
             var users = _fixture.CreateMany<UserResponseDTO>();
@@ -45,10 +45,10 @@ namespace AutoHub.Tests.ControllersTests
                 .Create());
 
             _mapperMock.Setup(mapper => mapper.Map<IEnumerable<UserResponseModel>>(users)).Returns(mappedUsers);
-            _userServiceMock.Setup(service => service.GetAllAsync()).Returns(users);
+            _userServiceMock.Setup(service => service.GetAllAsync()).ReturnsAsync(users);
 
             //Act
-            var result = _userController.GetAllUsers();
+            var result = await _userController.GetAllUsers();
 
             //Assert
             result.Should().NotBeNull();
@@ -71,7 +71,7 @@ namespace AutoHub.Tests.ControllersTests
                 .Create();
 
             _mapperMock.Setup(mapper => mapper.Map<UserResponseModel>(user)).Returns(mappedUser);
-            _userServiceMock.Setup(service => service.GetByIdAsync(user.UserId)).Returns(user);
+            _userServiceMock.Setup(service => service.GetByIdAsync(user.UserId)).ReturnsAsync(user);
 
             //Act
             var result = _userController.GetUserById(user.UserId);
@@ -79,68 +79,6 @@ namespace AutoHub.Tests.ControllersTests
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
-        }
-
-        /*[Fact]
-        public void LoginUser_ValidData_ReturnsOk()
-        {
-            //Arrange
-            var requestModel = _fixture.Create<UserLoginRequestModel>();
-
-            var responseDTO = _fixture.Build<UserResponseDTO>()
-                .With(x => x.Email, requestModel.Username)
-                .Create();
-
-            var mappedUser = _fixture.Build<UserLoginRequestDTO>()
-                .With(x => x.Username, requestModel.Username)
-                .With(x => x.Password, requestModel.Password)
-                .Create();
-
-            var authModel = _fixture.Build<UserLoginResponseDTO>()
-                .With(x => x.UserName, mappedUser.Username)
-                .Create();
-
-            var mappedAuthModel = _fixture.Build<UserLoginResponseModel>()
-                .With(x => x.Email, authModel.Email)
-                .With(x => x.Token, authModel.Token)
-                .Create();
-
-            _userServiceMock.Setup(service => service.GetByEmailAsync(requestModel.Username)).Returns(responseDTO);
-            _mapperMock.Setup(mapper => mapper.Map<UserLoginRequestDTO>(requestModel)).Returns(mappedUser);
-            _userServiceMock.Setup(service => service.LoginAsync(mappedUser)).Returns(authModel);
-            _mapperMock.Setup(mapper => mapper.Map<UserLoginResponseModel>(authModel)).Returns(mappedAuthModel);
-
-            //Act
-            var result = _userController.LoginUser(requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<OkObjectResult>();
-        }*/
-
-        [Fact]
-        public void RegisterUser_ValidModel_ReturnsCreated()
-        {
-            //Arrange
-            var requestModel = _fixture.Create<UserRegisterRequestModel>();
-
-            var mappedUser = _fixture.Build<UserRegisterRequestDTO>()
-                .With(x => x.Email, requestModel.Email)
-                .With(x => x.Password, requestModel.Password)
-                .With(x => x.PhoneNumber, requestModel.PhoneNumber)
-                .With(x => x.FirstName, requestModel.FirstName)
-                .With(x => x.LastName, requestModel.LastName)
-                .Create();
-
-            _mapperMock.Setup(mapper => mapper.Map<UserRegisterRequestDTO>(requestModel)).Returns(mappedUser);
-            //Act
-            var result = _userController.RegisterUser(requestModel);
-
-            //Assert
-            result.Should().NotBeNull();
-            result.Should().BeOfType<StatusCodeResult>().And.BeEquivalentTo(new StatusCodeResult(201));
-
-            _userServiceMock.Verify(service => service.RegisterAsync(mappedUser));
         }
 
         [Fact]

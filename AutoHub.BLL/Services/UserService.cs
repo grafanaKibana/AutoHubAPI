@@ -48,7 +48,7 @@ namespace AutoHub.BLL.Services
         public async Task<UserResponseDTO> GetByIdAsync(int userId)
         {
             var user = _context.Users.Find(userId);
-            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist.");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
             mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
@@ -59,7 +59,7 @@ namespace AutoHub.BLL.Services
         {
             var user = _context.Users.FirstOrDefault(user => user.Email == email);
 
-            if (user == null) throw new NotFoundException($"User with E-Mail {email} not exist");
+            if (user == null) throw new NotFoundException($"User with E-Mail {email} not exist.");
 
             var mappedUser = _mapper.Map<UserResponseDTO>(user);
             mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
@@ -70,13 +70,13 @@ namespace AutoHub.BLL.Services
         {
             var user = await _userManager.FindByNameAsync(userModel.Username);
 
-            if (user == null) throw new NotFoundException($"User with username {userModel.Username} not found");
+            if (user == null) throw new NotFoundException($"User with username {userModel.Username} not found.");
 
             var isPasswordVerified =
                 await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe,
                     false);
 
-            if (!isPasswordVerified.Succeeded) throw new LoginFailedException("Wrong password");
+            if (!isPasswordVerified.Succeeded) throw new LoginFailedException("Wrong password.");
 
             var mappedUser = new UserLoginResponseDTO
             {
@@ -85,6 +85,7 @@ namespace AutoHub.BLL.Services
                 Email = user.Email,
                 Token = _authService.GenerateWebTokenForUser(user)
             };
+
             return mappedUser;
         }
 
@@ -93,12 +94,14 @@ namespace AutoHub.BLL.Services
             var isDuplicate = _context.Users.Any(user => user.Email == registerUserDTO.Email);
 
             if (isDuplicate)
-                throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists");
+                throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists.");
 
             var newUser = _mapper.Map<AppUser>(registerUserDTO);
 
             newUser.RegistrationTime = DateTime.UtcNow;
+
             var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
+
             await _userManager.AddToRoleAsync(newUser, "Customer");
             if (!result.Succeeded)
             {
@@ -112,7 +115,7 @@ namespace AutoHub.BLL.Services
         {
             var user = _context.Users.Find(userId);
 
-            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist.");
 
             user.FirstName = updateUserDTO.FirstName;
             user.LastName = updateUserDTO.LastName;
@@ -131,7 +134,7 @@ namespace AutoHub.BLL.Services
 
             var user = _context.UserRoles.Find(userId);
 
-            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist.");
 
             user.RoleId = roleId;
             _context.UserRoles.Update(user);
@@ -142,15 +145,12 @@ namespace AutoHub.BLL.Services
         {
             var user = _context.Users.Find(userId);
 
-            if (user == null) throw new NotFoundException($"User with ID {userId} not exist");
+            if (user == null) throw new NotFoundException($"User with ID {userId} not exist.");
 
             _context.Users.Remove(user);
             _context.SaveChanges();
         }
 
-        public async Task LogoutAsync()
-        {
-            await _signManager.SignOutAsync();
-        }
+        public async Task LogoutAsync() => await _signManager.SignOutAsync();
     }
 }
