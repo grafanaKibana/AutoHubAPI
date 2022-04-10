@@ -8,7 +8,7 @@ namespace AutoHub.DAL.EntitySettings
     {
         public void Configure(EntityTypeBuilder<Bid> builder)
         {
-            builder.ToTable("Bid").HasKey(bid => bid.BidId);
+            builder.ToTable(nameof(Bid)).HasKey(bid => bid.BidId);
 
             builder.HasOne(bid => bid.User)
                 .WithMany(user => user.UserBids)

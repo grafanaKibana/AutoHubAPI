@@ -9,9 +9,9 @@ namespace AutoHub.API.Extensions
     {
         public static void AddIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<AppUser, AppRole>()
-                .AddRoleManager<RoleManager<AppRole>>()
-                .AddSignInManager<SignInManager<AppUser>>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddRoleManager<RoleManager<ApplicationRole>>()
+                .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddEntityFrameworkStores<AutoHubContext>()
                 .AddDefaultTokenProviders();
             

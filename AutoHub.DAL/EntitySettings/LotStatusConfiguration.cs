@@ -11,7 +11,7 @@ namespace AutoHub.DAL.EntitySettings
     {
         public void Configure(EntityTypeBuilder<LotStatus> builder)
         {
-            builder.ToTable("LotStatus").HasKey(status => status.LotStatusId);
+            builder.ToTable(nameof(LotStatus)).HasKey(status => status.LotStatusId);
 
             builder.HasData(
                 Enum.GetValues(typeof(LotStatusEnum))

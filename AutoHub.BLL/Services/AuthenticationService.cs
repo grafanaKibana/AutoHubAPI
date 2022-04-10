@@ -15,17 +15,17 @@ using Crypto = BCrypt.Net.BCrypt;
 
 namespace AutoHub.BLL.Services
 {
-    public class AuthService : IAuthService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly JwtConfiguration _jwtOptions;
-        private readonly IList<AppRole> _roles;
-        public AuthService(IOptions<JwtConfiguration> jwtOptions, RoleManager<AppRole> roleManager)
+        private readonly IList<ApplicationRole> _roles;
+        public AuthenticationService(IOptions<JwtConfiguration> jwtOptions, RoleManager<ApplicationRole> roleManager)
         {
             _jwtOptions = jwtOptions.Value;
             _roles = roleManager.Roles.ToList();
         }
 
-        public string GenerateWebTokenForUser(AppUser user)
+        public string GenerateWebTokenForUser(ApplicationUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_jwtOptions.Key);

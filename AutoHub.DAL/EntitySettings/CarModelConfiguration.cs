@@ -8,7 +8,7 @@ namespace AutoHub.DAL.EntitySettings
     {
         public void Configure(EntityTypeBuilder<CarModel> builder)
         {
-            builder.ToTable("CarModel");
+            builder.ToTable(nameof(CarModel));
 
             builder.HasMany(model => model.Cars)
                 .WithOne(car => car.CarModel)

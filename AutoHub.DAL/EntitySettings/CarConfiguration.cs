@@ -9,7 +9,7 @@ namespace AutoHub.DAL.EntitySettings
         
         public void Configure(EntityTypeBuilder<Car> builder)
         {
-            builder.ToTable("Car").HasKey(car => car.CarId);
+            builder.ToTable(nameof(Car)).HasKey(car => car.CarId);
 
             builder.Navigation(car => car.CarBrand).AutoInclude();
             builder.Navigation(car => car.CarModel).AutoInclude();

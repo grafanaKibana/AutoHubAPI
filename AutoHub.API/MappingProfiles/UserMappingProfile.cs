@@ -18,10 +18,10 @@ namespace AutoHub.API.MappingProfiles
             CreateMap<UserUpdateRequestModel, UserUpdateRequestDTO>();
 
             //DTO <-> Entity maps
-            CreateMap<AppUser, UserResponseDTO>()
+            CreateMap<ApplicationUser, UserResponseDTO>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
-            CreateMap<UserRegisterRequestDTO, AppUser>();
-            CreateMap<UserUpdateRequestDTO, AppUser>();
+            CreateMap<UserRegisterRequestDTO, ApplicationUser>();
+            CreateMap<UserUpdateRequestDTO, ApplicationUser>();
         }
     }
 }

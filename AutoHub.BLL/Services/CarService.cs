@@ -118,12 +118,12 @@ namespace AutoHub.BLL.Services
 
         public void UpdateStatus(int carId, int statusId)
         {
-            if (!Enum.IsDefined(typeof(CarStatusEnum), statusId))
+            if (Enum.IsDefined(typeof(CarStatusEnum), statusId).Equals(false))
+            {
                 throw new EntityValidationException($"Incorrect {nameof(CarStatus.CarStatusId)} value.");
+            }
 
-            var car = _context.Cars.Find(carId);
-
-            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist.");
+            var car = _context.Cars.Find(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
             car.CarStatusId = (CarStatusEnum)statusId;
 
@@ -133,9 +133,7 @@ namespace AutoHub.BLL.Services
 
         public void Delete(int carId)
         {
-            var car = _context.Cars.Find(carId);
-
-            if (car == null) throw new NotFoundException($"Car with ID {carId} not exist.");
+            var car = _context.Cars.Find(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
             _context.Cars.Remove(car);
             _context.SaveChanges();

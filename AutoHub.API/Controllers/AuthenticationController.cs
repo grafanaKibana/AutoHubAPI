@@ -17,7 +17,7 @@ namespace AutoHub.API.Controllers
     [Produces("application/json")]
     public class AuthenticationController : Controller
     {
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
         public AuthenticationController(IUserService userService, IMapper mapper)

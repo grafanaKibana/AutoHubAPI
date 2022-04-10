@@ -1,37 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoHub.DAL.Entities;
 using AutoHub.DAL.Entities.Identity;
-using AutoHub.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<AppRole>
+    public class RoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
     {
-        public void Configure(EntityTypeBuilder<AppRole> builder)
+        public void Configure(EntityTypeBuilder<ApplicationRole> builder)
         {
-            builder.HasData(new List<AppRole>
+            builder.ToTable(nameof(ApplicationRole));
+
+            builder.HasData(new List<ApplicationRole>
             {
-                new AppRole
+                new ApplicationRole
                 {
                     Id = 1,
                     Name = "Customer",
                     NormalizedName = "Customer".Normalize().ToUpperInvariant(),
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 },
-                new AppRole
+                new ApplicationRole
                 {
                     Id = 2,
                     Name = "Seller",
                     NormalizedName = "Seller".Normalize().ToUpperInvariant(),
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 },
-                new AppRole
+                new ApplicationRole
                 {
                     Id = 3,
                     Name = "Administrator",

@@ -12,7 +12,7 @@ namespace AutoHub.API.Validators
         {
             RuleFor(x => x.Username).NotEmpty().MustNotHaveLeadingTrailingSpaces();
             
-            RuleFor(x => x.Password).NotEmpty().Length(UserRestrictions.MinPasswordLenght);
+            RuleFor(x => x.Password).NotEmpty().MinimumLength(UserRestrictions.MinPasswordLenght);
         }
     }
 
@@ -22,7 +22,7 @@ namespace AutoHub.API.Validators
         {
             RuleFor(x => x.Email).NotEmpty().EmailAddress().MustNotHaveLeadingTrailingSpaces();
             
-            RuleFor(x => x.Password).NotEmpty().Length(UserRestrictions.MinPasswordLenght);
+            RuleFor(x => x.Password).NotEmpty().MinimumLength(UserRestrictions.MinPasswordLenght);
             
             RuleFor(x => x.FirstName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
             

@@ -8,7 +8,7 @@ namespace AutoHub.DAL.EntitySettings
     {
         public void Configure(EntityTypeBuilder<CarColor> builder)
         {
-            builder.ToTable("CarColor");
+            builder.ToTable(nameof(CarColor));
 
             builder.HasMany(color => color.Cars)
                 .WithOne(car => car.CarColor)

@@ -8,7 +8,7 @@ namespace AutoHub.DAL.EntitySettings
     {
         public void Configure(EntityTypeBuilder<Lot> builder)
         {
-            builder.ToTable("Lot").HasKey(lot => lot.LotId);
+            builder.ToTable(nameof(Lot)).HasKey(lot => lot.LotId);
 
             builder.Navigation(lot => lot.LotStatus).AutoInclude();
 

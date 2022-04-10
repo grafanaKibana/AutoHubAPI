@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    internal class UserConfiguration : IEntityTypeConfiguration<AppUser>
+    internal class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            
+            builder.ToTable(nameof(ApplicationUser));
         }
     }
 }

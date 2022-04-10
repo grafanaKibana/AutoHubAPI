@@ -9,16 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoHub.DAL
 {
-    public class AutoHubContext : IdentityDbContext<AppUser, AppRole, int>
+    public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
-        public AutoHubContext()
-        {
-        }
+        public AutoHubContext(DbContextOptions<AutoHubContext> options) : base(options) { }
 
-        public AutoHubContext(DbContextOptions<AutoHubContext> options)
-            : base(options)
-        {
-        }
         //DbSets [Entities]
         public virtual DbSet<Car> Cars { get; set; }
         public virtual DbSet<CarBrand> CarBrands { get; set; }
@@ -29,18 +23,12 @@ namespace AutoHub.DAL
         public virtual DbSet<CarStatus> CarStatus { get; set; }
         public virtual DbSet<LotStatus> LotStatus { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(
-                "Data Source=SQL5101.site4now.net;Initial Catalog=db_a7d938_autohubdb;User Id=db_a7d938_autohubdb_admin;Password=db_a7d938");
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            new RoleConfiguration().Configure(builder.Entity<AppRole>());
-            new UserConfiguration().Configure(builder.Entity<AppUser>());
+            
+            new RoleConfiguration().Configure(builder.Entity<ApplicationRole>());
+            new UserConfiguration().Configure(builder.Entity<ApplicationUser>());
             new CarConfiguration().Configure(builder.Entity<Car>());
             new CarBrandConfiguration().Configure(builder.Entity<CarBrand>());
             new CarModelConfiguration().Configure(builder.Entity<CarModel>());

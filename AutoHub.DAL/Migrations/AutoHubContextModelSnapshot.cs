@@ -194,7 +194,7 @@ namespace AutoHub.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AutoHub.DAL.Entities.Identity.AppRole", b =>
+            modelBuilder.Entity("AutoHub.DAL.Entities.Identity.ApplicationRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -226,27 +226,27 @@ namespace AutoHub.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "201e653b-c2e2-474e-b9f0-ec8559329736",
+                            ConcurrencyStamp = "c4f2eb39-e2ab-4792-a29b-ced1916bfa70",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "a90cb7d7-7ab4-416b-83a0-7fab5ef0846b",
+                            ConcurrencyStamp = "dafd068d-b8d6-456a-b440-d93496fdb99e",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "4c6ee1d4-2ed2-4105-a698-ef71ae2bb8a1",
+                            ConcurrencyStamp = "51230421-e3b5-49f0-bb65-4d493d5541a1",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
                 });
 
-            modelBuilder.Entity("AutoHub.DAL.Entities.Identity.AppUser", b =>
+            modelBuilder.Entity("AutoHub.DAL.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -506,7 +506,7 @@ namespace AutoHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationUser", "User")
                         .WithMany("UserBids")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -560,7 +560,7 @@ namespace AutoHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", "Creator")
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationUser", "Creator")
                         .WithMany("UserLots")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -572,7 +572,7 @@ namespace AutoHub.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", "Winner")
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationUser", "Winner")
                         .WithMany("VictoryLots")
                         .HasForeignKey("WinnerId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -588,7 +588,7 @@ namespace AutoHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppRole", null)
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -597,7 +597,7 @@ namespace AutoHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -606,7 +606,7 @@ namespace AutoHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -615,13 +615,13 @@ namespace AutoHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppRole", null)
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -630,7 +630,7 @@ namespace AutoHub.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("AutoHub.DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("AutoHub.DAL.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -657,7 +657,7 @@ namespace AutoHub.DAL.Migrations
                     b.Navigation("Cars");
                 });
 
-            modelBuilder.Entity("AutoHub.DAL.Entities.Identity.AppUser", b =>
+            modelBuilder.Entity("AutoHub.DAL.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("UserBids");
 
