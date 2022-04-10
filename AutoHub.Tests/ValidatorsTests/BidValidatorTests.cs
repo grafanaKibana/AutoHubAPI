@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoHub.API.Models.BidModels;
+﻿using AutoHub.API.Models.BidModels;
 using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
 using Xunit;

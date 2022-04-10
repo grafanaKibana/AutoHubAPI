@@ -1,14 +1,14 @@
+using AutoHub.API.Common;
 using AutoHub.API.Models.CarModelModels;
 using AutoHub.BLL.DTOs.CarModelDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using AutoHub.API.Common;
-using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace AutoHub.API.Controllers
 {
@@ -55,7 +55,7 @@ namespace AutoHub.API.Controllers
         ///     {
         ///         "carModelName": "RS6 Avant"
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <response code="201">Model was created successfully</response>
         /// <response code="400">Invalid model</response>
@@ -89,7 +89,7 @@ namespace AutoHub.API.Controllers
         ///     {
         ///         "carModelName": "RS6 Avant"
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <response code="204">Model was updated successfully</response>
         /// <response code="400">Invalid model</response>

@@ -1,5 +1,3 @@
-using System.Security.AccessControl;
-
 namespace AutoHub.BLL.DTOs.UserDTOs
 {
     public class UserUpdateRequestDTO
@@ -13,6 +11,5 @@ namespace AutoHub.BLL.DTOs.UserDTOs
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }
-
     }
 }

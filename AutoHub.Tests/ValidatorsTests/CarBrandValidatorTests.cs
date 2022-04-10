@@ -11,6 +11,7 @@ namespace AutoHub.Tests.ValidatorsTests
         private readonly Fixture _fixture;
         private readonly CarBrandCreateRequestModelValidator _createValidator;
         private readonly CarBrandUpdateRequestModelValidator _updateValidator;
+
         public CarBrandValidatorTests()
         {
             _fixture = new Fixture();

@@ -1,14 +1,14 @@
-﻿using AutoHub.API.Models.CarModels;
+﻿using AutoHub.API.Common;
+using AutoHub.API.Models.CarModels;
 using AutoHub.BLL.DTOs.CarDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using AutoHub.API.Common;
-using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace AutoHub.API.Controllers
 {
@@ -154,7 +154,6 @@ namespace AutoHub.API.Controllers
             return NoContent();
         }
 
-
         /// <summary>
         /// Update car status.
         /// </summary>
@@ -198,8 +197,8 @@ namespace AutoHub.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCar(int carId)
-        { 
-            _carService.Delete(carId); 
+        {
+            _carService.Delete(carId);
             return NoContent();
         }
     }

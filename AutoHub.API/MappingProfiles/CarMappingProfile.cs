@@ -14,7 +14,6 @@ namespace AutoHub.API.MappingProfiles
             CreateMap<CarCreateRequestModel, CarCreateRequestDTO>();
             CreateMap<CarUpdateRequestModel, CarUpdateRequestDTO>();
 
-
             //DTO <-> Entity maps
             CreateMap<Car, CarResponseDTO>()
                 .ForPath(dest => dest.CarBrand, o => o.MapFrom(car => car.CarBrand.CarBrandName))

@@ -67,13 +67,13 @@ namespace AutoHub.API.Controllers
 
             return Ok(mappedUser);
         }
-        
+
         /// <summary>
         /// Update user.
         /// </summary>
         /// /// <remarks>
         /// Sample request:
-        /// 
+        ///
         ///     PUT /User
         ///     {
         ///         "userRoleId": 3
@@ -82,7 +82,7 @@ namespace AutoHub.API.Controllers
         ///         "email": "user@mail.com",
         ///         "phoneNumber": "+380000000000"
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <param name="userId"></param>
         /// <param name="model"></param>

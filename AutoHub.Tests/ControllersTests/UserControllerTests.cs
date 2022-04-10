@@ -20,7 +20,6 @@ namespace AutoHub.Tests.ControllersTests
         private readonly UserController _userController;
         private readonly Mock<IUserService> _userServiceMock;
 
-
         public UserControllerTests()
         {
             _fixture = new Fixture();
@@ -87,7 +86,7 @@ namespace AutoHub.Tests.ControllersTests
             //Arrange
             var userId = _fixture.Create<int>();
             var requestModel = _fixture.Create<UserUpdateRequestModel>();
-                
+
             var mappedUser = _fixture.Build<UserUpdateRequestDTO>()
                 .With(x => x.Email, requestModel.Email)
                 .With(x => x.PhoneNumber, requestModel.PhoneNumber)

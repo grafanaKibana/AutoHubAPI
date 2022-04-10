@@ -1,14 +1,14 @@
-﻿using AutoHub.API.Models.LotModels;
+﻿using AutoHub.API.Common;
+using AutoHub.API.Models.LotModels;
 using AutoHub.BLL.DTOs.LotDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using AutoHub.API.Common;
-using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace AutoHub.API.Controllers
 {
@@ -20,7 +20,6 @@ namespace AutoHub.API.Controllers
     {
         private readonly ILotService _lotService;
         private readonly IMapper _mapper;
-
 
         public LotController(ILotService lotService, IMapper mapper)
         {
@@ -79,7 +78,6 @@ namespace AutoHub.API.Controllers
             return Ok(mappedLot);
         }
 
-
         /// <summary>
         /// Create lot.
         /// </summary>
@@ -113,7 +111,7 @@ namespace AutoHub.API.Controllers
             var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
             _lotService.Create(mappedLot);
 
-            return StatusCode((int) HttpStatusCode.Created);
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         /// <summary>

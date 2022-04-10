@@ -1,14 +1,14 @@
+using AutoHub.API.Common;
 using AutoHub.API.Models.CarBrandModels;
 using AutoHub.BLL.DTOs.CarBrandDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using AutoHub.API.Common;
-using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace AutoHub.API.Controllers
 {
@@ -26,7 +26,6 @@ namespace AutoHub.API.Controllers
             _carBrandService = carBrandService ?? throw new ArgumentNullException(nameof(carBrandService));
             _mapper = mapper;
         }
-
 
         /// <summary>
         /// Get all car brands.
@@ -56,7 +55,7 @@ namespace AutoHub.API.Controllers
         ///     {
         ///         "carBrandName": "Audi"
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <response code="201">Brand was created successfully</response>
         /// <response code="400">Invalid model</response>
@@ -90,7 +89,7 @@ namespace AutoHub.API.Controllers
         ///     {
         ///         "carBrandName": "Audi"
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <response code="204">Brand was updated successfully</response>
         /// <response code="400">Invalid model</response>
@@ -113,7 +112,6 @@ namespace AutoHub.API.Controllers
 
             return NoContent();
         }
-
 
         /// <summary>
         /// Delete car brand.

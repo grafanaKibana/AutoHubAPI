@@ -1,6 +1,7 @@
 using AutoHub.BLL.Configuration;
 using AutoHub.BLL.Interfaces;
-using AutoHub.DAL.Entities;
+using AutoHub.DAL.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -9,8 +10,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using AutoHub.DAL.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
 using Crypto = BCrypt.Net.BCrypt;
 
 namespace AutoHub.BLL.Services
@@ -19,6 +18,7 @@ namespace AutoHub.BLL.Services
     {
         private readonly JwtConfiguration _jwtOptions;
         private readonly IList<ApplicationRole> _roles;
+
         public AuthenticationService(IOptions<JwtConfiguration> jwtOptions, RoleManager<ApplicationRole> roleManager)
         {
             _jwtOptions = jwtOptions.Value;

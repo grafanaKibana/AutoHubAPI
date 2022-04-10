@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoHub.API.Models.CarColorModels;
-using AutoHub.API.Models.CarModelModels;
 using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -75,6 +69,6 @@ namespace AutoHub.Tests.ValidatorsTests
 
             //Assert
             result.ShouldHaveValidationErrorFor(x => x.CarColorName);
-        } 
+        }
     }
 }

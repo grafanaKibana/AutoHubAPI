@@ -1,6 +1,5 @@
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
-using AutoHub.DAL.Entities;
 using AutoHub.DAL.Entities.Identity;
 using AutoMapper;
 

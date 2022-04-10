@@ -1,7 +1,7 @@
-﻿using AutoHub.DAL.Enums;
+﻿using AutoHub.DAL.Entities.Identity;
+using AutoHub.DAL.Enums;
 using System;
 using System.Collections.Generic;
-using AutoHub.DAL.Entities.Identity;
 
 namespace AutoHub.DAL.Entities
 {

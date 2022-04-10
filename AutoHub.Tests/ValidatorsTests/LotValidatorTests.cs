@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
-using AutoHub.API.Models.LotModels;
+﻿using AutoHub.API.Models.LotModels;
 using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
 using Xunit;

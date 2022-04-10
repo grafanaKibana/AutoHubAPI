@@ -6,7 +6,6 @@ namespace AutoHub.DAL.EntitySettings
 {
     public class CarConfiguration : IEntityTypeConfiguration<Car>
     {
-        
         public void Configure(EntityTypeBuilder<Car> builder)
         {
             builder.ToTable(nameof(Car)).HasKey(car => car.CarId);

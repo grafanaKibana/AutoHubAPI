@@ -1,13 +1,13 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using AutoHub.API.Models.UserModels;
+﻿using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers
 {
@@ -25,21 +25,21 @@ namespace AutoHub.API.Controllers
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _mapper = mapper;
         }
-        
+
         /// <summary>
         /// Log-in with credentials.
         /// </summary>
         /// <param name="model"></param>
         /// <remarks>
         /// Sample request:
-        /// 
+        ///
         ///     POST /User/Login
         ///     {
         ///         "username": "nightWalker",
         ///         "password": "PasSw0Rd666",
         ///         "rememberMe": true
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <response code="200">Logged in successfully.</response>
         /// <response code="400">Invalid model.</response>
@@ -66,7 +66,7 @@ namespace AutoHub.API.Controllers
         /// <param name="model"></param>
         /// <remarks>
         /// Sample request:
-        /// 
+        ///
         ///     POST /User/Register
         ///     {
         ///         "firstName": "John",
@@ -76,7 +76,7 @@ namespace AutoHub.API.Controllers
         ///         "phoneNumber": "+380000000000",
         ///         "password": "PasSw0Rd666"
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <response code="201">Successfully registered.</response>
         /// <response code="400">Invalid model.</response>
@@ -90,7 +90,7 @@ namespace AutoHub.API.Controllers
             var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
             await _userService.RegisterAsync(mappedUser);
 
-            return StatusCode((int) HttpStatusCode.Created);
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         /// <summary>

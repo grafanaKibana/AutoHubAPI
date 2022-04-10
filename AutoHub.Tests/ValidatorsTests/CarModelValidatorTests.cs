@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoHub.API.Models.CarModelModels;
 using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
@@ -41,7 +36,7 @@ namespace AutoHub.Tests.ValidatorsTests
         public void CreateModelTestValidate_InvalidModel_ShouldHaveError()
         {
             //Arrange
-            var model = new CarModelCreateRequestModel{ CarModelName = null };
+            var model = new CarModelCreateRequestModel { CarModelName = null };
 
             //Act
             var result = _createModelValidator.TestValidate(model);

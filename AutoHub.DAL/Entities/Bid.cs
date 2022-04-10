@@ -1,5 +1,5 @@
-using System;
 using AutoHub.DAL.Entities.Identity;
+using System;
 
 namespace AutoHub.DAL.Entities
 {

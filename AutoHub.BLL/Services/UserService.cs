@@ -2,14 +2,14 @@ using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.BLL.Exceptions;
 using AutoHub.BLL.Interfaces;
 using AutoHub.DAL;
+using AutoHub.DAL.Entities.Identity;
 using AutoHub.DAL.Enums;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoHub.DAL.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
 
 namespace AutoHub.BLL.Services
 {

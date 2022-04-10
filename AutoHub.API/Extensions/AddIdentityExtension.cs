@@ -14,7 +14,7 @@ namespace AutoHub.API.Extensions
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddEntityFrameworkStores<AutoHubContext>()
                 .AddDefaultTokenProviders();
-            
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;

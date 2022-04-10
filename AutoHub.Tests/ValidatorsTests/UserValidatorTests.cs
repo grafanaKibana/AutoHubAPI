@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoHub.API.Models.UserModels;
 using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
@@ -113,17 +108,17 @@ namespace AutoHub.Tests.ValidatorsTests
         [Fact]
         public void UpdateUserTestValidate_ValidModel_ShouldNotHaveError()
         {
-           //Arrange
-           var model = new UserUpdateRequestModel
-           {
-               Email = "v.zelensky@gov.ua",
-               FirstName = "Volodymyr",
-               LastName = "Zelensky",
-               PhoneNumber = "+380670000000",
-           };
+            //Arrange
+            var model = new UserUpdateRequestModel
+            {
+                Email = "v.zelensky@gov.ua",
+                FirstName = "Volodymyr",
+                LastName = "Zelensky",
+                PhoneNumber = "+380670000000",
+            };
 
-           //Act
-           var result = _updateValidator.TestValidate(model);
+            //Act
+            var result = _updateValidator.TestValidate(model);
 
             //Assert
             result.ShouldNotHaveValidationErrorFor(x => x.Email);
@@ -152,7 +147,6 @@ namespace AutoHub.Tests.ValidatorsTests
             result.ShouldHaveValidationErrorFor(x => x.FirstName);
             result.ShouldHaveValidationErrorFor(x => x.LastName);
             result.ShouldHaveValidationErrorFor(x => x.PhoneNumber);
-
         }
     }
 }

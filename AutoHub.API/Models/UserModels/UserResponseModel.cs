@@ -8,7 +8,7 @@ namespace AutoHub.API.Models.UserModels
         public int UserId { get; set; }
 
         public string Username { get; set; }
-        
+
         public IList<string> UserRoles { get; set; }
 
         public string FirstName { get; set; }

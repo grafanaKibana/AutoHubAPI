@@ -38,7 +38,6 @@ namespace AutoHub.API.Controllers
         [HttpGet]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
-        
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -63,7 +62,7 @@ namespace AutoHub.API.Controllers
         ///         "userId": 1,
         ///         "bidValue": 50000
         ///     }
-        /// 
+        ///
         /// </remarks>
         /// <response code="201">Bid was created successfully</response>
         /// <response code="400">Invalid model</response>
