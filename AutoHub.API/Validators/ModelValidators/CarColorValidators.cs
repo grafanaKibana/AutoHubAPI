@@ -7,14 +7,14 @@ namespace AutoHub.API.Validators
     {
         public CarColorCreateRequestModelValidator()
         {
-            RuleFor(x => x.CarColorName).NotEmpty();
+            RuleFor(x => x.CarColorName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
         }
     }
     public class CarColorUpdateRequestModelValidator : AbstractValidator<CarColorUpdateRequestModel>
     {
         public CarColorUpdateRequestModelValidator()
         {
-            RuleFor(x => x.CarColorName).NotEmpty();
+            RuleFor(x => x.CarColorName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
         }
     }
 }

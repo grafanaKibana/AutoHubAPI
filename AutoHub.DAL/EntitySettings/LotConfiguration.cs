@@ -4,22 +4,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    public class LotConfiguration
+    public class LotConfiguration : IEntityTypeConfiguration<Lot>
     {
-        public LotConfiguration(EntityTypeBuilder<Lot> entity)
+        public void Configure(EntityTypeBuilder<Lot> builder)
         {
-            entity.ToTable("Lot").HasKey(lot => lot.LotId);
+            builder.ToTable(nameof(Lot)).HasKey(lot => lot.LotId);
 
-            entity.Navigation(lot => lot.LotStatus).AutoInclude();
+            builder.Navigation(lot => lot.LotStatus).AutoInclude();
 
-            entity.Property(lot => lot.StartTime).IsRequired();
+            builder.Property(lot => lot.StartTime).IsRequired();
 
-            entity.HasOne(lot => lot.Creator)
+            builder.HasOne(lot => lot.Creator)
                 .WithMany(user => user.UserLots)
                 .HasForeignKey(lot => lot.CreatorId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            entity.HasOne(lot => lot.Winner)
+            builder.HasOne(lot => lot.Winner)
                 .WithMany(user => user.VictoryLots)
                 .HasForeignKey(lot => lot.WinnerId)
                 .OnDelete(DeleteBehavior.NoAction);

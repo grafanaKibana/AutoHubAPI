@@ -5,11 +5,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace AutoHub.API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = AuthorizationRoles.Administrator)]
     [Route("api/Users/{userId}/Bids")]
     [Produces("application/json")]
     public class UserBidController : Controller
@@ -19,7 +21,7 @@ namespace AutoHub.API.Controllers
 
         public UserBidController(IBidService bidService, IMapper mapper)
         {
-            _bidService = bidService;
+            _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
             _mapper = mapper;
         }
 
@@ -27,12 +29,13 @@ namespace AutoHub.API.Controllers
         /// Returns all bids created by user
         /// </summary>
         /// <param name="userId"></param>
+        /// <response code="401">Unauthorized Access.</response>
         /// <response code="403">Admin access only</response>
         /// <response code="404">User not found</response>
         /// <returns>List of bids of user</returns>
         [HttpGet]
-        [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(typeof(IEnumerable<BidResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

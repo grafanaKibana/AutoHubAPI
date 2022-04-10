@@ -29,8 +29,6 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
                 .ToList();
 
@@ -44,8 +42,6 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
                 .Where(lot => lot.LotStatusId == LotStatusEnum.InProgress)
                 .ToList();
@@ -60,12 +56,8 @@ namespace AutoHub.BLL.Services
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
-                .FirstOrDefault(lot => lot.LotId == lotId);
-
-            if (lot == null) throw new NotFoundException($"Lot with ID {lotId} not exist");
+                .FirstOrDefault(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
             var mappedLot = _mapper.Map<LotResponseDTO>(lot);
             return mappedLot;
@@ -85,28 +77,22 @@ namespace AutoHub.BLL.Services
 
         public void Update(int lotId, LotUpdateRequestDTO updateLotDTO)
         {
-            if (!Enum.IsDefined(typeof(LotStatusEnum), updateLotDTO.LotStatusId))
-                throw new EntityValidationException("Incorrect lot status ID");
+            if (Enum.IsDefined(typeof(LotStatusEnum), updateLotDTO.LotStatusId).Equals(false))
+            {
+                throw new EntityValidationException($"Incorrect {nameof(LotStatus.LotStatusId)} value.");
+            }
 
             var lot = _context.Lots
                 .Include(lot => lot.Car.CarBrand)
                 .Include(lot => lot.Car.CarModel)
                 .Include(lot => lot.Car.CarColor)
-                .Include(lot => lot.Creator.UserRole)
-                .Include(lot => lot.Winner.UserRole)
                 .Include(lot => lot.LotStatus)
-                .FirstOrDefault(lot => lot.LotId == lotId);
-
-            if (lot == null) throw new NotFoundException($"Lot with ID {lotId} not exist");
+                .FirstOrDefault(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
             if (updateLotDTO.WinnerId.HasValue)
             {
-                var winner = _context.Users.FirstOrDefault(user => user.UserId == updateLotDTO.WinnerId);
-
-                if (winner == null)
-                    throw new NotFoundException($"User with ID {updateLotDTO.WinnerId} not exist");
-
-                lot.Winner = winner;
+                var winner = _context.Users.Find(updateLotDTO.WinnerId);
+                lot.Winner = winner ?? throw new NotFoundException($"User with ID {updateLotDTO.WinnerId} not exist.");
             }
 
             lot.LotStatusId = (LotStatusEnum)updateLotDTO.LotStatusId;
@@ -118,12 +104,12 @@ namespace AutoHub.BLL.Services
 
         public void UpdateStatus(int lotId, int statusId)
         {
-            if (!Enum.IsDefined(typeof(LotStatusEnum), statusId))
-                throw new EntityValidationException("Incorrect lot status ID");
+            if (Enum.IsDefined(typeof(LotStatusEnum), statusId).Equals(false))
+            {
+                throw new EntityValidationException($"Incorrect {nameof(LotStatus.LotStatusId)} value.");
+            }
 
-            var lot = _context.Lots.Find(lotId);
-
-            if (lot == null) throw new NotFoundException($"Lot with ID {lotId} not exist");
+            var lot = _context.Lots.Find(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
             lot.LotStatusId = (LotStatusEnum)statusId;
 
@@ -133,9 +119,7 @@ namespace AutoHub.BLL.Services
 
         public void Delete(int lotId)
         {
-            var lot = _context.Lots.Find(lotId);
-
-            if (lot == null) throw new NotFoundException($"Lot with ID {lotId} not exist");
+            var lot = _context.Lots.Find(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
             _context.Lots.Remove(lot);
             _context.SaveChanges();

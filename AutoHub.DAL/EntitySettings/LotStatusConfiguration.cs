@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    public class LotStatusConfiguration
+    public class LotStatusConfiguration : IEntityTypeConfiguration<LotStatus>
     {
-        public LotStatusConfiguration(EntityTypeBuilder<LotStatus> entity)
+        public void Configure(EntityTypeBuilder<LotStatus> builder)
         {
-            entity.ToTable("LotStatus").HasKey(status => status.LotStatusId);
+            builder.ToTable(nameof(LotStatus)).HasKey(status => status.LotStatusId);
 
-            entity.HasData(
+            builder.HasData(
                 Enum.GetValues(typeof(LotStatusEnum))
                     .Cast<LotStatusEnum>()
                     .Select(s => new LotStatus
@@ -22,7 +22,7 @@ namespace AutoHub.DAL.EntitySettings
                         LotStatusName = s.ToString()
                     }));
 
-            entity.HasMany(status => status.Lots)
+            builder.HasMany(status => status.Lots)
                 .WithOne(lot => lot.LotStatus)
                 .OnDelete(DeleteBehavior.NoAction);
         }

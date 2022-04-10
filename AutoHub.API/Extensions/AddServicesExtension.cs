@@ -15,7 +15,7 @@ namespace AutoHub.API.Extensions
             services.AddScoped<ICarBrandService, CarBrandService>();
             services.AddScoped<ICarModelService, CarModelService>();
             services.AddScoped<ICarColorService, CarColorService>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
     }
 }

@@ -1,24 +1,19 @@
-﻿using AutoHub.DAL.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AutoHub.DAL.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    public class UserConfiguration
+    internal class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public UserConfiguration(EntityTypeBuilder<User> entity)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            entity.ToTable("User").HasKey(user => user.UserId);
-
-            entity.Navigation(user => user.UserRole).AutoInclude();
-
-            entity.Property(user => user.FirstName).IsRequired().HasMaxLength(30);
-            entity.Property(user => user.LastName).IsRequired().HasMaxLength(30);
-            entity.Property(user => user.Email).IsRequired().HasMaxLength(60);
-            entity.Property(user => user.Phone).IsRequired().HasMaxLength(24);
-            entity.Property(user => user.Password).IsRequired().HasMaxLength(2000);
-            entity.Property(user => user.RegistrationTime).IsRequired();
-            entity.HasIndex(user => user.Email).IsUnique();
+            builder.ToTable(nameof(ApplicationUser));
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AutoHub.API.Extensions
 {
-    public static class AddAuthExtension
+    public static class AddAuthenticationExtension
     {
         public static void AddAuth(this IServiceCollection services, IConfiguration configuration)
         {

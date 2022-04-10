@@ -1,6 +1,7 @@
 using AutoHub.API.Models.UserModels;
 using AutoHub.BLL.DTOs.UserDTOs;
 using AutoHub.DAL.Entities;
+using AutoHub.DAL.Entities.Identity;
 using AutoMapper;
 
 namespace AutoHub.API.MappingProfiles
@@ -17,10 +18,10 @@ namespace AutoHub.API.MappingProfiles
             CreateMap<UserUpdateRequestModel, UserUpdateRequestDTO>();
 
             //DTO <-> Entity maps
-            CreateMap<User, UserResponseDTO>()
-                .ForPath(dest => dest.UserRole, o => o.MapFrom(user => user.UserRole.UserRoleName));
-            CreateMap<UserRegisterRequestDTO, User>();
-            CreateMap<UserUpdateRequestDTO, User>();
+            CreateMap<ApplicationUser, UserResponseDTO>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<UserRegisterRequestDTO, ApplicationUser>();
+            CreateMap<UserUpdateRequestDTO, ApplicationUser>();
         }
     }
 }

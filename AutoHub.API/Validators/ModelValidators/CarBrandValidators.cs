@@ -7,14 +7,14 @@ namespace AutoHub.API.Validators
     {
         public CarBrandCreateRequestModelValidator()
         {
-            RuleFor(x => x.CarBrandName).NotEmpty();
+            RuleFor(x => x.CarBrandName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
         }
     }
     public class CarBrandUpdateRequestModelValidator : AbstractValidator<CarBrandUpdateRequestModel>
     {
         public CarBrandUpdateRequestModelValidator()
         {
-            RuleFor(x => x.CarBrandName).NotEmpty();
+            RuleFor(x => x.CarBrandName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
         }
     }
 }

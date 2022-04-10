@@ -8,10 +8,12 @@ using System.Collections.Generic;
 using System.Net;
 using AutoHub.API.Common;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace AutoHub.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]s")]
     [Produces("application/json")]
     public class CarModelController : Controller
@@ -21,16 +23,18 @@ namespace AutoHub.API.Controllers
 
         public CarModelController(ICarModelService carModelService, IMapper mapper)
         {
-            _carModelService = carModelService;
+            _carModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));
             _mapper = mapper;
         }
 
         /// <summary>
         /// Get all car models.
         /// </summary>
+        /// <response code="401">Unauthorized Access.</response>
         /// <returns>Returns list of car models</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CarModelResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllCarModels()
         {
@@ -55,11 +59,15 @@ namespace AutoHub.API.Controllers
         /// </remarks>
         /// <response code="201">Model was created successfully</response>
         /// <response code="400">Invalid model</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateCarModel([FromBody] CarModelCreateRequestModel model)
         {
@@ -85,12 +93,16 @@ namespace AutoHub.API.Controllers
         /// </remarks>
         /// <response code="204">Model was updated successfully</response>
         /// <response code="400">Invalid model</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <response code="404">Model not found</response>
         /// <returns></returns>
         [HttpPut("{carModelId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateCarModel(int carModelId, [FromBody] CarModelUpdateRequestModel model)
@@ -106,11 +118,15 @@ namespace AutoHub.API.Controllers
         /// </summary>
         /// <param name="carModelId"></param>
         /// <response code="204">Model was deleted successfully</response>
+        /// <response code="401">Unauthorized Access.</response>
+        /// <response code="403">Admin access only.</response>
         /// <response code="404">Model not found</response>
         /// <returns></returns>
         [HttpDelete("{carModelId}")]
         [Authorize(Roles = AuthorizationRoles.Administrator)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteCarModel(int carModelId)

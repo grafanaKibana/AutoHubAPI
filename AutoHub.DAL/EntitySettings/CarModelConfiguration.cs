@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoHub.DAL.EntitySettings
 {
-    public class CarModelConfiguration
+    public class CarModelConfiguration : IEntityTypeConfiguration<CarModel>
     {
-        public CarModelConfiguration(EntityTypeBuilder<CarModel> entity)
+        public void Configure(EntityTypeBuilder<CarModel> builder)
         {
-            entity.ToTable("CarModel");
+            builder.ToTable(nameof(CarModel));
 
-            entity.HasMany(model => model.Cars)
+            builder.HasMany(model => model.Cars)
                 .WithOne(car => car.CarModel)
                 .OnDelete(DeleteBehavior.Cascade);
         }

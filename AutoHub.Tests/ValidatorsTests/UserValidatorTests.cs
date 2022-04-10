@@ -36,7 +36,7 @@ namespace AutoHub.Tests.ValidatorsTests
                 FirstName = "Volodymyr",
                 LastName = "Zelensky",
                 Password = "adminadmin",
-                Phone = "+380670000000"
+                PhoneNumber = "+380670000000"
             };
 
             //Act
@@ -47,7 +47,7 @@ namespace AutoHub.Tests.ValidatorsTests
             result.ShouldNotHaveValidationErrorFor(x => x.FirstName);
             result.ShouldNotHaveValidationErrorFor(x => x.LastName);
             result.ShouldNotHaveValidationErrorFor(x => x.Password);
-            result.ShouldNotHaveValidationErrorFor(x => x.Phone);
+            result.ShouldNotHaveValidationErrorFor(x => x.PhoneNumber);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace AutoHub.Tests.ValidatorsTests
                 FirstName = "",
                 LastName = "",
                 Password = "admin",
-                Phone = "+38067"
+                PhoneNumber = "+38067"
             };
 
             //Act
@@ -71,7 +71,7 @@ namespace AutoHub.Tests.ValidatorsTests
             result.ShouldHaveValidationErrorFor(x => x.FirstName);
             result.ShouldHaveValidationErrorFor(x => x.LastName);
             result.ShouldHaveValidationErrorFor(x => x.Password);
-            result.ShouldHaveValidationErrorFor(x => x.Phone);
+            result.ShouldHaveValidationErrorFor(x => x.PhoneNumber);
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace AutoHub.Tests.ValidatorsTests
             //Arrange
             var model = new UserLoginRequestModel
             {
-                Email = "v.zelensky@gov.ua",
+                Username = "v.zelensky@gov.ua",
                 Password = "adminadmin"
             };
 
@@ -88,7 +88,7 @@ namespace AutoHub.Tests.ValidatorsTests
             var result = _loginValidator.TestValidate(model);
 
             //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.Email);
+            result.ShouldNotHaveValidationErrorFor(x => x.Username);
             result.ShouldNotHaveValidationErrorFor(x => x.Password);
         }
 
@@ -98,7 +98,7 @@ namespace AutoHub.Tests.ValidatorsTests
             //Arrange
             var model = new UserLoginRequestModel
             {
-                Email = "v.zelensky",
+                Username = string.Empty,
                 Password = "admin"
             };
 
@@ -106,7 +106,7 @@ namespace AutoHub.Tests.ValidatorsTests
             var result = _loginValidator.TestValidate(model);
 
             //Assert
-            result.ShouldHaveValidationErrorFor(x => x.Email);
+            result.ShouldHaveValidationErrorFor(x => x.Username);
             result.ShouldHaveValidationErrorFor(x => x.Password);
         }
 
@@ -119,9 +119,7 @@ namespace AutoHub.Tests.ValidatorsTests
                Email = "v.zelensky@gov.ua",
                FirstName = "Volodymyr",
                LastName = "Zelensky",
-               Password = "adminadmin",
-               Phone = "+380670000000",
-               UserRoleId = 3
+               PhoneNumber = "+380670000000",
            };
 
            //Act
@@ -131,9 +129,7 @@ namespace AutoHub.Tests.ValidatorsTests
             result.ShouldNotHaveValidationErrorFor(x => x.Email);
             result.ShouldNotHaveValidationErrorFor(x => x.FirstName);
             result.ShouldNotHaveValidationErrorFor(x => x.LastName);
-            result.ShouldNotHaveValidationErrorFor(x => x.Password);
-            result.ShouldNotHaveValidationErrorFor(x => x.Phone);
-            result.ShouldNotHaveValidationErrorFor(x => x.UserRoleId);
+            result.ShouldNotHaveValidationErrorFor(x => x.PhoneNumber);
         }
 
         [Fact]
@@ -145,9 +141,7 @@ namespace AutoHub.Tests.ValidatorsTests
                 Email = "v.zelensky",
                 FirstName = "",
                 LastName = "",
-                Password = "admin",
-                Phone = "+38067",
-                UserRoleId = 255
+                PhoneNumber = "+38067",
             };
 
             //Act
@@ -157,9 +151,7 @@ namespace AutoHub.Tests.ValidatorsTests
             result.ShouldHaveValidationErrorFor(x => x.Email);
             result.ShouldHaveValidationErrorFor(x => x.FirstName);
             result.ShouldHaveValidationErrorFor(x => x.LastName);
-            result.ShouldHaveValidationErrorFor(x => x.Password);
-            result.ShouldHaveValidationErrorFor(x => x.Phone);
-            result.ShouldHaveValidationErrorFor(x => x.UserRoleId);
+            result.ShouldHaveValidationErrorFor(x => x.PhoneNumber);
 
         }
     }
