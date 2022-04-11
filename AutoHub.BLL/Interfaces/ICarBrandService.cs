@@ -1,17 +1,18 @@
 using AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface ICarBrandService
 {
-    IEnumerable<CarBrandResponseDTO> GetAll();
+    Task<IEnumerable<CarBrandResponseDTO>> GetAll();
 
-    CarBrandResponseDTO GetById(int carBrandId);
+    Task<CarBrandResponseDTO> GetByIdAsync(int carBrandId);
 
-    void Create(CarBrandCreateRequestDTO createBrandDTO);
+    Task Create(CarBrandCreateRequestDTO createBrandDTO);
 
-    void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO);
+    Task Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO);
 
-    void Delete(int carBrandId);
+    Task Delete(int carBrandId);
 }

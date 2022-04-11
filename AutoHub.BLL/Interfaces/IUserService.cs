@@ -6,21 +6,21 @@ namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface IUserService
 {
-    Task<IEnumerable<UserResponseDTO>> GetAllAsync();
+    Task<IEnumerable<UserResponseDTO>> GetAll();
 
-    Task<UserResponseDTO> GetByIdAsync(int userId);
+    Task<UserResponseDTO> GetById(int userId);
 
     Task<UserResponseDTO> GetByEmailAsync(string email);
 
-    Task<UserLoginResponseDTO> LoginAsync(UserLoginRequestDTO userModel);
+    Task<UserLoginResponseDTO> Login(UserLoginRequestDTO userModel);
 
-    Task RegisterAsync(UserRegisterRequestDTO registerUserDTO);
+    Task Register(UserRegisterRequestDTO registerUserDTO);
 
-    void Update(int userId, UserUpdateRequestDTO updateUserDTO);
+    Task Update(int userId, UserUpdateRequestDTO updateUserDTO);
 
-    void UpdateRole(int userId, int roleId);
+    Task UpdateRole(int userId, int roleId);
 
-    void Delete(int userId);
+    Task Delete(int userId);
 
-    Task LogoutAsync();
+    Task Logout();
 }

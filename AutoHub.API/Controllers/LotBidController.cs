@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers;
 
@@ -41,9 +42,9 @@ public class LotBidController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetLotBids(int lotId)
+    public async Task<IActionResult> GetLotBids(int lotId)
     {
-        var bids = _bidService.GetLotBids(lotId);
+        var bids = await _bidService.GetLotBids(lotId);
         var mappedBids = _mapper.Map<IEnumerable<BidResponse>>(bids);
 
         return Ok(mappedBids);
@@ -75,10 +76,10 @@ public class LotBidController : Controller
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult CreateBid(int lotId, [FromBody] BidCreateRequest model)
+    public async Task<IActionResult> CreateBidAsync(int lotId, [FromBody] BidCreateRequest model)
     {
         var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
-        _bidService.Create(lotId, mappedBid);
+        await _bidService.Create(lotId, mappedBid);
 
         return StatusCode((int)HttpStatusCode.Created);
     }

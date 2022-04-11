@@ -40,7 +40,7 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _userService.GetAllAsync();
+        var users = await _userService.GetAll();
         var mappedUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
 
         return Ok(mappedUsers);
@@ -60,9 +60,9 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetUserById(int userId)
+    public async Task<IActionResult> GetUserById(int userId)
     {
-        var user = _userService.GetByIdAsync(userId);
+        var user = await _userService.GetById(userId);
         var mappedUser = _mapper.Map<UserResponse>(user);
 
         return Ok(mappedUser);
@@ -101,10 +101,10 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateUser(int userId, [FromBody] UserUpdateRequest model)
+    public async Task<IActionResult> UpdateUser(int userId, [FromBody] UserUpdateRequest model)
     {
         var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
-        _userService.Update(userId, mappedUser);
+        await _userService.Update(userId, mappedUser);
 
         return NoContent();
     }
@@ -125,9 +125,9 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateUserRole(int userId, int roleId)
+    public async Task<IActionResult> UpdateUserRoleAsync(int userId, int roleId)
     {
-        _userService.UpdateRole(userId, roleId);
+        await _userService.UpdateRole(userId, roleId);
 
         return NoContent();
     }
@@ -147,9 +147,9 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult DeleteUser(int userId)
+    public async Task<IActionResult> DeleteUser(int userId)
     {
-        _userService.Delete(userId);
+        await _userService.Delete(userId);
 
         return NoContent();
     }

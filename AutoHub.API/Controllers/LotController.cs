@@ -6,9 +6,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
+using System;
 
 namespace AutoHub.API.Controllers;
 
@@ -35,9 +36,9 @@ public class LotController : Controller
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<LotResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetAllLots()
+    public async Task<IActionResult> GetAllLots()
     {
-        var lots = _lotService.GetAll();
+        var lots = await _lotService.GetAll();
         var mappedLots = _mapper.Map<IEnumerable<LotResponse>>(lots);
 
         return Ok(mappedLots);
@@ -52,9 +53,9 @@ public class LotController : Controller
     [ProducesResponseType(typeof(IEnumerable<LotResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetLotsInProgress()
+    public async Task<IActionResult> GetLotsInProgress()
     {
-        var lots = _lotService.GetInProgress();
+        var lots = await _lotService.GetInProgress();
         var mappedLots = _mapper.Map<IEnumerable<LotResponse>>(lots);
 
         return Ok(mappedLots);
@@ -70,9 +71,9 @@ public class LotController : Controller
     [ProducesResponseType(typeof(LotResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetLotById(int lotId)
+    public async Task<IActionResult> GetLotById(int lotId)
     {
-        var lot = _lotService.GetById(lotId);
+        var lot = await _lotService.GetById(lotId);
         var mappedLot = _mapper.Map<LotResponse>(lot);
 
         return Ok(mappedLot);
@@ -106,10 +107,10 @@ public class LotController : Controller
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult CreateLot([FromBody] LotCreateRequest model)
+    public async Task<IActionResult> CreateLot([FromBody] LotCreateRequest model)
     {
         var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
-        _lotService.Create(mappedLot);
+        await _lotService.Create(mappedLot);
 
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -146,10 +147,10 @@ public class LotController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateLot(int lotId, [FromBody] LotUpdateRequest model)
+    public async Task<IActionResult> UpdateLot(int lotId, [FromBody] LotUpdateRequest model)
     {
         var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
-        _lotService.Update(lotId, mappedLot);
+        await _lotService.Update(lotId, mappedLot);
 
         return NoContent();
     }
@@ -173,9 +174,9 @@ public class LotController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateLotStatus(int lotId, int statusId)
+    public async Task<IActionResult> UpdateLotStatusAsync(int lotId, int statusId)
     {
-        _lotService.UpdateStatus(lotId, statusId);
+        await _lotService.UpdateStatus(lotId, statusId);
 
         return NoContent();
     }
@@ -196,9 +197,10 @@ public class LotController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult DeleteLot(int lotId)
+    public async Task<IActionResult> DeleteLot(int lotId)
     {
-        _lotService.Delete(lotId);
+        await _lotService.Delete(lotId);
+
         return NoContent();
     }
 }
