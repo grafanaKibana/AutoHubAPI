@@ -69,7 +69,7 @@ public class LotBidControllerTests
         _mapperMock.Setup(mapper => mapper.Map<BidCreateRequestDTO>(requestModel)).Returns(mappedBid);
 
         //Act
-        var result = await _lotBidController.CreateBidAsync(lotId, requestModel);
+        var result = await _lotBidController.CreateBid(lotId, requestModel);
 
         //Assert
         result.Should().NotBeNull();

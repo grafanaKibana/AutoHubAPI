@@ -8,7 +8,7 @@ public interface ICarBrandService
 {
     Task<IEnumerable<CarBrandResponseDTO>> GetAll();
 
-    Task<CarBrandResponseDTO> GetByIdAsync(int carBrandId);
+    Task<CarBrandResponseDTO> GetById(int carBrandId);
 
     Task Create(CarBrandCreateRequestDTO createBrandDTO);
 

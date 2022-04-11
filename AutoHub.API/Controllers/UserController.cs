@@ -125,7 +125,7 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateUserRoleAsync(int userId, int roleId)
+    public async Task<IActionResult> UpdateUserRole(int userId, int roleId)
     {
         await _userService.UpdateRole(userId, roleId);
 

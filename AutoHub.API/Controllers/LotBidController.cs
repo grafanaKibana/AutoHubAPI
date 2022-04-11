@@ -76,7 +76,7 @@ public class LotBidController : Controller
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateBidAsync(int lotId, [FromBody] BidCreateRequest model)
+    public async Task<IActionResult> CreateBid(int lotId, [FromBody] BidCreateRequest model)
     {
         var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
         await _bidService.Create(lotId, mappedBid);

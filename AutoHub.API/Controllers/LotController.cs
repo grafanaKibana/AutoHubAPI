@@ -174,7 +174,7 @@ public class LotController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateLotStatusAsync(int lotId, int statusId)
+    public async Task<IActionResult> UpdateLotStatus(int lotId, int statusId)
     {
         await _lotService.UpdateStatus(lotId, statusId);
 

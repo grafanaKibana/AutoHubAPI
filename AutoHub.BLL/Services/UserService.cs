@@ -55,7 +55,7 @@ public class UserService : IUserService
         return mappedUser;
     }
 
-    public async Task<UserResponseDTO> GetByEmailAsync(string email)
+    public async Task<UserResponseDTO> GetByEmail(string email)
     {
         var user = await (_context.Users.FirstOrDefaultAsync(user => user.Email == email) ?? throw new NotFoundException($"User with E-Mail {email} not exist."));
         var mappedUser = _mapper.Map<UserResponseDTO>(user);

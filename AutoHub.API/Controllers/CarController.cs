@@ -174,7 +174,7 @@ public class CarController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateCarStatusAsync(int carId, int statusId)
+    public async Task<IActionResult> UpdateCarStatus(int carId, int statusId)
     {
         await _carService.UpdateStatus(carId, statusId);
 

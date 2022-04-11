@@ -29,7 +29,7 @@ public class CarBrandService : ICarBrandService
         return mappedBrands;
     }
 
-    public async Task<CarBrandResponseDTO> GetByIdAsync(int carBrandId)
+    public async Task<CarBrandResponseDTO> GetById(int carBrandId)
     {
         var brand = await _context.CarBrands.FindAsync(carBrandId) ?? throw new NotFoundException($"Car brand with ID {carBrandId} not exist.");
 

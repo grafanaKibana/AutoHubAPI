@@ -10,7 +10,7 @@ public interface IUserService
 
     Task<UserResponseDTO> GetById(int userId);
 
-    Task<UserResponseDTO> GetByEmailAsync(string email);
+    Task<UserResponseDTO> GetByEmail(string email);
 
     Task<UserLoginResponseDTO> Login(UserLoginRequestDTO userModel);
 
