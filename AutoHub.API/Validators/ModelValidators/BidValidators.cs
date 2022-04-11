@@ -1,15 +1,14 @@
 ﻿using AutoHub.API.Models.BidModels;
 using FluentValidation;
 
-namespace AutoHub.API.Validators
+namespace AutoHub.API.Validators;
+
+public class BidCreateRequestModelValidator : AbstractValidator<BidCreateRequest>
 {
-    public class BidCreateRequestModelValidator : AbstractValidator<BidCreateRequestModel>
+    public BidCreateRequestModelValidator()
     {
-        public BidCreateRequestModelValidator()
-        {
-            RuleFor(x => x.BidValue).NotEmpty().GreaterThan(0);
-            
-            RuleFor(x => x.UserId).NotEmpty().GreaterThanOrEqualTo(0);
-        }
+        RuleFor(x => x.BidValue).NotEmpty().GreaterThan(0);
+
+        RuleFor(x => x.UserId).NotEmpty().GreaterThanOrEqualTo(0);
     }
 }

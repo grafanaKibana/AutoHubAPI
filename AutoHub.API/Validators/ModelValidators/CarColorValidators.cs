@@ -1,20 +1,20 @@
 ﻿using AutoHub.API.Models.CarColorModels;
 using FluentValidation;
 
-namespace AutoHub.API.Validators
+namespace AutoHub.API.Validators;
+
+public class CarColorCreateRequestModelValidator : AbstractValidator<CarColorCreateRequest>
 {
-    public class CarColorCreateRequestModelValidator : AbstractValidator<CarColorCreateRequestModel>
+    public CarColorCreateRequestModelValidator()
     {
-        public CarColorCreateRequestModelValidator()
-        {
-            RuleFor(x => x.CarColorName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
-        }
+        RuleFor(x => x.CarColorName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
     }
-    public class CarColorUpdateRequestModelValidator : AbstractValidator<CarColorUpdateRequestModel>
+}
+
+public class CarColorUpdateRequestModelValidator : AbstractValidator<CarColorUpdateRequest>
+{
+    public CarColorUpdateRequestModelValidator()
     {
-        public CarColorUpdateRequestModelValidator()
-        {
-            RuleFor(x => x.CarColorName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
-        }
+        RuleFor(x => x.CarColorName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
     }
 }

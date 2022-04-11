@@ -1,8 +1,7 @@
-namespace AutoHub.BLL.DTOs.CarDTOs
+namespace AutoHub.BusinessLogic.DTOs.CarDTOs;
+
+public class CarUpdateRequestDTO : CarBaseRequestDTO
 {
-    public class CarUpdateRequestDTO : CarBaseRequestDTO
-    {
-        public decimal CostPrice { get; set; }
-        public int CarStatusId { get; set; }
-    }
+    public decimal CostPrice { get; set; }
+    public int CarStatusId { get; set; }
 }

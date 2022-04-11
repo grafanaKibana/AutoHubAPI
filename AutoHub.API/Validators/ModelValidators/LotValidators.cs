@@ -1,33 +1,32 @@
 ﻿using AutoHub.API.Models.LotModels;
-using AutoHub.BLL.Constants;
-using AutoHub.DAL.Enums;
+using AutoHub.API.Constants;
 using FluentValidation;
 using System;
+using AutoHub.Domain.Enums;
 
-namespace AutoHub.API.Validators
+namespace AutoHub.API.Validators;
+
+public class LotCreateRequestModelValidator : AbstractValidator<LotCreateRequest>
 {
-    public class LotCreateRequestModelValidator : AbstractValidator<LotCreateRequestModel>
+    public LotCreateRequestModelValidator()
     {
-        public LotCreateRequestModelValidator()
-        {
-            RuleFor(x => x.CarId).NotEmpty().GreaterThan(0);
-            
-            RuleFor(x => x.CreatorId).NotEmpty().GreaterThan(0);
-            
-            RuleFor(x => x.DurationInDays).NotEmpty().GreaterThanOrEqualTo(LotRestrictions.MinDurationInDays);
-        }
-    }
+        RuleFor(x => x.CarId).NotEmpty().GreaterThan(0);
 
-    public class LotUpdateRequestModelValidator : AbstractValidator<LotUpdateRequestModel>
+        RuleFor(x => x.CreatorId).NotEmpty().GreaterThan(0);
+
+        RuleFor(x => x.DurationInDays).NotEmpty().GreaterThanOrEqualTo(LotRestrictions.MinDurationInDays);
+    }
+}
+
+public class LotUpdateRequestModelValidator : AbstractValidator<LotUpdateRequest>
+{
+    public LotUpdateRequestModelValidator()
     {
-        public LotUpdateRequestModelValidator()
-        {
-            RuleFor(x => x.DurationInDays).GreaterThanOrEqualTo(LotRestrictions.MinDurationInDays);
-            
-            RuleFor(x => x.LotStatusId)
-                .NotEmpty()
-                .Must(id => Enum.IsDefined(typeof(LotStatusEnum), id))
-                .WithMessage($"Incorrect {nameof(LotUpdateRequestModel.LotStatusId)} value.");
-        }
+        RuleFor(x => x.DurationInDays).GreaterThanOrEqualTo(LotRestrictions.MinDurationInDays);
+
+        RuleFor(x => x.LotStatusId)
+            .NotEmpty()
+            .Must(id => Enum.IsDefined(typeof(LotStatusEnum), id))
+            .WithMessage($"Incorrect {nameof(LotUpdateRequest.LotStatusId)} value.");
     }
 }

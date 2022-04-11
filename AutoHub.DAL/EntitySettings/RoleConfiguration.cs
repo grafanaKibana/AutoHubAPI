@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoHub.DAL.Entities.Identity;
+﻿using AutoHub.Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
 
-namespace AutoHub.DAL.EntitySettings
+namespace AutoHub.DataAccess.EntitySettings;
+
+public class RoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
+    public void Configure(EntityTypeBuilder<ApplicationRole> builder)
     {
-        public void Configure(EntityTypeBuilder<ApplicationRole> builder)
-        {
-            builder.ToTable(nameof(ApplicationRole));
+        builder.ToTable(nameof(ApplicationRole));
 
-            builder.HasData(new List<ApplicationRole>
+        builder.HasData(new List<ApplicationRole>
             {
                 new ApplicationRole
                 {
@@ -37,6 +36,5 @@ namespace AutoHub.DAL.EntitySettings
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 }
             });
-        }
     }
 }

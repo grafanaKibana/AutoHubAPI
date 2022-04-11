@@ -1,14 +1,17 @@
-using AutoHub.BLL.DTOs.CarColorDTOs;
+using AutoHub.BusinessLogic.DTOs.CarColorDTOs;
 using System.Collections.Generic;
 
-namespace AutoHub.BLL.Interfaces
+namespace AutoHub.BusinessLogic.Interfaces;
+
+public interface ICarColorService
 {
-    public interface ICarColorService
-    {
-        IEnumerable<CarColorResponseDTO> GetAll();
-        CarColorResponseDTO GetById(int carColorId);
-        void Create(CarColorCreateRequestDTO createColorDTO);
-        void Update(int carColorId, CarColorUpdateRequestDTO updateColorDTO);
-        void Delete(int carColorId);
-    }
+    IEnumerable<CarColorResponseDTO> GetAll();
+
+    CarColorResponseDTO GetById(int carColorId);
+
+    void Create(CarColorCreateRequestDTO createColorDTO);
+
+    void Update(int carColorId, CarColorUpdateRequestDTO updateColorDTO);
+
+    void Delete(int carColorId);
 }

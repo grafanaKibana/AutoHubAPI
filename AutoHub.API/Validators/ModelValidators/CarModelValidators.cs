@@ -1,20 +1,20 @@
 ﻿using AutoHub.API.Models.CarModelModels;
 using FluentValidation;
 
-namespace AutoHub.API.Validators
+namespace AutoHub.API.Validators;
+
+public class CarModelCreateRequestModelValidator : AbstractValidator<CarModelCreateRequest>
 {
-    public class CarModelCreateRequestModelValidator : AbstractValidator<CarModelCreateRequestModel>
+    public CarModelCreateRequestModelValidator()
     {
-        public CarModelCreateRequestModelValidator()
-        {
-            RuleFor(x => x.CarModelName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
-        }
+        RuleFor(x => x.CarModelName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
     }
-    public class CarModelUpdateRequestModelValidator : AbstractValidator<CarModelUpdateRequestModel>
+}
+
+public class CarModelUpdateRequestModelValidator : AbstractValidator<CarModelUpdateRequest>
+{
+    public CarModelUpdateRequestModelValidator()
     {
-        public CarModelUpdateRequestModelValidator()
-        {
-            RuleFor(x => x.CarModelName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
-        }
+        RuleFor(x => x.CarModelName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
     }
 }

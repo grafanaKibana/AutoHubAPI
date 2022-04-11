@@ -1,19 +1,18 @@
-using AutoHub.BLL.DTOs.LotDTOs;
-using AutoHub.BLL.DTOs.UserDTOs;
+using AutoHub.BusinessLogic.DTOs.LotDTOs;
+using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using System;
 
-namespace AutoHub.BLL.DTOs.BidDTOs
+namespace AutoHub.BusinessLogic.DTOs.BidDTOs;
+
+public class BidResponseDTO
 {
-    public class BidResponseDTO
-    {
-        public int BidId { get; set; }
+    public int BidId { get; set; }
 
-        public UserResponseDTO User { get; set; }
+    public UserResponseDTO User { get; set; }
 
-        public LotResponseDTO Lot { get; set; }
+    public LotResponseDTO Lot { get; set; }
 
-        public decimal BidValue { get; set; }
+    public decimal BidValue { get; set; }
 
-        public DateTime BidTime { get; set; }
-    }
+    public DateTime BidTime { get; set; }
 }
