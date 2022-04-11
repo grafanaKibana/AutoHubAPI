@@ -3,96 +3,95 @@ using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace AutoHub.Tests.ValidatorsTests
+namespace AutoHub.Tests.ValidatorsTests;
+
+public class LotValidatorTests
 {
-    public class LotValidatorTests
+    private readonly LotCreateRequestModelValidator _createValidator;
+    private readonly LotUpdateRequestModelValidator _updateValidator;
+
+    public LotValidatorTests()
     {
-        private readonly LotCreateRequestModelValidator _createValidator;
-        private readonly LotUpdateRequestModelValidator _updateValidator;
+        _createValidator = new LotCreateRequestModelValidator();
+        _updateValidator = new LotUpdateRequestModelValidator();
+    }
 
-        public LotValidatorTests()
+    [Fact]
+    public void CreateLotTestValidate_ValidModel_ShouldNotHaveError()
+    {
+        //Arrange
+        var model = new LotCreateRequest
         {
-            _createValidator = new LotCreateRequestModelValidator();
-            _updateValidator = new LotUpdateRequestModelValidator();
-        }
+            CarId = 1,
+            CreatorId = 1,
+            DurationInDays = 7
+        };
 
-        [Fact]
-        public void CreateLotTestValidate_ValidModel_ShouldNotHaveError()
+        //Act
+        var result = _createValidator.TestValidate(model);
+
+        //Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.CarId);
+        result.ShouldNotHaveValidationErrorFor(x => x.CreatorId);
+        result.ShouldNotHaveValidationErrorFor(x => x.DurationInDays);
+    }
+
+    [Fact]
+    public void CreateLotTestValidate_InvalidModel_ShouldHaveError()
+    {
+        //Arrange
+        var model = new LotCreateRequest
         {
-            //Arrange
-            var model = new LotCreateRequestModel
-            {
-                CarId = 1,
-                CreatorId = 1,
-                DurationInDays = 7
-            };
+            CarId = -1,
+            CreatorId = -1,
+            DurationInDays = -1
+        };
 
-            //Act
-            var result = _createValidator.TestValidate(model);
+        //Act
+        var result = _createValidator.TestValidate(model);
 
-            //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.CarId);
-            result.ShouldNotHaveValidationErrorFor(x => x.CreatorId);
-            result.ShouldNotHaveValidationErrorFor(x => x.DurationInDays);
-        }
+        //Assert
+        result.ShouldHaveValidationErrorFor(x => x.CarId);
+        result.ShouldHaveValidationErrorFor(x => x.CreatorId);
+        result.ShouldHaveValidationErrorFor(x => x.DurationInDays);
+    }
 
-        [Fact]
-        public void CreateLotTestValidate_InvalidModel_ShouldHaveError()
+    [Fact]
+    public void UpdateLotTestValidate_ValidModel_ShouldNotHaveError()
+    {
+        //Arrange
+        var model = new LotUpdateRequest
         {
-            //Arrange
-            var model = new LotCreateRequestModel
-            {
-                CarId = -1,
-                CreatorId = -1,
-                DurationInDays = -1
-            };
+            DurationInDays = 7,
+            LotStatusId = 2,
+            WinnerId = 1
+        };
 
-            //Act
-            var result = _createValidator.TestValidate(model);
+        //Act
+        var result = _updateValidator.TestValidate(model);
 
-            //Assert
-            result.ShouldHaveValidationErrorFor(x => x.CarId);
-            result.ShouldHaveValidationErrorFor(x => x.CreatorId);
-            result.ShouldHaveValidationErrorFor(x => x.DurationInDays);
-        }
+        //Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.DurationInDays);
+        result.ShouldNotHaveValidationErrorFor(x => x.LotStatusId);
+        result.ShouldNotHaveValidationErrorFor(x => x.WinnerId);
+    }
 
-        [Fact]
-        public void UpdateLotTestValidate_ValidModel_ShouldNotHaveError()
+    [Fact]
+    public void UpdateLotTestValidate_InvalidModel_ShouldHaveError()
+    {
+        //Arrange
+        var model = new LotUpdateRequest
         {
-            //Arrange
-            var model = new LotUpdateRequestModel
-            {
-                DurationInDays = 7,
-                LotStatusId = 2,
-                WinnerId = 1
-            };
+            DurationInDays = -1,
+            LotStatusId = 22,
+            WinnerId = null
+        };
 
-            //Act
-            var result = _updateValidator.TestValidate(model);
+        //Act
+        var result = _updateValidator.TestValidate(model);
 
-            //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.DurationInDays);
-            result.ShouldNotHaveValidationErrorFor(x => x.LotStatusId);
-            result.ShouldNotHaveValidationErrorFor(x => x.WinnerId);
-        }
-
-        [Fact]
-        public void UpdateLotTestValidate_InvalidModel_ShouldHaveError()
-        {
-            //Arrange
-            var model = new LotUpdateRequestModel
-            {
-                DurationInDays = -1,
-                LotStatusId = 22,
-                WinnerId = null
-            };
-
-            //Act
-            var result = _updateValidator.TestValidate(model);
-
-            //Assert
-            result.ShouldHaveValidationErrorFor(x => x.DurationInDays);
-            result.ShouldHaveValidationErrorFor(x => x.LotStatusId);
-        }
+        //Assert
+        result.ShouldHaveValidationErrorFor(x => x.DurationInDays);
+        result.ShouldHaveValidationErrorFor(x => x.LotStatusId);
     }
 }

@@ -1,23 +1,22 @@
 using AutoHub.API.Models.CarColorModels;
-using AutoHub.BLL.DTOs.CarColorDTOs;
-using AutoHub.DAL.Entities;
+using AutoHub.BusinessLogic.DTOs.CarColorDTOs;
+using AutoHub.Domain.Entities;
 using AutoMapper;
 
-namespace AutoHub.API.MappingProfiles
-{
-    public class CarColorProfile : Profile
-    {
-        public CarColorProfile()
-        {
-            //Model <-> DTO maps
-            CreateMap<CarColorResponseDTO, CarColorResponseModel>();
-            CreateMap<CarColorCreateRequestModel, CarColorCreateRequestDTO>();
-            CreateMap<CarColorUpdateRequestModel, CarColorUpdateRequestDTO>();
+namespace AutoHub.API.MappingProfiles;
 
-            //DTO <-> Entity maps
-            CreateMap<CarColor, CarColorResponseDTO>();
-            CreateMap<CarColorCreateRequestDTO, CarColor>();
-            CreateMap<CarColorUpdateRequestDTO, CarColor>();
-        }
+public class CarColorProfile : Profile
+{
+    public CarColorProfile()
+    {
+        //Model <-> DTO maps
+        CreateMap<CarColorResponseDTO, CarColorResponse>();
+        CreateMap<CarColorCreateRequest, CarColorCreateRequestDTO>();
+        CreateMap<CarColorUpdateRequest, CarColorUpdateRequestDTO>();
+
+        //DTO <-> Entity maps
+        CreateMap<CarColor, CarColorResponseDTO>();
+        CreateMap<CarColorCreateRequestDTO, CarColor>();
+        CreateMap<CarColorUpdateRequestDTO, CarColor>();
     }
 }

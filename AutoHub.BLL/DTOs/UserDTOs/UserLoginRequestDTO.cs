@@ -1,11 +1,10 @@
-namespace AutoHub.BLL.DTOs.UserDTOs
+namespace AutoHub.BusinessLogic.DTOs.UserDTOs;
+
+public class UserLoginRequestDTO
 {
-    public class UserLoginRequestDTO
-    {
-        public string Username { get; set; }
+    public string Username { get; set; }
 
-        public string Password { get; set; }
+    public string Password { get; set; }
 
-        public bool RememberMe { get; set; }
-    }
+    public bool RememberMe { get; set; }
 }

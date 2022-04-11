@@ -1,22 +1,21 @@
-﻿using AutoHub.BLL.DTOs.LotDTOs;
+﻿using AutoHub.BusinessLogic.DTOs.LotDTOs;
 using System.Collections.Generic;
 
-namespace AutoHub.BLL.Interfaces
+namespace AutoHub.BusinessLogic.Interfaces;
+
+public interface ILotService
 {
-    public interface ILotService
-    {
-        IEnumerable<LotResponseDTO> GetAll();
+    IEnumerable<LotResponseDTO> GetAll();
 
-        IEnumerable<LotResponseDTO> GetInProgress();
+    IEnumerable<LotResponseDTO> GetInProgress();
 
-        LotResponseDTO GetById(int lotId);
+    LotResponseDTO GetById(int lotId);
 
-        void Create(LotCreateRequestDTO createLotDTO);
+    void Create(LotCreateRequestDTO createLotDTO);
 
-        void Update(int lotId, LotUpdateRequestDTO updateLotDTO);
+    void Update(int lotId, LotUpdateRequestDTO updateLotDTO);
 
-        void UpdateStatus(int lotId, int statusId);
+    void UpdateStatus(int lotId, int statusId);
 
-        void Delete(int lotId);
-    }
+    void Delete(int lotId);
 }

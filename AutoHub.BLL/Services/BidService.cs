@@ -1,93 +1,92 @@
-using AutoHub.BLL.DTOs.BidDTOs;
-using AutoHub.BLL.Exceptions;
-using AutoHub.BLL.Interfaces;
-using AutoHub.DAL;
-using AutoHub.DAL.Entities;
+using AutoHub.BusinessLogic.DTOs.BidDTOs;
+using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.DataAccess;
+using AutoHub.Domain.Entities;
+using AutoHub.Domain.Exceptions;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AutoHub.BLL.Services
+namespace AutoHub.BusinessLogic.Services;
+
+public class BidService : IBidService
 {
-    public class BidService : IBidService
+    private readonly AutoHubContext _context;
+    private readonly IMapper _mapper;
+
+    public BidService(AutoHubContext context, IMapper mapper)
     {
-        private readonly AutoHubContext _context;
-        private readonly IMapper _mapper;
+        _context = context;
+        _mapper = mapper;
+    }
 
-        public BidService(AutoHubContext context, IMapper mapper)
+    public IEnumerable<BidResponseDTO> GetUserBids(int userId)
+    {
+        var userExist = _context.Users.Any(user => user.Id == userId);
+
+        if (userExist.Equals(false))
         {
-            _context = context;
-            _mapper = mapper;
+            throw new NotFoundException($"User with ID {userId} not exist.");
         }
 
-        public IEnumerable<BidResponseDTO> GetUserBids(int userId)
+        var bids = _context.Bids
+            .Include(bid => bid.Lot.Car.CarBrand)
+            .Include(bid => bid.Lot.Car.CarModel)
+            .Include(bid => bid.Lot.Car.CarColor)
+            .Include(bid => bid.Lot.Car.CarStatus)
+            .Include(bid => bid.Lot.LotStatus)
+            .Where(bid => bid.UserId == userId)
+            .ToList();
+
+        var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
+        return mappedBids;
+    }
+
+    public IEnumerable<BidResponseDTO> GetLotBids(int lotId)
+    {
+        var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
+
+        if (lotExist.Equals(false))
         {
-            var userExist = _context.Users.Any(user => user.Id == userId);
-
-            if (userExist.Equals(false))
-            {
-                throw new NotFoundException($"User with ID {userId} not exist.");
-            }
-
-            var bids = _context.Bids
-                .Include(bid => bid.Lot.Car.CarBrand)
-                .Include(bid => bid.Lot.Car.CarModel)
-                .Include(bid => bid.Lot.Car.CarColor)
-                .Include(bid => bid.Lot.Car.CarStatus)
-                .Include(bid => bid.Lot.LotStatus)
-                .Where(bid => bid.UserId == userId)
-                .ToList();
-
-            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
-            return mappedBids;
+            throw new NotFoundException($"Lot with ID {lotId} not exist.");
         }
 
-        public IEnumerable<BidResponseDTO> GetLotBids(int lotId)
+        var bids = _context.Bids
+            .Include(bid => bid.Lot.Car.CarBrand)
+            .Include(bid => bid.Lot.Car.CarModel)
+            .Include(bid => bid.Lot.Car.CarColor)
+            .Include(bid => bid.Lot.Car.CarStatus)
+            .Include(bid => bid.Lot.LotStatus)
+            .Where(bid => bid.LotId == lotId)
+            .ToList();
+
+        var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
+        return mappedBids;
+    }
+
+    public void Create(int lotId, BidCreateRequestDTO createBidDTO)
+    {
+        var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
+
+        if (lotExist.Equals(false))
         {
-            var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
-
-            if (lotExist.Equals(false))
-            {
-                throw new NotFoundException($"Lot with ID {lotId} not exist.");
-            }
-
-            var bids = _context.Bids
-                .Include(bid => bid.Lot.Car.CarBrand)
-                .Include(bid => bid.Lot.Car.CarModel)
-                .Include(bid => bid.Lot.Car.CarColor)
-                .Include(bid => bid.Lot.Car.CarStatus)
-                .Include(bid => bid.Lot.LotStatus)
-                .Where(bid => bid.LotId == lotId)
-                .ToList();
-
-            var mappedBids = _mapper.Map<IEnumerable<BidResponseDTO>>(bids);
-            return mappedBids;
+            throw new NotFoundException($"Lot with ID {lotId} not exist.");
         }
 
-        public void Create(int lotId, BidCreateRequestDTO createBidDTO)
+        var userExist = _context.Users.Any(user => user.Id == createBidDTO.UserId);
+
+        if (userExist.Equals(false))
         {
-            var lotExist = _context.Lots.Any(lot => lot.LotId == lotId);
-
-            if (lotExist.Equals(false))
-            {
-                throw new NotFoundException($"Lot with ID {lotId} not exist.");
-            }
-
-            var userExist = _context.Users.Any(user => user.Id == createBidDTO.UserId);
-
-            if (userExist.Equals(false))
-            {
-                throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
-            }
-
-            var bid = _mapper.Map<Bid>(createBidDTO);
-            bid.LotId = lotId;
-            bid.BidTime = DateTime.UtcNow;
-
-            _context.Bids.Add(bid);
-            _context.SaveChanges();
+            throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
         }
+
+        var bid = _mapper.Map<Bid>(createBidDTO);
+        bid.LotId = lotId;
+        bid.BidTime = DateTime.UtcNow;
+
+        _context.Bids.Add(bid);
+        _context.SaveChanges();
     }
 }

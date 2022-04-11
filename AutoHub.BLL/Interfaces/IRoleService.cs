@@ -1,6 +1,5 @@
-﻿namespace AutoHub.BLL.Interfaces
+﻿namespace AutoHub.BusinessLogic.Interfaces;
+
+public interface IRoleService
 {
-    public interface IRoleService
-    {
-    }
 }

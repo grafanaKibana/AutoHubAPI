@@ -1,28 +1,27 @@
-﻿using AutoHub.DAL.Entities;
+﻿using AutoHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AutoHub.DAL.EntitySettings
+namespace AutoHub.DataAccess.EntitySettings;
+
+public class LotConfiguration : IEntityTypeConfiguration<Lot>
 {
-    public class LotConfiguration : IEntityTypeConfiguration<Lot>
+    public void Configure(EntityTypeBuilder<Lot> builder)
     {
-        public void Configure(EntityTypeBuilder<Lot> builder)
-        {
-            builder.ToTable(nameof(Lot)).HasKey(lot => lot.LotId);
+        builder.ToTable(nameof(Lot)).HasKey(lot => lot.LotId);
 
-            builder.Navigation(lot => lot.LotStatus).AutoInclude();
+        builder.Navigation(lot => lot.LotStatus).AutoInclude();
 
-            builder.Property(lot => lot.StartTime).IsRequired();
+        builder.Property(lot => lot.StartTime).IsRequired();
 
-            builder.HasOne(lot => lot.Creator)
-                .WithMany(user => user.UserLots)
-                .HasForeignKey(lot => lot.CreatorId)
-                .OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(lot => lot.Creator)
+            .WithMany(user => user.UserLots)
+            .HasForeignKey(lot => lot.CreatorId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(lot => lot.Winner)
-                .WithMany(user => user.VictoryLots)
-                .HasForeignKey(lot => lot.WinnerId)
-                .OnDelete(DeleteBehavior.NoAction);
-        }
+        builder.HasOne(lot => lot.Winner)
+            .WithMany(user => user.VictoryLots)
+            .HasForeignKey(lot => lot.WinnerId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

@@ -1,23 +1,22 @@
 using AutoHub.API.Models.CarModelModels;
-using AutoHub.BLL.DTOs.CarModelDTOs;
-using AutoHub.DAL.Entities;
+using AutoHub.BusinessLogic.DTOs.CarModelDTOs;
+using AutoHub.Domain.Entities;
 using AutoMapper;
 
-namespace AutoHub.API.MappingProfiles
-{
-    public class CarModelProfile : Profile
-    {
-        public CarModelProfile()
-        {
-            //Model <-> DTO maps
-            CreateMap<CarModelResponseDTO, CarModelResponseModel>();
-            CreateMap<CarModelCreateRequestModel, CarModelCreateRequestDTO>();
-            CreateMap<CarModelUpdateRequestModel, CarModelUpdateRequestDTO>();
+namespace AutoHub.API.MappingProfiles;
 
-            //DTO <-> Entity maps
-            CreateMap<CarModel, CarModelResponseDTO>();
-            CreateMap<CarModelCreateRequestDTO, CarModel>();
-            CreateMap<CarModelUpdateRequestDTO, CarModel>();
-        }
+public class CarModelProfile : Profile
+{
+    public CarModelProfile()
+    {
+        //Model <-> DTO maps
+        CreateMap<CarModelResponseDTO, CarModelResponse>();
+        CreateMap<CarModelCreateRequest, CarModelCreateRequestDTO>();
+        CreateMap<CarModelUpdateRequest, CarModelUpdateRequestDTO>();
+
+        //DTO <-> Entity maps
+        CreateMap<CarModel, CarModelResponseDTO>();
+        CreateMap<CarModelCreateRequestDTO, CarModel>();
+        CreateMap<CarModelUpdateRequestDTO, CarModel>();
     }
 }

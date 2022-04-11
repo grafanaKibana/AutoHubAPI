@@ -1,7 +1,6 @@
-namespace AutoHub.BLL.DTOs.CarColorDTOs
+namespace AutoHub.BusinessLogic.DTOs.CarColorDTOs;
+
+public class CarColorUpdateRequestDTO
 {
-    public class CarColorUpdateRequestDTO
-    {
-        public string CarColorName { get; set; }
-    }
+    public string CarColorName { get; set; }
 }

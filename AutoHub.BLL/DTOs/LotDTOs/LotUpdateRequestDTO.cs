@@ -1,9 +1,8 @@
-namespace AutoHub.BLL.DTOs.LotDTOs
+namespace AutoHub.BusinessLogic.DTOs.LotDTOs;
+
+public class LotUpdateRequestDTO
 {
-    public class LotUpdateRequestDTO
-    {
-        public int LotStatusId { get; set; }
-        public int? WinnerId { get; set; }
-        public int DurationInDays { get; set; }
-    }
+    public int LotStatusId { get; set; }
+    public int? WinnerId { get; set; }
+    public int DurationInDays { get; set; }
 }

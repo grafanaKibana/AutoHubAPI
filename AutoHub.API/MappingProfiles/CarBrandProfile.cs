@@ -1,23 +1,22 @@
 using AutoHub.API.Models.CarBrandModels;
-using AutoHub.BLL.DTOs.CarBrandDTOs;
-using AutoHub.DAL.Entities;
+using AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
+using AutoHub.Domain.Entities;
 using AutoMapper;
 
-namespace AutoHub.API.MappingProfiles
-{
-    public class CarBrandProfile : Profile
-    {
-        public CarBrandProfile()
-        {
-            //Model <-> DTO maps
-            CreateMap<CarBrandResponseDTO, CarBrandResponseModel>();
-            CreateMap<CarBrandCreateRequestModel, CarBrandCreateRequestDTO>();
-            CreateMap<CarBrandUpdateRequestModel, CarBrandUpdateRequestDTO>();
+namespace AutoHub.API.MappingProfiles;
 
-            //DTO <-> Entity maps
-            CreateMap<CarBrand, CarBrandResponseDTO>();
-            CreateMap<CarBrandCreateRequestDTO, CarBrand>();
-            CreateMap<CarBrandUpdateRequestDTO, CarBrand>();
-        }
+public class CarBrandProfile : Profile
+{
+    public CarBrandProfile()
+    {
+        //Model <-> DTO maps
+        CreateMap<CarBrandResponseDTO, CarBrandResponse>();
+        CreateMap<CarBrandCreateRequest, CarBrandCreateRequestDTO>();
+        CreateMap<CarBrandUpdateRequest, CarBrandUpdateRequestDTO>();
+
+        //DTO <-> Entity maps
+        CreateMap<CarBrand, CarBrandResponseDTO>();
+        CreateMap<CarBrandCreateRequestDTO, CarBrand>();
+        CreateMap<CarBrandUpdateRequestDTO, CarBrand>();
     }
 }

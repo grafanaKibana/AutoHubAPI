@@ -1,14 +1,13 @@
-﻿using AutoHub.DAL.Entities.Identity;
+﻿using AutoHub.Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AutoHub.DAL.EntitySettings
+namespace AutoHub.DataAccess.EntitySettings;
+
+internal class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {
-    internal class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
+    public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
-        {
-            builder.ToTable(nameof(ApplicationUser));
-        }
+        builder.ToTable(nameof(ApplicationUser));
     }
 }

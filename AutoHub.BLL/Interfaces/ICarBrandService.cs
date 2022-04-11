@@ -1,18 +1,17 @@
-using AutoHub.BLL.DTOs.CarBrandDTOs;
+using AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
 using System.Collections.Generic;
 
-namespace AutoHub.BLL.Interfaces
+namespace AutoHub.BusinessLogic.Interfaces;
+
+public interface ICarBrandService
 {
-    public interface ICarBrandService
-    {
-        IEnumerable<CarBrandResponseDTO> GetAll();
+    IEnumerable<CarBrandResponseDTO> GetAll();
 
-        CarBrandResponseDTO GetById(int carBrandId);
+    CarBrandResponseDTO GetById(int carBrandId);
 
-        void Create(CarBrandCreateRequestDTO createBrandDTO);
+    void Create(CarBrandCreateRequestDTO createBrandDTO);
 
-        void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO);
+    void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO);
 
-        void Delete(int carBrandId);
-    }
+    void Delete(int carBrandId);
 }

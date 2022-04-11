@@ -3,51 +3,50 @@ using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace AutoHub.Tests.ValidatorsTests
+namespace AutoHub.Tests.ValidatorsTests;
+
+public class BidValidatorTests
 {
-    public class BidValidatorTests
+    private readonly BidCreateRequestModelValidator _createValidator;
+
+    public BidValidatorTests()
     {
-        private readonly BidCreateRequestModelValidator _createValidator;
+        _createValidator = new BidCreateRequestModelValidator();
+    }
 
-        public BidValidatorTests()
+    [Fact]
+    public void CreateBidTestValidate_ValidModel_ShouldNotHaveError()
+    {
+        //Arrange
+        var model = new BidCreateRequest
         {
-            _createValidator = new BidCreateRequestModelValidator();
-        }
+            BidValue = 25500,
+            UserId = 1
+        };
 
-        [Fact]
-        public void CreateBidTestValidate_ValidModel_ShouldNotHaveError()
+        //Act
+        var result = _createValidator.TestValidate(model);
+
+        //Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.BidValue);
+        result.ShouldNotHaveValidationErrorFor(x => x.UserId);
+    }
+
+    [Fact]
+    public void CreateBidTestValidate_InvalidModel_ShouldNotHaveError()
+    {
+        //Arrange
+        var model = new BidCreateRequest
         {
-            //Arrange
-            var model = new BidCreateRequestModel
-            {
-                BidValue = 25500,
-                UserId = 1
-            };
+            BidValue = 0,
+            UserId = 0
+        };
 
-            //Act
-            var result = _createValidator.TestValidate(model);
+        //Act
+        var result = _createValidator.TestValidate(model);
 
-            //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.BidValue);
-            result.ShouldNotHaveValidationErrorFor(x => x.UserId);
-        }
-
-        [Fact]
-        public void CreateBidTestValidate_InvalidModel_ShouldNotHaveError()
-        {
-            //Arrange
-            var model = new BidCreateRequestModel
-            {
-                BidValue = 0,
-                UserId = 0
-            };
-
-            //Act
-            var result = _createValidator.TestValidate(model);
-
-            //Assert
-            result.ShouldHaveValidationErrorFor(x => x.BidValue);
-            result.ShouldHaveValidationErrorFor(x => x.UserId);
-        }
+        //Assert
+        result.ShouldHaveValidationErrorFor(x => x.BidValue);
+        result.ShouldHaveValidationErrorFor(x => x.UserId);
     }
 }

@@ -1,9 +1,8 @@
-namespace AutoHub.BLL.DTOs.CarBrandDTOs
-{
-    public class CarBrandResponseDTO
-    {
-        public int CarBrandId { get; set; }
+namespace AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
 
-        public string CarBrandName { get; set; }
-    }
+public class CarBrandResponseDTO
+{
+    public int CarBrandId { get; set; }
+
+    public string CarBrandName { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AutoHub.DAL.Migrations
+namespace AutoHub.DataAccess.Migrations
 {
     public partial class RoleSeed : Migration
     {

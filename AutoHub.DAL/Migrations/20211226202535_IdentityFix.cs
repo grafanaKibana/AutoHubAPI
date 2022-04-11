@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace AutoHub.DAL.Migrations
+namespace AutoHub.DataAccess.Migrations
 {
     public partial class IdentityFix : Migration
     {

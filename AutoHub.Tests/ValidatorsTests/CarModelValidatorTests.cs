@@ -4,71 +4,70 @@ using AutoHub.API.Validators;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace AutoHub.Tests.ValidatorsTests
+namespace AutoHub.Tests.ValidatorsTests;
+
+public class CarModelValidatorTests
 {
-    public class CarModelValidatorTests
+    private readonly Fixture _fixture;
+    private readonly CarModelCreateRequestModelValidator _createModelValidator;
+    private readonly CarModelUpdateRequestModelValidator _updateModelValidator;
+
+    public CarModelValidatorTests()
     {
-        private readonly Fixture _fixture;
-        private readonly CarModelCreateRequestModelValidator _createModelValidator;
-        private readonly CarModelUpdateRequestModelValidator _updateModelValidator;
+        _fixture = new Fixture();
+        _createModelValidator = new CarModelCreateRequestModelValidator();
+        _updateModelValidator = new CarModelUpdateRequestModelValidator();
+    }
 
-        public CarModelValidatorTests()
-        {
-            _fixture = new Fixture();
-            _createModelValidator = new CarModelCreateRequestModelValidator();
-            _updateModelValidator = new CarModelUpdateRequestModelValidator();
-        }
+    [Fact]
+    public void CreateModelTestValidate_ValidModel_ShouldNotHaveError()
+    {
+        //Arrange
+        var model = _fixture.Create<CarModelCreateRequest>();
 
-        [Fact]
-        public void CreateModelTestValidate_ValidModel_ShouldNotHaveError()
-        {
-            //Arrange
-            var model = _fixture.Create<CarModelCreateRequestModel>();
+        //Act
+        var result = _createModelValidator.TestValidate(model);
 
-            //Act
-            var result = _createModelValidator.TestValidate(model);
+        //Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.CarModelName);
+    }
 
-            //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.CarModelName);
-        }
+    [Fact]
+    public void CreateModelTestValidate_InvalidModel_ShouldHaveError()
+    {
+        //Arrange
+        var model = new CarModelCreateRequest { CarModelName = null };
 
-        [Fact]
-        public void CreateModelTestValidate_InvalidModel_ShouldHaveError()
-        {
-            //Arrange
-            var model = new CarModelCreateRequestModel { CarModelName = null };
+        //Act
+        var result = _createModelValidator.TestValidate(model);
 
-            //Act
-            var result = _createModelValidator.TestValidate(model);
+        //Assert
+        result.ShouldHaveValidationErrorFor(x => x.CarModelName);
+    }
 
-            //Assert
-            result.ShouldHaveValidationErrorFor(x => x.CarModelName);
-        }
+    [Fact]
+    public void UpdateModelTestValidate_ValidModel_ShouldNotHaveError()
+    {
+        //Arrange
+        var model = _fixture.Create<CarModelUpdateRequest>();
 
-        [Fact]
-        public void UpdateModelTestValidate_ValidModel_ShouldNotHaveError()
-        {
-            //Arrange
-            var model = _fixture.Create<CarModelUpdateRequestModel>();
+        //Act
+        var result = _updateModelValidator.TestValidate(model);
 
-            //Act
-            var result = _updateModelValidator.TestValidate(model);
+        //Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.CarModelName);
+    }
 
-            //Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.CarModelName);
-        }
+    [Fact]
+    public void UpdateModelTestValidate_InvalidModel_ShouldHaveError()
+    {
+        //Arrange
+        var model = new CarModelUpdateRequest { CarModelName = null };
 
-        [Fact]
-        public void UpdateModelTestValidate_InvalidModel_ShouldHaveError()
-        {
-            //Arrange
-            var model = new CarModelUpdateRequestModel { CarModelName = null };
+        //Act
+        var result = _updateModelValidator.TestValidate(model);
 
-            //Act
-            var result = _updateModelValidator.TestValidate(model);
-
-            //Assert
-            result.ShouldHaveValidationErrorFor(x => x.CarModelName);
-        }
+        //Assert
+        result.ShouldHaveValidationErrorFor(x => x.CarModelName);
     }
 }

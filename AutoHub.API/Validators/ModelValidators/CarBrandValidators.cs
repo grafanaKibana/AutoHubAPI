@@ -1,21 +1,20 @@
 ﻿using AutoHub.API.Models.CarBrandModels;
 using FluentValidation;
 
-namespace AutoHub.API.Validators
-{
-    public class CarBrandCreateRequestModelValidator : AbstractValidator<CarBrandCreateRequestModel>
-    {
-        public CarBrandCreateRequestModelValidator()
-        {
-            RuleFor(x => x.CarBrandName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
-        }
-    }
+namespace AutoHub.API.Validators;
 
-    public class CarBrandUpdateRequestModelValidator : AbstractValidator<CarBrandUpdateRequestModel>
+public class CarBrandCreateRequestModelValidator : AbstractValidator<CarBrandCreateRequest>
+{
+    public CarBrandCreateRequestModelValidator()
     {
-        public CarBrandUpdateRequestModelValidator()
-        {
-            RuleFor(x => x.CarBrandName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
-        }
+        RuleFor(x => x.CarBrandName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
+    }
+}
+
+public class CarBrandUpdateRequestModelValidator : AbstractValidator<CarBrandUpdateRequest>
+{
+    public CarBrandUpdateRequestModelValidator()
+    {
+        RuleFor(x => x.CarBrandName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
     }
 }
