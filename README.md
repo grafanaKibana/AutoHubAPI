@@ -2,14 +2,14 @@
 
 API to manage used car auction business
 -
-The project is being developed on the basis of a monolithic three-layer architecture using ASP.NET WebAPI, MSSQL as a database, EF as ORM
+The project is being developed on the basis of a monolithic four-layer architecture using ASP.NET WebAPI, MSSQL as a database, EF as ORM, Identity as Authentification & Authorization service
 
 ## Framework & Libs that was used:
 
-- NET 5.0 
-- ASP.NET Core 5
-- Entity Framework Core 5
-- C# 9
+- NET 6.0 
+- ASP.NET Core 6
+- Entity Framework Core 6
+- C# 10
 - Identity
 - AutoMapper
 - Swagger + SwaggerUI
