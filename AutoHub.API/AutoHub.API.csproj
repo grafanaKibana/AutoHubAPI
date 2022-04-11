@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AutoHub.BLL\AutoHub.BusinessLogic.csproj" />
+        <ProjectReference Include="..\AutoHub.BusinessLogic\AutoHub.BusinessLogic.csproj" />
         <ProjectReference Include="..\AutoHub.Domain\AutoHub.Domain.csproj" />
     </ItemGroup>
 

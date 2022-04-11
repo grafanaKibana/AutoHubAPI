@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AutoHub.DAL\AutoHub.DataAccess.csproj" />
+        <ProjectReference Include="..\AutoHub.DataAccess\AutoHub.DataAccess.csproj" />
         <ProjectReference Include="..\AutoHub.Domain\AutoHub.Domain.csproj" />
     </ItemGroup>
 

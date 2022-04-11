@@ -25,6 +25,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AutoHub.API\AutoHub.API.csproj" />
+        <ProjectReference Include="..\AutoHub.BusinessLogic\AutoHub.BusinessLogic.csproj" />
     </ItemGroup>
 
 </Project>
