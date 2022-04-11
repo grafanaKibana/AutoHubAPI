@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -29,7 +30,7 @@ public class CarBrandControllerTests
     }
 
     [Fact]
-    public void GetAllCarBrands_ReturnsOk()
+    public async Task GetAllCarBrands_ReturnsOkAsync()
     {
         //Arrange
         var carBrands = _fixture.CreateMany<CarBrandResponseDTO>();
@@ -40,10 +41,10 @@ public class CarBrandControllerTests
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<CarBrandResponse>>(carBrands))
             .Returns(mappedCarBrands);
-        _carBrandServiceMock.Setup(service => service.GetAll()).Returns(carBrands);
+        _carBrandServiceMock.Setup(service => service.GetAll()).ReturnsAsync(carBrands);
 
         //Act
-        var result = _carBrandController.GetAllCarBrands();
+        var result = await _carBrandController.GetAllCarBrands();
 
         //Assert
         result.Should().NotBeNull();
@@ -51,7 +52,7 @@ public class CarBrandControllerTests
     }
 
     [Fact]
-    public void CreateCarBrand_ValidModel_ReturnsCreated()
+    public async Task CreateCarBrand_ValidModel_ReturnsCreatedAsync()
     {
         //Arrange
         var requestModel = _fixture.Create<CarBrandCreateRequest>();
@@ -63,7 +64,7 @@ public class CarBrandControllerTests
             .Returns(mappedCarBrand);
 
         //Act
-        var result = _carBrandController.CreateCarBrand(requestModel);
+        var result = await _carBrandController.CreateCarBrand(requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -73,7 +74,7 @@ public class CarBrandControllerTests
     }
 
     [Fact]
-    public void UpdateCarBrand_ValidData_ReturnsNoContent()
+    public async Task UpdateCarBrand_ValidData_ReturnsNoContentAsync()
     {
         //Arrange
         var carBrandId = _fixture.Create<int>();
@@ -85,7 +86,7 @@ public class CarBrandControllerTests
         _mapperMock.Setup(mapper => mapper.Map<CarBrandUpdateRequestDTO>(requestModel)).Returns(mappedCarBrand);
 
         //Act
-        var result = _carBrandController.UpdateCarBrand(carBrandId, requestModel);
+        var result = await _carBrandController.UpdateCarBrand(carBrandId, requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -95,13 +96,13 @@ public class CarBrandControllerTests
     }
 
     [Fact]
-    public void DeleteCarBrand_CarBrandExists_ReturnsNoContent()
+    public async Task DeleteCarBrand_CarBrandExists_ReturnsNoContentAsync()
     {
         //Arrange
         var carBrandId = _fixture.Create<int>();
 
         //Act
-        var result = _carBrandController.DeleteCarBrand(carBrandId);
+        var result = await _carBrandController.DeleteCarBrand(carBrandId);
 
         //Assert
         result.Should().NotBeNull();

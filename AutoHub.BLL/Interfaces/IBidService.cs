@@ -1,13 +1,14 @@
 using AutoHub.BusinessLogic.DTOs.BidDTOs;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface IBidService
 {
-    IEnumerable<BidResponseDTO> GetUserBids(int userId);
+    Task<IEnumerable<BidResponseDTO>> GetUserBids(int userId);
 
-    IEnumerable<BidResponseDTO> GetLotBids(int lotId);
+    Task<IEnumerable<BidResponseDTO>> GetLotBids(int lotId);
 
-    void Create(int lotId, BidCreateRequestDTO createBidDTO);
+    Task Create(int lotId, BidCreateRequestDTO createBidDTO);
 }

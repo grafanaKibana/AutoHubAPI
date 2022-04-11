@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -29,7 +30,7 @@ public class CarControllerTests
     }
 
     [Fact]
-    public void GetAllCars_ReturnsOk()
+    public async Task GetAllCars_ReturnsOkAsync()
     {
         //Arrange
         var cars = _fixture.CreateMany<CarResponseDTO>();
@@ -48,10 +49,10 @@ public class CarControllerTests
             .Create());
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<CarResponse>>(cars)).Returns(mappedCars);
-        _carServiceMock.Setup(service => service.GetAll()).Returns(cars);
+        _carServiceMock.Setup(service => service.GetAll()).ReturnsAsync(cars);
 
         //Act
-        var result = _carController.GetAllCars();
+        var result = await _carController.GetAllCars();
 
         //Assert
         result.Should().NotBeNull();
@@ -59,7 +60,7 @@ public class CarControllerTests
     }
 
     [Fact]
-    public void GetCarById_CarExists_ReturnsOk()
+    public async Task GetCarById_CarExists_ReturnsOkAsync()
     {
         //Arrange
         var car = _fixture.Create<CarResponseDTO>();
@@ -77,11 +78,11 @@ public class CarControllerTests
             .With(x => x.CarStatus, car.CarStatus)
             .Create();
 
-        _carServiceMock.Setup(service => service.GetById(car.CarId)).Returns(car);
+        _carServiceMock.Setup(service => service.GetById(car.CarId)).ReturnsAsync(car);
         _mapperMock.Setup(mapper => mapper.Map<CarResponse>(car)).Returns(mappedCar);
 
         //Act
-        var result = _carController.GetCarById(car.CarId);
+        var result = await _carController.GetCarById(car.CarId);
 
         //Assert
         result.Should().NotBeNull();
@@ -89,7 +90,7 @@ public class CarControllerTests
     }
 
     [Fact]
-    public void CreateCar_ValidModel_ReturnsCreated()
+    public async Task CreateCar_ValidModel_ReturnsCreatedAsync()
     {
         //Arrange
         var car = _fixture.Create<CarCreateRequest>();
@@ -109,7 +110,7 @@ public class CarControllerTests
         _mapperMock.Setup(mapper => mapper.Map<CarCreateRequestDTO>(car)).Returns(mappedCar);
 
         //Act
-        var result = _carController.CreateCar(car);
+        var result = await _carController.CreateCar(car);
 
         //Assert
         result.Should().NotBeNull();
@@ -119,7 +120,7 @@ public class CarControllerTests
     }
 
     [Fact]
-    public void UpdateCar_ValidData_ReturnsNoContent()
+    public async Task UpdateCar_ValidData_ReturnsNoContentAsync()
     {
         //Arrange
         var carId = _fixture.Create<int>();
@@ -127,7 +128,7 @@ public class CarControllerTests
         var requestModel = _fixture.Build<CarUpdateRequest>()
             .With(x => x.CarStatusId,
                 _fixture.Create<int>() % (6 - 1 + 1) + 1) //Defines range of generating to match enum values
-            .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
+            .Create();                                    //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
 
         var mappedCar = _fixture.Build<CarUpdateRequestDTO>()
             .With(x => x.CarBrand, requestModel.CarBrand)
@@ -146,7 +147,7 @@ public class CarControllerTests
         _mapperMock.Setup(mapper => mapper.Map<CarUpdateRequestDTO>(requestModel)).Returns(mappedCar);
 
         //Act
-        var result = _carController.UpdateCar(carId, requestModel);
+        var result = await _carController.UpdateCar(carId, requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -156,13 +157,13 @@ public class CarControllerTests
     }
 
     [Fact]
-    public void DeleteCar_CarExists_ReturnsNoContent()
+    public async Task DeleteCar_CarExists_ReturnsNoContentAsync()
     {
         //Arrange
         var carId = _fixture.Create<int>();
 
         //Act
-        var result = _carController.DeleteCar(carId);
+        var result = await _carController.DeleteCar(carId);
 
         //Assert
         result.Should().NotBeNull();

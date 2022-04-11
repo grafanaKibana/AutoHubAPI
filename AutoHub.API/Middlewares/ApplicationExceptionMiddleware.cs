@@ -38,7 +38,7 @@ public class ApplicationExceptionMiddleware
         {
             await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, aEx);
         }
-        catch (DublicateException dEx)
+        catch (DuplicateException dEx)
         {
             await HandleExceptionAsync(httpContext, HttpStatusCode.Conflict, dEx);
         }

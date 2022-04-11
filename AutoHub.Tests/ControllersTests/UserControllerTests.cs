@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -29,7 +30,7 @@ public class UserControllerTests
     }
 
     [Fact]
-    public async void GetAllUsers_ReturnsOk()
+    public async Task GetAllUsers_ReturnsOkAsync()
     {
         //Arrange
         var users = _fixture.CreateMany<UserResponseDTO>();
@@ -44,7 +45,7 @@ public class UserControllerTests
             .Create());
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<UserResponse>>(users)).Returns(mappedUsers);
-        _userServiceMock.Setup(service => service.GetAllAsync()).ReturnsAsync(users);
+        _userServiceMock.Setup(service => service.GetAll()).ReturnsAsync(users);
 
         //Act
         var result = await _userController.GetAllUsers();
@@ -55,7 +56,7 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void GetByUserById_UserExists_ReturnsOk()
+    public async Task GetByUserById_UserExists_ReturnsOkAsync()
     {
         //Arrange
         var user = _fixture.Create<UserResponseDTO>();
@@ -70,10 +71,10 @@ public class UserControllerTests
             .Create();
 
         _mapperMock.Setup(mapper => mapper.Map<UserResponse>(user)).Returns(mappedUser);
-        _userServiceMock.Setup(service => service.GetByIdAsync(user.UserId)).ReturnsAsync(user);
+        _userServiceMock.Setup(service => service.GetById(user.UserId)).ReturnsAsync(user);
 
         //Act
-        var result = _userController.GetUserById(user.UserId);
+        var result = await _userController.GetUserById(user.UserId);
 
         //Assert
         result.Should().NotBeNull();
@@ -81,7 +82,7 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void UpdateUser_ValidData_ReturnsNoContent()
+    public async Task UpdateUser_ValidData_ReturnsNoContentAsync()
     {
         //Arrange
         var userId = _fixture.Create<int>();
@@ -97,7 +98,7 @@ public class UserControllerTests
         _mapperMock.Setup(mapper => mapper.Map<UserUpdateRequestDTO>(requestModel)).Returns(mappedUser);
 
         //Act
-        var result = _userController.UpdateUser(userId, requestModel);
+        var result = await _userController.UpdateUser(userId, requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -107,13 +108,13 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void DeleteUser_UserExist_ReturnsNoContent()
+    public async Task DeleteUser_UserExist_ReturnsNoContentAsync()
     {
         //Arrange
         var userId = _fixture.Create<int>();
 
         //Act
-        var result = _userController.DeleteUser(userId);
+        var result = await _userController.DeleteUser(userId);
 
         //Assert
         result.Should().NotBeNull();

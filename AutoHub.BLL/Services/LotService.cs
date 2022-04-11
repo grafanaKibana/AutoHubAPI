@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -23,47 +24,47 @@ public class LotService : ILotService
         _mapper = mapper;
     }
 
-    public IEnumerable<LotResponseDTO> GetAll()
+    public async Task<IEnumerable<LotResponseDTO>> GetAll()
     {
-        var lots = _context.Lots
+        var lots = await _context.Lots
             .Include(lot => lot.Car.CarBrand)
             .Include(lot => lot.Car.CarModel)
             .Include(lot => lot.Car.CarColor)
             .Include(lot => lot.LotStatus)
-            .ToList();
+            .ToListAsync();
 
         var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
         return mappedLots;
     }
 
-    public IEnumerable<LotResponseDTO> GetInProgress()
+    public async Task<IEnumerable<LotResponseDTO>> GetInProgress()
     {
-        var lots = _context.Lots
+        var lots = await _context.Lots
             .Include(lot => lot.Car.CarBrand)
             .Include(lot => lot.Car.CarModel)
             .Include(lot => lot.Car.CarColor)
             .Include(lot => lot.LotStatus)
             .Where(lot => lot.LotStatusId == LotStatusEnum.InProgress)
-            .ToList();
+            .ToListAsync();
 
         var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
         return mappedLots;
     }
 
-    public LotResponseDTO GetById(int lotId)
+    public async Task<LotResponseDTO> GetById(int lotId)
     {
-        var lot = _context.Lots
+        var lot = await _context.Lots
             .Include(lot => lot.Car.CarBrand)
             .Include(lot => lot.Car.CarModel)
             .Include(lot => lot.Car.CarColor)
             .Include(lot => lot.LotStatus)
-            .FirstOrDefault(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+            .FirstOrDefaultAsync(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
         var mappedLot = _mapper.Map<LotResponseDTO>(lot);
         return mappedLot;
     }
 
-    public void Create(LotCreateRequestDTO createLotDTO)
+    public async Task Create(LotCreateRequestDTO createLotDTO)
     {
         var lot = _mapper.Map<Lot>(createLotDTO);
 
@@ -71,27 +72,27 @@ public class LotService : ILotService
         lot.StartTime = DateTime.UtcNow;
         lot.EndTime = lot.StartTime.AddDays(createLotDTO.DurationInDays);
 
-        _context.Lots.Add(lot);
-        _context.SaveChanges();
+        await _context.Lots.AddAsync(lot);
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(int lotId, LotUpdateRequestDTO updateLotDTO)
+    public async Task Update(int lotId, LotUpdateRequestDTO updateLotDTO)
     {
         if (Enum.IsDefined(typeof(LotStatusEnum), updateLotDTO.LotStatusId).Equals(false))
         {
             throw new EntityValidationException($"Incorrect {nameof(LotStatus.LotStatusId)} value.");
         }
 
-        var lot = _context.Lots
+        var lot = await _context.Lots
             .Include(lot => lot.Car.CarBrand)
             .Include(lot => lot.Car.CarModel)
             .Include(lot => lot.Car.CarColor)
             .Include(lot => lot.LotStatus)
-            .FirstOrDefault(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+            .FirstOrDefaultAsync(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
         if (updateLotDTO.WinnerId.HasValue)
         {
-            var winner = _context.Users.Find(updateLotDTO.WinnerId);
+            var winner = await _context.Users.FindAsync(updateLotDTO.WinnerId);
             lot.Winner = winner ?? throw new NotFoundException($"User with ID {updateLotDTO.WinnerId} not exist.");
         }
 
@@ -99,29 +100,29 @@ public class LotService : ILotService
         lot.EndTime = lot.StartTime.AddDays(updateLotDTO.DurationInDays);
 
         _context.Lots.Update(lot);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void UpdateStatus(int lotId, int statusId)
+    public async Task UpdateStatus(int lotId, int statusId)
     {
         if (Enum.IsDefined(typeof(LotStatusEnum), statusId).Equals(false))
         {
             throw new EntityValidationException($"Incorrect {nameof(LotStatus.LotStatusId)} value.");
         }
 
-        var lot = _context.Lots.Find(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        var lot = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
         lot.LotStatusId = (LotStatusEnum)statusId;
 
         _context.Lots.Update(lot);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int lotId)
+    public async Task Delete(int lotId)
     {
-        var lot = _context.Lots.Find(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        var lot = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
         _context.Lots.Remove(lot);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

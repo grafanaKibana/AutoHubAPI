@@ -52,9 +52,10 @@ public class AuthenticationController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> LoginUser([FromBody] UserLoginRequest model)
     {
-        await _userService.LogoutAsync();
+        await _userService.Logout();
+
         var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
-        var authModel = await _userService.LoginAsync(mappedUser);
+        var authModel = await _userService.Login(mappedUser);
         var mappedAuthModel = _mapper.Map<UserLoginResponse>(authModel);
 
         return Ok(mappedAuthModel);
@@ -88,7 +89,7 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> RegisterUser([FromBody] UserRegisterRequest model)
     {
         var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
-        await _userService.RegisterAsync(mappedUser);
+        await _userService.Register(mappedUser);
 
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -100,10 +101,12 @@ public class AuthenticationController : Controller
     /// <response code="401">Unauthorized Access.</response>
     [HttpPost("Logout")]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task LogoutUser()
+    public async Task<IActionResult> LogoutUser()
     {
-        await _userService.LogoutAsync();
+        await _userService.Logout();
+
+        return NoContent();
     }
 }

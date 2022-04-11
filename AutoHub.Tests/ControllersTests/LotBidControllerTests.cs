@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -32,7 +33,7 @@ public class LotBidControllerTests
     }
 
     [Fact]
-    public void GetLotBids_LotExists_ReturnsOk()
+    public async Task GetLotBids_LotExists_ReturnsOkAsync()
     {
         //Arrange
         var lotId = _fixture.Create<int>();
@@ -44,10 +45,10 @@ public class LotBidControllerTests
             .Create());
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<BidResponse>>(bids)).Returns(mappedBids);
-        _bidServiceMock.Setup(service => service.GetLotBids(lotId)).Returns(bids);
+        _bidServiceMock.Setup(service => service.GetLotBids(lotId)).ReturnsAsync(bids);
 
         //Act
-        var result = _lotBidController.GetLotBids(lotId);
+        var result = await _lotBidController.GetLotBids(lotId);
 
         //Assert
         result.Should().NotBeNull();
@@ -55,7 +56,7 @@ public class LotBidControllerTests
     }
 
     [Fact]
-    public void CreateBid_ValidData_ReturnsCreated()
+    public async Task CreateBid_ValidData_ReturnsCreatedAsync()
     {
         //Arrange
         var lotId = _fixture.Create<int>();
@@ -68,7 +69,7 @@ public class LotBidControllerTests
         _mapperMock.Setup(mapper => mapper.Map<BidCreateRequestDTO>(requestModel)).Returns(mappedBid);
 
         //Act
-        var result = _lotBidController.CreateBid(lotId, requestModel);
+        var result = await _lotBidController.CreateBid(lotId, requestModel);
 
         //Assert
         result.Should().NotBeNull();

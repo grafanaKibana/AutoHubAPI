@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers;
 
@@ -36,9 +37,9 @@ public class CarColorController : Controller
     [ProducesResponseType(typeof(IEnumerable<CarColorResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetAllCarColors()
+    public async Task<IActionResult> GetAllCarColors()
     {
-        var carColors = _carColorService.GetAll();
+        var carColors = await _carColorService.GetAll();
         var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponse>>(carColors);
 
         return Ok(mappedCarColors);
@@ -69,10 +70,10 @@ public class CarColorController : Controller
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult CreateCarColor([FromBody] CarColorCreateRequest model)
+    public async Task<IActionResult> CreateCarColor([FromBody] CarColorCreateRequest model)
     {
         var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
-        _carColorService.Create(mappedCarColor);
+        await _carColorService.Create(mappedCarColor);
 
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -105,10 +106,10 @@ public class CarColorController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequest model)
+    public async Task<IActionResult> UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequest model)
     {
         var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
-        _carColorService.Update(carColorId, mappedCarColor);
+        await _carColorService.Update(carColorId, mappedCarColor);
 
         return NoContent();
     }
@@ -129,9 +130,9 @@ public class CarColorController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult DeleteCarColor(int carColorId)
+    public async Task<IActionResult> DeleteCarColor(int carColorId)
     {
-        _carColorService.Delete(carColorId);
+        await _carColorService.Delete(carColorId);
 
         return NoContent();
     }

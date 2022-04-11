@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -29,7 +30,7 @@ public class CarColorControllerTests
     }
 
     [Fact]
-    public void GetAllCarColors_ReturnsOk()
+    public async Task GetAllCarColors_ReturnsOkAsync()
     {
         //Arrange
         var carColors = _fixture.CreateMany<CarColorResponseDTO>();
@@ -41,10 +42,10 @@ public class CarColorControllerTests
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<CarColorResponse>>(carColors))
             .Returns(mappedCarColors);
-        _carColorServiceMock.Setup(service => service.GetAll()).Returns(carColors);
+        _carColorServiceMock.Setup(service => service.GetAll()).ReturnsAsync(carColors);
 
         //Act
-        var result = _carColorController.GetAllCarColors();
+        var result = await _carColorController.GetAllCarColors();
 
         //Assert
         result.Should().NotBeNull();
@@ -52,7 +53,7 @@ public class CarColorControllerTests
     }
 
     [Fact]
-    public void CreateCarColor_ValidModel_ReturnsCreated()
+    public async Task CreateCarColor_ValidModel_ReturnsCreatedAsync()
     {
         //Arrange
         var requestModel = _fixture.Create<CarColorCreateRequest>();
@@ -63,7 +64,7 @@ public class CarColorControllerTests
         _mapperMock.Setup(mapper => mapper.Map<CarColorCreateRequestDTO>(requestModel)).Returns(mappedCarColor);
 
         //Act
-        var result = _carColorController.CreateCarColor(requestModel);
+        var result = await _carColorController.CreateCarColor(requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -73,7 +74,7 @@ public class CarColorControllerTests
     }
 
     [Fact]
-    public void UpdateCarColor_ValidData_ReturnsNoContent()
+    public async Task UpdateCarColor_ValidData_ReturnsNoContentAsync()
     {
         //Arrange
         var carColorId = _fixture.Create<int>();
@@ -85,7 +86,7 @@ public class CarColorControllerTests
         _mapperMock.Setup(mapper => mapper.Map<CarColorUpdateRequestDTO>(requestModel)).Returns(mappedCarColor);
 
         //Act
-        var result = _carColorController.UpdateCarColor(carColorId, requestModel);
+        var result = await _carColorController.UpdateCarColor(carColorId, requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -95,13 +96,13 @@ public class CarColorControllerTests
     }
 
     [Fact]
-    public void DeleteCarColor_CarColorExists_ReturnsNoContent()
+    public async Task DeleteCarColor_CarColorExists_ReturnsNoContentAsync()
     {
         //Arrange
         var carColorId = _fixture.Create<int>();
 
         //Act
-        var result = _carColorController.DeleteCarColor(carColorId);
+        var result = await _carColorController.DeleteCarColor(carColorId);
 
         //Assert
         result.Should().NotBeNull();

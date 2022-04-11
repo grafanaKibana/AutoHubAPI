@@ -1,5 +1,4 @@
 using AutoHub.API.Extensions;
-using AutoHub.API.Filters;
 using AutoHub.API.Middlewares;
 using AutoHub.DataAccess;
 using FluentValidation.AspNetCore;
@@ -24,7 +23,7 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllers(options => options.Filters.Add(new ValidModelAttribute()))
+        services.AddControllers()
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Startup>());
         services.AddAutoMapper(typeof(Startup).Assembly);
         services.AddRouting();

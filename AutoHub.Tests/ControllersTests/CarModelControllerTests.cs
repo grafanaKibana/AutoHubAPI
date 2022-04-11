@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -29,7 +30,7 @@ public class CarModelControllerTests
     }
 
     [Fact]
-    public void GetAllCarModels_ReturnsOk()
+    public async Task GetAllCarModels_ReturnsOkAsync()
     {
         //Arrange
         var carModels = _fixture.CreateMany<CarModelResponseDTO>();
@@ -40,10 +41,10 @@ public class CarModelControllerTests
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<CarModelResponse>>(carModels))
             .Returns(mappedCarModels);
-        _carModelServiceMock.Setup(service => service.GetAll()).Returns(carModels);
+        _carModelServiceMock.Setup(service => service.GetAll()).ReturnsAsync(carModels);
 
         //Act
-        var result = _carModelController.GetAllCarModels();
+        var result = await _carModelController.GetAllCarModels();
 
         //Assert
         result.Should().NotBeNull();
@@ -51,7 +52,7 @@ public class CarModelControllerTests
     }
 
     [Fact]
-    public void CreateCarModel_ValidModel_ReturnsCreated()
+    public async Task CreateCarModel_ValidModel_ReturnsCreatedAsync()
     {
         //Arrange
         var requestModel = _fixture.Create<CarModelCreateRequest>();
@@ -62,7 +63,7 @@ public class CarModelControllerTests
         _mapperMock.Setup(mapper => mapper.Map<CarModelCreateRequestDTO>(requestModel)).Returns(mappedCarModel);
 
         //Act
-        var result = _carModelController.CreateCarModel(requestModel);
+        var result = await _carModelController.CreateCarModel(requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -72,7 +73,7 @@ public class CarModelControllerTests
     }
 
     [Fact]
-    public void UpdateCarModel_ValidData_ReturnsNoContent()
+    public async Task UpdateCarModel_ValidData_ReturnsNoContentAsync()
     {
         //Arrange
         var carModelId = _fixture.Create<int>();
@@ -84,7 +85,7 @@ public class CarModelControllerTests
         _mapperMock.Setup(mapper => mapper.Map<CarModelUpdateRequestDTO>(requestModel)).Returns(mappedCarModel);
 
         //Act
-        var result = _carModelController.UpdateCarModel(carModelId, requestModel);
+        var result = await _carModelController.UpdateCarModel(carModelId, requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -94,13 +95,13 @@ public class CarModelControllerTests
     }
 
     [Fact]
-    public void DeleteCarModel_CarModelExists_ReturnsNoContent()
+    public async Task DeleteCarModel_CarModelExists_ReturnsNoContentAsync()
     {
         //Arrange
         var carModelId = _fixture.Create<int>();
 
         //Act
-        var result = _carModelController.DeleteCarModel(carModelId);
+        var result = await _carModelController.DeleteCarModel(carModelId);
 
         //Assert
         result.Should().NotBeNull();

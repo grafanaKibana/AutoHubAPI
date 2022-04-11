@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers;
 
@@ -36,9 +37,9 @@ public class CarBrandController : Controller
     [ProducesResponseType(typeof(IEnumerable<CarBrandResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetAllCarBrands()
+    public async Task<IActionResult> GetAllCarBrands()
     {
-        var carBrands = _carBrandService.GetAll();
+        var carBrands = await _carBrandService.GetAll();
         var mappedCarBrands = _mapper.Map<IEnumerable<CarBrandResponse>>(carBrands);
 
         return Ok(mappedCarBrands);
@@ -69,10 +70,10 @@ public class CarBrandController : Controller
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult CreateCarBrand([FromBody] CarBrandCreateRequest model)
+    public async Task<IActionResult> CreateCarBrand([FromBody] CarBrandCreateRequest model)
     {
         var mappedCarBrand = _mapper.Map<CarBrandCreateRequestDTO>(model);
-        _carBrandService.Create(mappedCarBrand);
+        await _carBrandService.Create(mappedCarBrand);
 
         return StatusCode((int)HttpStatusCode.Created);
     }
@@ -105,10 +106,10 @@ public class CarBrandController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequest model)
+    public async Task<IActionResult> UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequest model)
     {
         var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
-        _carBrandService.Update(carBrandId, mappedCarBrand);
+        await _carBrandService.Update(carBrandId, mappedCarBrand);
 
         return NoContent();
     }
@@ -129,9 +130,9 @@ public class CarBrandController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult DeleteCarBrand(int carBrandId)
+    public async Task<IActionResult> DeleteCarBrand(int carBrandId)
     {
-        _carBrandService.Delete(carBrandId);
+        await _carBrandService.Delete(carBrandId);
 
         return NoContent();
     }

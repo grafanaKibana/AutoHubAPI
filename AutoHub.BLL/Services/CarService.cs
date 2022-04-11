@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -23,81 +24,78 @@ public class CarService : ICarService
         _mapper = mapper;
     }
 
-    public IEnumerable<CarResponseDTO> GetAll()
+    public async Task<IEnumerable<CarResponseDTO>> GetAll()
     {
-        var cars = _context.Cars
+        var cars = await _context.Cars
             .Include(car => car.CarBrand)
             .Include(car => car.CarModel)
             .Include(car => car.CarColor)
             .Include(car => car.CarStatus)
-            .ToList();
+            .ToListAsync();
 
         var mappedCars = _mapper.Map<IEnumerable<CarResponseDTO>>(cars);
         return mappedCars;
     }
 
-    public CarResponseDTO GetById(int carId)
+    public async Task<CarResponseDTO> GetById(int carId)
     {
-        var car = _context.Cars
+        var car = await _context.Cars
             .Include(car => car.CarBrand)
             .Include(car => car.CarModel)
             .Include(car => car.CarColor)
             .Include(car => car.CarStatus)
-            .FirstOrDefault(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+            .FirstOrDefaultAsync(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         var mappedCar = _mapper.Map<CarResponseDTO>(car);
         return mappedCar;
     }
 
-    public void Create(CarCreateRequestDTO createCarDTO)
+    public async Task Create(CarCreateRequestDTO createCarDTO)
     {
         var car = _mapper.Map<Car>(createCarDTO);
 
-        var brand = _context.CarBrands.FirstOrDefault(carBrand => carBrand.CarBrandName == createCarDTO.CarBrand);
-        var model = _context.CarModels.FirstOrDefault(carModel => carModel.CarModelName == createCarDTO.CarModel);
-        var color = _context.CarColors.FirstOrDefault(carColor => carColor.CarColorName == createCarDTO.CarColor);
+        var brand = await _context.CarBrands.FirstOrDefaultAsync(carBrand => carBrand.CarBrandName == createCarDTO.CarBrand);
+        var model = await _context.CarModels.FirstOrDefaultAsync(carModel => carModel.CarModelName == createCarDTO.CarModel);
+        var color = await _context.CarColors.FirstOrDefaultAsync(carColor => carColor.CarColorName == createCarDTO.CarColor);
 
         car.CarBrand = brand ?? new CarBrand { CarBrandName = createCarDTO.CarBrand };
         car.CarModel = model ?? new CarModel { CarModelName = createCarDTO.CarModel };
         car.CarColor = color ?? new CarColor { CarColorName = createCarDTO.CarColor };
         car.CarStatusId = CarStatusEnum.New;
 
-        _context.Cars.Add(car);
-        _context.SaveChanges();
+        await _context.Cars.AddAsync(car);
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(int carId, CarUpdateRequestDTO updateCarDTO)
+    public async Task Update(int carId, CarUpdateRequestDTO updateCarDTO)
     {
         if (Enum.IsDefined(typeof(CarStatusEnum), updateCarDTO.CarStatusId).Equals(false))
         {
             throw new EntityValidationException($"Incorrect {nameof(CarStatus.CarStatusId)} value.");
         }
 
-        var car = _context.Cars
+        var car = await _context.Cars
             .Include(car => car.CarBrand)
             .Include(car => car.CarModel)
             .Include(car => car.CarColor)
             .Include(car => car.CarStatus)
-            .FirstOrDefault(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+            .FirstOrDefaultAsync(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         if (car.CarBrand.CarBrandName != updateCarDTO.CarBrand)
         {
-            var brand = _context.CarBrands.FirstOrDefault(
-                carBrand => carBrand.CarBrandName == updateCarDTO.CarBrand);
+            var brand = await _context.CarBrands.FirstOrDefaultAsync(carBrand => carBrand.CarBrandName == updateCarDTO.CarBrand);
             car.CarBrand = brand ?? new CarBrand { CarBrandName = updateCarDTO.CarBrand };
         }
 
         if (car.CarModel.CarModelName != updateCarDTO.CarModel)
         {
-            var model = _context.CarModels.FirstOrDefault(
-                carModel => carModel.CarModelName == updateCarDTO.CarModel);
+            var model = await _context.CarModels.FirstOrDefaultAsync(carModel => carModel.CarModelName == updateCarDTO.CarModel);
             car.CarModel = model ?? new CarModel { CarModelName = updateCarDTO.CarModel };
         }
 
         if (car.CarColor.CarColorName != updateCarDTO.CarColor)
         {
-            var color = _context.CarColors.FirstOrDefault(
-                carColor => carColor.CarColorName == updateCarDTO.CarColor);
+            var color = await _context.CarColors.FirstOrDefaultAsync(carColor => carColor.CarColorName == updateCarDTO.CarColor);
             car.CarColor = color ?? new CarColor { CarColorName = updateCarDTO.CarColor };
         }
 
@@ -111,29 +109,29 @@ public class CarService : ICarService
         car.CarStatusId = (CarStatusEnum)updateCarDTO.CarStatusId;
 
         _context.Cars.Update(car);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void UpdateStatus(int carId, int statusId)
+    public async Task UpdateStatus(int carId, int statusId)
     {
         if (Enum.IsDefined(typeof(CarStatusEnum), statusId).Equals(false))
         {
             throw new EntityValidationException($"Incorrect {nameof(CarStatus.CarStatusId)} value.");
         }
 
-        var car = _context.Cars.Find(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+        var car = await _context.Cars.FindAsync(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         car.CarStatusId = (CarStatusEnum)statusId;
 
         _context.Cars.Update(car);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int carId)
+    public async Task Delete(int carId)
     {
-        var car = _context.Cars.Find(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+        var car = await _context.Cars.FindAsync(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         _context.Cars.Remove(car);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers;
 
@@ -39,9 +40,9 @@ public class UserBidController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult GetUserBids(int userId)
+    public async Task<IActionResult> GetUserBids(int userId)
     {
-        var bids = _bidService.GetUserBids(userId);
+        var bids = await _bidService.GetUserBids(userId);
         var mappedBids = _mapper.Map<IEnumerable<BidResponse>>(bids);
 
         return Ok(mappedBids);

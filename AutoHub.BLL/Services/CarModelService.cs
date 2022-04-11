@@ -4,8 +4,10 @@ using AutoHub.DataAccess;
 using AutoHub.Domain.Entities;
 using AutoHub.Domain.Exceptions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -20,50 +22,50 @@ public class CarModelService : ICarModelService
         _mapper = mapper;
     }
 
-    public IEnumerable<CarModelResponseDTO> GetAll()
+    public async Task<IEnumerable<CarModelResponseDTO>> GetAll()
     {
-        var models = _context.CarModels.ToList();
+        var models = await _context.CarModels.ToListAsync();
         var mappedModels = _mapper.Map<IEnumerable<CarModelResponseDTO>>(models);
         return mappedModels;
     }
 
-    public CarModelResponseDTO GetById(int carModelId)
+    public async Task<CarModelResponseDTO> GetById(int carModelId)
     {
-        var model = _context.CarModels.Find(carModelId) ?? throw new NotFoundException($"Car model with ID {carModelId} not exist.");
+        var model = await _context.CarModels.FindAsync(carModelId) ?? throw new NotFoundException($"Car model with ID {carModelId} not exist.");
 
         var mappedModels = _mapper.Map<CarModelResponseDTO>(model);
         return mappedModels;
     }
 
-    public void Create(CarModelCreateRequestDTO createModelDTO)
+    public async Task Create(CarModelCreateRequestDTO createModelDTO)
     {
-        var isDuplicate = _context.CarModels.Any(carModel => carModel.CarModelName == createModelDTO.CarModelName);
+        var isDuplicate = await _context.CarModels.AnyAsync(carModel => carModel.CarModelName == createModelDTO.CarModelName);
 
         if (isDuplicate.Equals(true))
         {
-            throw new DublicateException($"\"{createModelDTO.CarModelName}\" already exists.");
+            throw new DuplicateException($"\"{createModelDTO.CarModelName}\" already exists.");
         }
 
         var model = _mapper.Map<CarModel>(createModelDTO);
-        _context.CarModels.Add(model);
-        _context.SaveChanges();
+        await _context.CarModels.AddAsync(model);
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(int carModelId, CarModelUpdateRequestDTO updateModelDTO)
+    public async Task Update(int carModelId, CarModelUpdateRequestDTO updateModelDTO)
     {
-        var carModel = _context.CarModels.Find(carModelId) ?? throw new NotFoundException($"Car model with ID {carModelId} not exist.");
+        var carModel = await _context.CarModels.FindAsync(carModelId) ?? throw new NotFoundException($"Car model with ID {carModelId} not exist.");
 
         carModel.CarModelName = updateModelDTO.CarModelName;
 
         _context.CarModels.Update(carModel);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int carModelId)
+    public async Task Delete(int carModelId)
     {
-        var carModel = _context.CarModels.Find(carModelId) ?? throw new NotFoundException($"Car model with ID {carModelId} not exist.");
+        var carModel = await _context.CarModels.FindAsync(carModelId) ?? throw new NotFoundException($"Car model with ID {carModelId} not exist.");
 
         _context.CarModels.Remove(carModel);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

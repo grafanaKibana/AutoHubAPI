@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Crypto = BCrypt.Net.BCrypt;
 
 namespace AutoHub.BusinessLogic.Services;
@@ -25,7 +26,7 @@ public class AuthenticationService : IAuthenticationService
         _roles = roleManager.Roles.ToList();
     }
 
-    public string GenerateWebTokenForUser(ApplicationUser user)
+    public Task<string> GenerateWebTokenForUser(ApplicationUser user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes(_jwtOptions.Key);
@@ -48,10 +49,10 @@ public class AuthenticationService : IAuthenticationService
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        return Task.FromResult(tokenHandler.WriteToken(token));
     }
 
-    public string HashPassword(string password) => Crypto.HashPassword(password);
+    public Task<string> HashPassword(string password) => Task.FromResult(Crypto.HashPassword(password));
 
-    public bool VerifyPassword(string password, string hashedPassword) => Crypto.Verify(password, hashedPassword);
+    public Task<bool> VerifyPassword(string password, string hashedPassword) => Task.FromResult(Crypto.Verify(password, hashedPassword));
 }
