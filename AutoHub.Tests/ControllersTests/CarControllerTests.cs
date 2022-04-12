@@ -128,7 +128,7 @@ public class CarControllerTests
         var requestModel = _fixture.Build<CarUpdateRequest>()
             .With(x => x.CarStatusId,
                 _fixture.Create<int>() % (6 - 1 + 1) + 1) //Defines range of generating to match enum values
-            .Create();                                    //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
+            .Create();                                    //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole
 
         var mappedCar = _fixture.Build<CarUpdateRequestDTO>()
             .With(x => x.CarBrand, requestModel.CarBrand)

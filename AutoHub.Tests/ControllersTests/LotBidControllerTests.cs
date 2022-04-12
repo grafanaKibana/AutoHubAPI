@@ -19,7 +19,6 @@ public class LotBidControllerTests
     private readonly Mock<IBidService> _bidServiceMock;
     private readonly Fixture _fixture;
     private readonly LotBidController _lotBidController;
-    private readonly Mock<ILotService> _lotServiceMock;
     private readonly Mock<IMapper> _mapperMock;
 
     public LotBidControllerTests()
@@ -27,9 +26,7 @@ public class LotBidControllerTests
         _fixture = new Fixture();
         _mapperMock = new Mock<IMapper>();
         _bidServiceMock = new Mock<IBidService>();
-        _lotServiceMock = new Mock<ILotService>();
-        _lotBidController =
-            new LotBidController(_bidServiceMock.Object, _mapperMock.Object);
+        _lotBidController = new LotBidController(_bidServiceMock.Object, _mapperMock.Object);
     }
 
     [Fact]

@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.Tests", "AutoHub.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.DataAccess", "AutoHub.DAL\AutoHub.DataAccess.csproj", "{FD8640AB-0CFD-4C2B-B1AE-26E50A9E3D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.Domain", "AutoHub.Domain\AutoHub.Domain.csproj", "{66EE80BC-F226-435D-B35E-EA225A1E8E4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.Domain", "AutoHub.Domain\AutoHub.Domain.csproj", "{66EE80BC-F226-435D-B35E-EA225A1E8E4C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{253F40F1-053B-4212-B27E-54182928D15E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

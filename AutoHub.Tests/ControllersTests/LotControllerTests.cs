@@ -124,7 +124,7 @@ public class LotControllerTests
         var requestModel = _fixture.Build<LotUpdateRequest>()
             .With(x => x.LotStatusId,
                 _fixture.Create<int>() % (4 - 1 + 1) + 1) //Defines range of generating to match enum values
-            .Create();                                    //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
+            .Create();                                    //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole
 
         var mappedLot = _fixture.Build<LotUpdateRequestDTO>()
             .With(x => x.LotStatusId, requestModel.LotStatusId)

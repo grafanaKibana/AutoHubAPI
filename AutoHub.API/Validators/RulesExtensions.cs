@@ -10,7 +10,9 @@ namespace AutoHub.API.Validators;
 public static class RulesExtensions
 {
     /// <summary>
-    /// Defines a 'MustNotHaveLeadingTrailingSpace' validator on the current rule builder. The validation will succeed if the property value not contains whitespace in the start or in the end of the string. The validation will fail if the property value contains whitespace in the start or in the end of the string.
+    /// Defines a 'MustNotHaveLeadingTrailingSpace' validator on the current rule builder. 
+    /// The validation will succeed if the property value not contains whitespace in the start or in the end of the string. 
+    /// The validation will fail if the property value contains whitespace in the start or in the end of the string.
     /// </summary>
     /// <typeparam name="T">Type of entity being validated.</typeparam>
     /// <param name="ruleBuilder">The rule builder on which the validator should be defined.</param>
@@ -21,7 +23,9 @@ public static class RulesExtensions
         .WithMessage("Leading and trailing spaces are not allowed.");
 
     /// <summary>
-    /// Defines a 'MustBeInUpperCase' validator on the current rule builder. The validation will succeed if the property value contains all characters in upper case . The validation will fail if the property value contains at least single character in lower case .
+    /// Defines a 'MustBeInUpperCase' validator on the current rule builder. 
+    /// The validation will succeed if the property value contains all characters in upper case. 
+    /// The validation will fail if the property value contains at least single character in lower case .
     /// </summary>
     /// <typeparam name="T">Type of entity being validated.</typeparam>
     /// <param name="ruleBuilder">The rule builder on which the validator should be defined.</param>

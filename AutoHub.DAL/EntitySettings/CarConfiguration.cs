@@ -1,4 +1,5 @@
-﻿using AutoHub.Domain.Entities;
+﻿using AutoHub.API.Constants;
+using AutoHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +18,7 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
 
         builder.Property(car => car.Description).IsRequired();
         builder.Property(car => car.Year).IsRequired().HasMaxLength(4);
-        builder.Property(car => car.VIN).IsRequired().HasMaxLength(17);
+        builder.Property(car => car.VIN).IsRequired().HasMaxLength(CarRestrictions.VINLenght);
         builder.Property(car => car.Mileage).IsRequired();
         builder.Property(car => car.CostPrice).IsRequired();
         builder.Property(car => car.SellingPrice).IsRequired();

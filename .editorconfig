@@ -1,0 +1,54 @@
+﻿[*.cs]
+
+# S103: Lines should not be too long
+dotnet_diagnostic.S103.severity = warning
+csharp_style_expression_bodied_constructors=true:silent
+csharp_style_var_for_built_in_types=true:silent
+
+# S881: Increment (++) and decrement (--) operators should not be used in a method call or mixed with other operators in an expression
+dotnet_diagnostic.S881.severity = warning
+
+# S4023: Interfaces should not be empty
+dotnet_diagnostic.S4023.severity = warning
+
+# S2302: "nameof" should be used
+dotnet_diagnostic.S2302.severity = suggestion
+
+# S1858: "ToString()" calls should not be redundant
+dotnet_diagnostic.S1858.severity = warning
+
+# S1479: "switch" statements should not have too many "case" clauses
+dotnet_diagnostic.S1479.severity = warning
+
+# S1301: "switch" statements should have at least 3 "case" clauses
+dotnet_diagnostic.S1301.severity = warning
+
+# S131: "switch/Select" statements should contain a "default/Case Else" clauses
+dotnet_diagnostic.S131.severity = warning
+
+# S122: Statements should be on separate lines
+dotnet_diagnostic.S122.severity = warning
+
+# S1227: break statements should not be used except for switch cases
+dotnet_diagnostic.S1227.severity = warning
+
+# S1109: A close curly brace should be located at the beginning of a line
+dotnet_diagnostic.S1109.severity = warning
+
+# S109: Magic numbers should not be used
+dotnet_diagnostic.S109.severity = warning
+
+# S110: Inheritance tree of classes should not be too deep
+dotnet_diagnostic.S110.severity = warning
+
+# S104: Files should not have too many lines of code
+dotnet_diagnostic.S104.severity = warning
+
+# CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+dotnet_diagnostic.CS8618.severity = none
+
+# S101: Types should be named in PascalCase
+dotnet_diagnostic.S101.severity = none
+
+# CS8032: An instance of analyzer Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator cannot be created from C:\Program Files\dotnet\sdk\6.0.200\Sdks\Microsoft.NET.Sdk.Razor\source-generators\Microsoft.NET.Sdk.Razor.SourceGenerators.dll : Could not load file or assembly 'Microsoft.CodeAnalysis, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35' or one of its dependencies. The system cannot find the file specified..
+dotnet_diagnostic.CS8032.severity = silent
