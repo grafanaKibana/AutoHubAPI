@@ -4,8 +4,10 @@ using AutoHub.DataAccess;
 using AutoHub.Domain.Entities;
 using AutoHub.Domain.Exceptions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -20,50 +22,50 @@ public class CarColorService : ICarColorService
         _mapper = mapper;
     }
 
-    public IEnumerable<CarColorResponseDTO> GetAll()
+    public async Task<IEnumerable<CarColorResponseDTO>> GetAll()
     {
-        var colors = _context.CarColors.ToList();
+        var colors = await _context.CarColors.ToListAsync();
         var mappedColors = _mapper.Map<IEnumerable<CarColorResponseDTO>>(colors);
         return mappedColors;
     }
 
-    public CarColorResponseDTO GetById(int carColorId)
+    public async Task<CarColorResponseDTO> GetById(int carColorId)
     {
-        var color = _context.CarColors.Find(carColorId) ?? throw new NotFoundException($"Car color with ID {carColorId} not exist.");
+        var color = await _context.CarColors.FindAsync(carColorId) ?? throw new NotFoundException($"Car color with ID {carColorId} not exist.");
 
         var mappedColor = _mapper.Map<CarColorResponseDTO>(color);
         return mappedColor;
     }
 
-    public void Create(CarColorCreateRequestDTO createColorDTO)
+    public async Task Create(CarColorCreateRequestDTO createColorDTO)
     {
-        var isDuplicate = _context.CarColors.Any(carColor => carColor.CarColorName == createColorDTO.CarColorName);
+        var isDuplicate = await _context.CarColors.AnyAsync(carColor => carColor.CarColorName == createColorDTO.CarColorName);
 
         if (isDuplicate.Equals(true))
         {
-            throw new DublicateException($"\"{createColorDTO.CarColorName}\" already exists.");
+            throw new DuplicateException($"\"{createColorDTO.CarColorName}\" already exists.");
         }
 
         var color = _mapper.Map<CarColor>(createColorDTO);
-        _context.CarColors.Add(color);
-        _context.SaveChanges();
+        await _context.CarColors.AddAsync(color);
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(int carColorId, CarColorUpdateRequestDTO updateColorDTO)
+    public async Task Update(int carColorId, CarColorUpdateRequestDTO updateColorDTO)
     {
-        var carColor = _context.CarColors.Find(carColorId) ?? throw new NotFoundException($"Car color with ID {carColorId} not exist.");
+        var carColor = await _context.CarColors.FindAsync(carColorId) ?? throw new NotFoundException($"Car color with ID {carColorId} not exist.");
 
         carColor.CarColorName = updateColorDTO.CarColorName;
 
         _context.CarColors.Update(carColor);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int carColorId)
+    public async Task Delete(int carColorId)
     {
-        var carColor = _context.CarColors.Find(carColorId) ?? throw new NotFoundException($"Car color with ID {carColorId} not exist.");
+        var carColor = await _context.CarColors.FindAsync(carColorId) ?? throw new NotFoundException($"Car color with ID {carColorId} not exist.");
 
         _context.CarColors.Remove(carColor);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

@@ -1,12 +1,13 @@
 using AutoHub.Domain.Entities.Identity;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface IAuthenticationService
 {
-    string GenerateWebTokenForUser(ApplicationUser user);
+    Task<string> GenerateWebTokenForUser(ApplicationUser user);
 
-    string HashPassword(string password);
+    Task<string> HashPassword(string password);
 
-    bool VerifyPassword(string password, string hashedPassword);
+    Task<bool> VerifyPassword(string password, string hashedPassword);
 }

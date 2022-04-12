@@ -1,17 +1,18 @@
 using AutoHub.BusinessLogic.DTOs.CarModelDTOs;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface ICarModelService
 {
-    IEnumerable<CarModelResponseDTO> GetAll();
+    Task<IEnumerable<CarModelResponseDTO>> GetAll();
 
-    CarModelResponseDTO GetById(int carModelId);
+    Task<CarModelResponseDTO> GetById(int carModelId);
 
-    void Create(CarModelCreateRequestDTO createModelDTO);
+    Task Create(CarModelCreateRequestDTO createModelDTO);
 
-    void Update(int carModelId, CarModelUpdateRequestDTO updateModelDTO);
+    Task Update(int carModelId, CarModelUpdateRequestDTO updateModelDTO);
 
-    void Delete(int carModelId);
+    Task Delete(int carModelId);
 }

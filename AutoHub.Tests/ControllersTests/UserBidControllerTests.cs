@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -30,7 +31,7 @@ public class UserBidControllerTests
     }
 
     [Fact]
-    public void GetUserBids_UserExists_ReturnsOk()
+    public async Task GetUserBids_UserExists_ReturnsOkAsync()
     {
         //Arrange
         var userId = _fixture.Create<int>();
@@ -42,10 +43,10 @@ public class UserBidControllerTests
             .Create());
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<BidResponse>>(bids)).Returns(mappedBids);
-        _bidServiceMock.Setup(service => service.GetUserBids(userId)).Returns(bids);
+        _bidServiceMock.Setup(service => service.GetUserBids(userId)).ReturnsAsync(bids);
 
         //Act
-        var result = _userBidController.GetUserBids(userId);
+        var result = await _userBidController.GetUserBids(userId);
 
         //Assert
         result.Should().NotBeNull();

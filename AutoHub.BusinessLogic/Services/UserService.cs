@@ -6,6 +6,7 @@ using AutoHub.Domain.Enums;
 using AutoHub.Domain.Exceptions;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,9 +32,9 @@ public class UserService : IUserService
         _signManager = signManager;
     }
 
-    public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
+    public async Task<IEnumerable<UserResponseDTO>> GetAll()
     {
-        var users = _context.Users.ToList();
+        var users = await _context.Users.ToListAsync();
 
         var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
         foreach (var dto in mappedUsers)
@@ -44,9 +45,9 @@ public class UserService : IUserService
         return mappedUsers;
     }
 
-    public async Task<UserResponseDTO> GetByIdAsync(int userId)
+    public async Task<UserResponseDTO> GetById(int userId)
     {
-        var user = _context.Users.Find(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
         var mappedUser = _mapper.Map<UserResponseDTO>(user);
         mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
@@ -54,16 +55,16 @@ public class UserService : IUserService
         return mappedUser;
     }
 
-    public async Task<UserResponseDTO> GetByEmailAsync(string email)
+    public async Task<UserResponseDTO> GetByEmail(string email)
     {
-        var user = _context.Users.FirstOrDefault(user => user.Email == email) ?? throw new NotFoundException($"User with E-Mail {email} not exist.");
+        var user = await (_context.Users.FirstOrDefaultAsync(user => user.Email == email) ?? throw new NotFoundException($"User with E-Mail {email} not exist."));
         var mappedUser = _mapper.Map<UserResponseDTO>(user);
         mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
 
         return mappedUser;
     }
 
-    public async Task<UserLoginResponseDTO> LoginAsync(UserLoginRequestDTO userModel)
+    public async Task<UserLoginResponseDTO> Login(UserLoginRequestDTO userModel)
     {
         var user = await _userManager.FindByNameAsync(userModel.Username) ?? throw new NotFoundException($"User with username {userModel.Username} not found.");
 
@@ -79,15 +80,15 @@ public class UserService : IUserService
             FullName = user.FullName,
             UserName = user.UserName,
             Email = user.Email,
-            Token = _authService.GenerateWebTokenForUser(user)
+            Token = await _authService.GenerateWebTokenForUser(user)
         };
 
         return mappedUser;
     }
 
-    public async Task RegisterAsync(UserRegisterRequestDTO registerUserDTO)
+    public async Task Register(UserRegisterRequestDTO registerUserDTO)
     {
-        var isDuplicate = _context.Users.Any(user => user.Email == registerUserDTO.Email);
+        var isDuplicate = await _context.Users.AnyAsync(user => user.Email == registerUserDTO.Email);
 
         if (isDuplicate.Equals(true))
         {
@@ -111,9 +112,9 @@ public class UserService : IUserService
         await _signManager.SignInAsync(newUser, isPersistent: false);
     }
 
-    public void Update(int userId, UserUpdateRequestDTO updateUserDTO)
+    public async Task Update(int userId, UserUpdateRequestDTO updateUserDTO)
     {
-        var user = _context.Users.Find(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
         user.FirstName = updateUserDTO.FirstName;
         user.LastName = updateUserDTO.LastName;
@@ -122,30 +123,31 @@ public class UserService : IUserService
         user.PhoneNumber = updateUserDTO.PhoneNumber;
 
         _context.Users.Update(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void UpdateRole(int userId, int roleId) //TODO: Change to "SetRole"
+    public async Task UpdateRole(int userId, int roleId) //TODO: Change to "SetRole"
     {
         if (Enum.IsDefined(typeof(UserRoleEnum), roleId).Equals(false))
         {
             throw new EntityValidationException("Incorrect user role ID");
         }
 
-        var user = _context.UserRoles.Find(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await _context.UserRoles.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
         user.RoleId = roleId;
+
         _context.UserRoles.Update(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int userId)
+    public async Task Delete(int userId)
     {
-        var user = _context.Users.Find(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
         _context.Users.Remove(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public async Task LogoutAsync() => await _signManager.SignOutAsync();
+    public async Task Logout() => await _signManager.SignOutAsync();
 }

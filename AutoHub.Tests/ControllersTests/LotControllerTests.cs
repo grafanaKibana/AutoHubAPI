@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AutoHub.Tests.ControllersTests;
@@ -30,7 +31,7 @@ public class LotControllerTests
     }
 
     [Fact]
-    public void GetAllLots_ReturnsOk()
+    public async Task GetAllLots_ReturnsOkAsync()
     {
         //Arrange
         var lots = _fixture.CreateMany<LotResponseDTO>();
@@ -42,10 +43,10 @@ public class LotControllerTests
             .Create());
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<LotResponse>>(lots)).Returns(mappedLots);
-        _lotServiceMock.Setup(service => service.GetAll()).Returns(lots);
+        _lotServiceMock.Setup(service => service.GetAll()).ReturnsAsync(lots);
 
         //Act
-        var result = _lotController.GetAllLots();
+        var result = await _lotController.GetAllLots();
 
         //Assert
         result.Should().NotBeNull();
@@ -53,7 +54,7 @@ public class LotControllerTests
     }
 
     [Fact]
-    public void GetActiveLots_ReturnsOk()
+    public async Task GetActiveLots_ReturnsOkAsync()
     {
         //Arrange
         var activeLots = _fixture.Build<LotResponseDTO>()
@@ -67,10 +68,10 @@ public class LotControllerTests
             .Create());
 
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<LotResponse>>(activeLots)).Returns(mappedLots);
-        _lotServiceMock.Setup(service => service.GetInProgress()).Returns(activeLots);
+        _lotServiceMock.Setup(service => service.GetInProgress()).ReturnsAsync(activeLots);
 
         //Act
-        var result = _lotController.GetLotsInProgress();
+        var result = await _lotController.GetLotsInProgress();
 
         //Assert
         result.Should().NotBeNull();
@@ -78,15 +79,15 @@ public class LotControllerTests
     }
 
     [Fact]
-    public void GetLotById_LotExists_ReturnsOk()
+    public async Task GetLotById_LotExists_ReturnsOkAsync()
     {
         //Arrange
         var lot = _fixture.Create<LotResponseDTO>();
 
-        _lotServiceMock.Setup(service => service.GetById(lot.LotId)).Returns(lot);
+        _lotServiceMock.Setup(service => service.GetById(lot.LotId)).ReturnsAsync(lot);
 
         //Act
-        var result = _lotController.GetLotById(lot.LotId);
+        var result = await _lotController.GetLotById(lot.LotId);
 
         //Assert
         result.Should().NotBeNull();
@@ -94,7 +95,7 @@ public class LotControllerTests
     }
 
     [Fact]
-    public void CreateLot_ValidModel_ReturnsCreated()
+    public async Task CreateLot_ValidModel_ReturnsCreatedAsync()
     {
         //Arrange
         var requestModel = _fixture.Create<LotCreateRequest>();
@@ -106,7 +107,7 @@ public class LotControllerTests
 
         _mapperMock.Setup(mapper => mapper.Map<LotCreateRequestDTO>(requestModel)).Returns(mappedLot);
         //Act
-        var result = _lotController.CreateLot(requestModel);
+        var result = await _lotController.CreateLot(requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -116,14 +117,14 @@ public class LotControllerTests
     }
 
     [Fact]
-    public void UpdateCar_ValidData_ReturnsNoContent()
+    public async Task UpdateCar_ValidData_ReturnsNoContentAsync()
     {
         //Arrange
         var lotId = _fixture.Create<int>();
         var requestModel = _fixture.Build<LotUpdateRequest>()
             .With(x => x.LotStatusId,
                 _fixture.Create<int>() % (4 - 1 + 1) + 1) //Defines range of generating to match enum values
-            .Create(); //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole;
+            .Create();                                    //.. % (maxIdOfRole - minIdOfRole + 1) + minIdOfRole
 
         var mappedLot = _fixture.Build<LotUpdateRequestDTO>()
             .With(x => x.LotStatusId, requestModel.LotStatusId)
@@ -135,7 +136,7 @@ public class LotControllerTests
         _lotServiceMock.Setup(service => service.Update(lotId, mappedLot));
 
         //Act
-        var result = _lotController.UpdateLot(lotId, requestModel);
+        var result = await _lotController.UpdateLot(lotId, requestModel);
 
         //Assert
         result.Should().NotBeNull();
@@ -143,13 +144,13 @@ public class LotControllerTests
     }
 
     [Fact]
-    public void DeleteLot_LotExists_ReturnsNoContent()
+    public async Task DeleteLot_LotExists_ReturnsNoContentAsync()
     {
         //Arrange
         var lotId = _fixture.Create<int>();
 
         //Act
-        var result = _lotController.DeleteLot(lotId);
+        var result = await _lotController.DeleteLot(lotId);
 
         //Assert
         result.Should().NotBeNull();

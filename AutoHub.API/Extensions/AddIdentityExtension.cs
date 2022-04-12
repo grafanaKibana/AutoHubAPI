@@ -1,4 +1,5 @@
-﻿using AutoHub.DataAccess;
+﻿using AutoHub.API.Constants;
+using AutoHub.DataAccess;
 using AutoHub.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,7 @@ public static class AddIdentityExtension
         {
             options.Password.RequireDigit = false;
             options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredLength = 8;
+            options.Password.RequiredLength = UserRestrictions.MinPasswordLenght;
             options.User.RequireUniqueEmail = true;
         });
     }

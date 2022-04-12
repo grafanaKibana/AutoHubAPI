@@ -4,8 +4,10 @@ using AutoHub.DataAccess;
 using AutoHub.Domain.Entities;
 using AutoHub.Domain.Exceptions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -20,50 +22,50 @@ public class CarBrandService : ICarBrandService
         _mapper = mapper;
     }
 
-    public IEnumerable<CarBrandResponseDTO> GetAll()
+    public async Task<IEnumerable<CarBrandResponseDTO>> GetAll()
     {
-        var brands = _context.CarBrands.ToList();
+        var brands = await _context.CarBrands.ToListAsync();
         var mappedBrands = _mapper.Map<IEnumerable<CarBrandResponseDTO>>(brands);
         return mappedBrands;
     }
 
-    public CarBrandResponseDTO GetById(int carBrandId)
+    public async Task<CarBrandResponseDTO> GetById(int carBrandId)
     {
-        var brand = _context.CarBrands.Find(carBrandId) ?? throw new NotFoundException($"Car brand with ID {carBrandId} not exist.");
+        var brand = await _context.CarBrands.FindAsync(carBrandId) ?? throw new NotFoundException($"Car brand with ID {carBrandId} not exist.");
 
         var mappedBrand = _mapper.Map<CarBrandResponseDTO>(brand);
         return mappedBrand;
     }
 
-    public void Create(CarBrandCreateRequestDTO createBrandDTO)
+    public async Task Create(CarBrandCreateRequestDTO createBrandDTO)
     {
-        var isDuplicate = _context.CarBrands.Any(carBrand => carBrand.CarBrandName == createBrandDTO.CarBrandName);
+        var isDuplicate = await _context.CarBrands.AnyAsync(carBrand => carBrand.CarBrandName == createBrandDTO.CarBrandName);
 
         if (isDuplicate)
         {
-            throw new DublicateException($"\"{createBrandDTO.CarBrandName}\" already exists.");
+            throw new DuplicateException($"\"{createBrandDTO.CarBrandName}\" already exists.");
         }
 
         var brand = _mapper.Map<CarBrand>(createBrandDTO);
-        _context.CarBrands.Add(brand);
-        _context.SaveChanges();
+        await _context.CarBrands.AddAsync(brand);
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO)
+    public async Task Update(int carBrandId, CarBrandUpdateRequestDTO updateBrandDTO)
     {
-        var carBrand = _context.CarBrands.Find(carBrandId) ?? throw new NotFoundException($"Car brand with ID {carBrandId} not exist.");
+        var carBrand = await _context.CarBrands.FindAsync(carBrandId) ?? throw new NotFoundException($"Car brand with ID {carBrandId} not exist.");
 
         carBrand.CarBrandName = updateBrandDTO.CarBrandName;
 
         _context.CarBrands.Update(carBrand);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int carBrandId)
+    public async Task Delete(int carBrandId)
     {
-        var carBrand = _context.CarBrands.Find(carBrandId) ?? throw new NotFoundException($"Car brand with ID {carBrandId} not exist.");
+        var carBrand = await _context.CarBrands.FindAsync(carBrandId) ?? throw new NotFoundException($"Car brand with ID {carBrandId} not exist.");
 
         _context.CarBrands.Remove(carBrand);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }
