@@ -10,8 +10,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
 {
     public void Configure(EntityTypeBuilder<ApplicationRole> builder)
     {
-        builder.ToTable(nameof(ApplicationRole));
-
         builder.HasData(new List<ApplicationRole>
             {
                 new ApplicationRole

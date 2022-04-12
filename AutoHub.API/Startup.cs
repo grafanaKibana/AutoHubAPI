@@ -24,7 +24,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers()
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Startup>());
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
         services.AddAutoMapper(typeof(Startup).Assembly);
         services.AddRouting();
         services.AddSingleton(_ => Configuration);
