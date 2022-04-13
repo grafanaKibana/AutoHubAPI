@@ -4,6 +4,7 @@ using AutoHub.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoHub.DataAccess.Migrations
 {
     [DbContext(typeof(AutoHubContext))]
-    partial class AutoHubContextModelSnapshot : ModelSnapshot
+    [Migration("20220413191252_RolesSeedUpdate")]
+    partial class RolesSeedUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

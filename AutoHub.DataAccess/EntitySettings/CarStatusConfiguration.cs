@@ -16,10 +16,10 @@ public class CarStatusConfiguration : IEntityTypeConfiguration<CarStatus>
         builder.HasData(
             Enum.GetValues(typeof(CarStatusEnum))
                 .Cast<CarStatusEnum>()
-                .Select(s => new CarStatus
+                .Select(status => new CarStatus
                 {
-                    CarStatusId = s,
-                    CarStatusName = s.ToString()
+                    CarStatusId = status,
+                    CarStatusName = status.ToString()
                 }));
 
         builder.HasMany(status => status.Cars)

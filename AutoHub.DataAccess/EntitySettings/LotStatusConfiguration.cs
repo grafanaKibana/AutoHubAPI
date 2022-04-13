@@ -16,10 +16,10 @@ public class LotStatusConfiguration : IEntityTypeConfiguration<LotStatus>
         builder.HasData(
             Enum.GetValues(typeof(LotStatusEnum))
                 .Cast<LotStatusEnum>()
-                .Select(s => new LotStatus
+                .Select(status => new LotStatus
                 {
-                    LotStatusId = s,
-                    LotStatusName = s.ToString()
+                    LotStatusId = status,
+                    LotStatusName = status.ToString()
                 }));
 
         builder.HasMany(status => status.Lots)
