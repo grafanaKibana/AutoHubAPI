@@ -122,22 +122,24 @@ public class UserService : IUserService
         try
         {
             var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
-            await _userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
-
-
-            var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-            confirmationCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationCode));
-
-            await _emailService.SendEmail(new SendMailRequest
-            {
-                ToEmail = registerUserDTO.Email,
-                Subject = "Confirm your account.",
-                Body = $"Confirm registration by clicking the folowing link <a href=\"\">{confirmationCode}</a>."
-            });
-
 
             if (result.Succeeded.Equals(true))
             {
+                var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                confirmationCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationCode));
+
+                await _userManager.ConfirmEmailAsync(newUser, WebEncoders.Base64UrlDecode(confirmationCode).ToString());
+
+                await _emailService.SendEmail(new SendMailRequest
+                {
+                    ToEmail = registerUserDTO.Email,
+                    Subject = "Confirm your account.",
+                    Body = $"<div>Hi, {newUser.FullName}!</div>" +
+                    $"Confirm registration by clicking the folowing link: " +
+                    $"<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">{confirmationCode}</a>."
+                });
+
+                await _userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
                 await _signManager.SignInAsync(newUser, isPersistent: false);
             }
             else

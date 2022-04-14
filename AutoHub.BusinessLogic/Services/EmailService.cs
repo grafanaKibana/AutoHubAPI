@@ -1,12 +1,10 @@
 ﻿using AutoHub.BusinessLogic.Configuration;
 using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.Domain.Entities;
+using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
-using System.Net;
-using System.Net.Mail;
+using MimeKit;
 using System.Threading.Tasks;
-using SmtpClient = System.Net.Mail.SmtpClient;
-
 namespace AutoHub.BusinessLogic.Services;
 
 public class EmailService : IEmailService
@@ -20,41 +18,27 @@ public class EmailService : IEmailService
 
     public async Task SendEmail(SendMailRequest mailRequest)
     {
-        //var builder = new BodyBuilder
-        //{
-        //    HtmlBody = mailRequest.Body
-        //};
+        var builder = new BodyBuilder
+        {
+            HtmlBody = mailRequest.Body
+        };
 
-        //var email = new MimeMessage
-        //{
-        //    Sender = MailboxAddress.Parse(_mailConfiguration.Mail),
-        //    Subject = mailRequest.Subject,
-        //    Body = builder.ToMessageBody(),
-        //};
+        var email = new MimeMessage
+        {
+            Sender = MailboxAddress.Parse(_mailConfiguration.Mail),
+            Subject = mailRequest.Subject,
+            Body = builder.ToMessageBody(),
+        };
 
-        //email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+        email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
 
-        //using var smtp = new SmtpClient();
+        using var smtp = new SmtpClient();
 
-        //smtp.AuthenticationMechanisms.Remove("XOAUTH2");
+        smtp.AuthenticationMechanisms.Remove("XOAUTH2");
 
-        //await smtp.ConnectAsync(_mailConfiguration.Host, _mailConfiguration.Port, true);
-        //await smtp.AuthenticateAsync(_mailConfiguration.Mail, _mailConfiguration.Password);
-        //await smtp.SendAsync(email);
-        //await smtp.DisconnectAsync(true);
-
-        using var message = new MailMessage(_mailConfiguration.Mail, mailRequest.ToEmail);
-
-        message.Subject = mailRequest.Subject;
-        message.Body = mailRequest.Body;
-
-        message.IsBodyHtml = false;
-        using SmtpClient smtp = new SmtpClient();
-        smtp.Host = "smtp.gmail.com";
-        smtp.EnableSsl = true;
-        smtp.UseDefaultCredentials = true;
-        smtp.Credentials = new NetworkCredential(_mailConfiguration.Mail, _mailConfiguration.Password);
-        smtp.Port = _mailConfiguration.Port;
-        smtp.Send(message);
+        await smtp.ConnectAsync(_mailConfiguration.Host, _mailConfiguration.Port, true);
+        await smtp.AuthenticateAsync(_mailConfiguration.Mail, _mailConfiguration.Password);
+        await smtp.SendAsync(email);
+        await smtp.DisconnectAsync(true);
     }
 }
