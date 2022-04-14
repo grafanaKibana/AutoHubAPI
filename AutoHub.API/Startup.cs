@@ -1,5 +1,6 @@
 using AutoHub.API.Extensions;
 using AutoHub.API.Middlewares;
+using AutoHub.BusinessLogic.Configuration;
 using AutoHub.DataAccess;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -27,12 +28,12 @@ public class Startup
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
         services.AddAutoMapper(typeof(Startup).Assembly);
         services.AddRouting();
-        services.AddSingleton(_ => Configuration);
         services.AddDbContext<AutoHubContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnectionString")));
         services.AddServices();
         services.AddSwagger();
         services.AddIdentity();
         services.AddAuth(Configuration);
+        services.Configure<MailConfiguration>(Configuration.GetSection("MailConfiguration"));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

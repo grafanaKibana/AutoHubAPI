@@ -28,7 +28,7 @@ public class UserController : Controller
     }
 
     /// <summary>
-    /// Get all users.
+    /// Gets all users.
     /// </summary>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
@@ -47,7 +47,7 @@ public class UserController : Controller
     }
 
     /// <summary>
-    /// Get a user by ID.
+    /// Gets a user by ID.
     /// </summary>
     /// <param name="userId"></param>
     /// <response code="401">Unauthorized Access.</response>
@@ -69,7 +69,7 @@ public class UserController : Controller
     }
 
     /// <summary>
-    /// Update user.
+    /// Updates user.
     /// </summary>
     /// /// <remarks>
     /// Sample request:
@@ -110,30 +110,55 @@ public class UserController : Controller
     }
 
     /// <summary>
-    /// Update user role.
+    /// Adds role to user.
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="roleId"></param>
     /// <response code="204">User role was updated successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="404">User not found.</response>
+    /// <response code="409">User already have specified role.</response>
     /// <response code="422">Invalid role ID.</response>
     /// <returns></returns>
-    [HttpPatch]
+    [HttpPatch("{userId}/AddToRole")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateUserRole(int userId, int roleId)
+    public async Task<IActionResult> AddRoleToUser(int userId, int roleId)
     {
-        await _userService.UpdateRole(userId, roleId);
+        await _userService.AddToRole(userId, roleId);
 
         return NoContent();
     }
 
     /// <summary>
-    /// Delete user.
+    /// Removes role from user.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="roleId"></param>
+    /// <response code="204">User role was updated successfully.</response>
+    /// <response code="401">Unauthorized Access.</response>
+    /// <response code="404">User not found or user not have specified role.</response>
+    /// <response code="422">Invalid role ID.</response>
+    /// <returns></returns>
+    [HttpPatch("{userId}/RemoveFromRole")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> RemoveRoleFromUserUser(int userId, int roleId)
+    {
+        await _userService.RemoveFromRole(userId, roleId);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Deletes user.
     /// </summary>
     /// <param name="userId"></param>
     /// <response code="204">User was deleted successfully.</response>
