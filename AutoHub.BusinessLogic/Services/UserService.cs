@@ -1,6 +1,7 @@
 using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.DataAccess;
+using AutoHub.Domain.Constants;
 using AutoHub.Domain.Entities.Identity;
 using AutoHub.Domain.Enums;
 using AutoHub.Domain.Exceptions;
@@ -37,6 +38,7 @@ public class UserService : IUserService
         var users = await _context.Users.ToListAsync();
 
         var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
+
         foreach (var dto in mappedUsers)
         {
             dto.UserRoles = await _userManager.GetRolesAsync(users.FirstOrDefault(x => x.Id == dto.UserId));
@@ -102,7 +104,7 @@ public class UserService : IUserService
 
         var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
 
-        await _userManager.AddToRoleAsync(newUser, "Customer");
+        await _userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
 
         if (result.Succeeded.Equals(false))
         {
