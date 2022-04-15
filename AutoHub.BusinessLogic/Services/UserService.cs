@@ -2,15 +2,18 @@ using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.DataAccess;
 using AutoHub.Domain.Constants;
+using AutoHub.Domain.Entities;
 using AutoHub.Domain.Entities.Identity;
 using AutoHub.Domain.Enums;
 using AutoHub.Domain.Exceptions;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AutoHub.BusinessLogic.Services;
@@ -18,17 +21,19 @@ namespace AutoHub.BusinessLogic.Services;
 public class UserService : IUserService
 {
     private readonly IAuthenticationService _authService;
+    private readonly IEmailService _emailService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signManager;
     private readonly AutoHubContext _context;
     private readonly IMapper _mapper;
 
-    public UserService(AutoHubContext context, IMapper mapper, IAuthenticationService authService,
+    public UserService(AutoHubContext context, IMapper mapper, IAuthenticationService authService, IEmailService emailService,
         UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signManager)
     {
         _context = context;
         _mapper = mapper;
-        _authService = authService;
+        _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+        _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         _userManager = userManager;
         _signManager = signManager;
     }
@@ -70,9 +75,14 @@ public class UserService : IUserService
     {
         var user = await _userManager.FindByNameAsync(userModel.Username) ?? throw new NotFoundException($"User with username {userModel.Username} not found.");
 
-        var isPasswordVerified = await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
+        if (user.EmailConfirmed.Equals(false))
+        {
+            throw new LoginFailedException("Please confirm registration via link in your email.");
+        }
 
-        if (isPasswordVerified.Succeeded.Equals(false))
+        var signInResult = await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
+
+        if (signInResult.Succeeded.Equals(true))
         {
             throw new LoginFailedException("Wrong password.");
         }
@@ -90,11 +100,18 @@ public class UserService : IUserService
 
     public async Task Register(UserRegisterRequestDTO registerUserDTO)
     {
-        var isDuplicate = await _context.Users.AnyAsync(user => user.Email == registerUserDTO.Email);
+        var emailExists = await _context.Users.AnyAsync(user => user.Email == registerUserDTO.Email);
 
-        if (isDuplicate.Equals(true))
+        if (emailExists.Equals(true))
         {
             throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists.");
+        }
+
+        var userNameExists = await _context.Users.AnyAsync(user => user.UserName == registerUserDTO.Username);
+
+        if (userNameExists.Equals(true))
+        {
+            throw new RegistrationFailedException($"User with username ({registerUserDTO.Username}) already exists.");
         }
 
         var newUser = _mapper.Map<ApplicationUser>(registerUserDTO);
@@ -102,16 +119,39 @@ public class UserService : IUserService
         newUser.RegistrationTime = DateTime.UtcNow;
         newUser.SecurityStamp = Guid.NewGuid().ToString();
 
-        var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
-
-        await _userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
-
-        if (result.Succeeded.Equals(false))
+        try
         {
-            throw new RegistrationFailedException(string.Concat(result.Errors, " \n"));
-        }
+            var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
 
-        await _signManager.SignInAsync(newUser, isPersistent: false);
+            if (result.Succeeded.Equals(true))
+            {
+                var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                confirmationCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmationCode));
+
+                await _userManager.ConfirmEmailAsync(newUser, WebEncoders.Base64UrlDecode(confirmationCode).ToString());
+
+                await _emailService.SendEmail(new SendMailRequest
+                {
+                    ToEmail = registerUserDTO.Email,
+                    Subject = "Confirm your account.",
+                    Body = $"<div>Hi, {newUser.FullName}!</div>" +
+                    $"Confirm registration by clicking the folowing link: " +
+                    $"<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">{confirmationCode}</a>."
+                });
+
+                await _userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
+                await _signManager.SignInAsync(newUser, isPersistent: false);
+            }
+            else
+            {
+                throw new RegistrationFailedException(string.Join('\n', result.Errors.Select(e => e.Description)));
+            }
+        }
+        catch (Exception)
+        {
+            await _userManager.DeleteAsync(newUser);
+            throw;
+        }
     }
 
     public async Task Update(int userId, UserUpdateRequestDTO updateUserDTO)
@@ -128,18 +168,42 @@ public class UserService : IUserService
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateRole(int userId, int roleId) //TODO: Change to "SetRole"
+    public async Task AddToRole(int userId, int roleId)
     {
         if (Enum.IsDefined(typeof(UserRoleEnum), roleId).Equals(false))
         {
             throw new EntityValidationException("Incorrect user role ID");
         }
 
-        var user = await _context.UserRoles.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var userRoles = await _userManager.GetRolesAsync(user);
 
-        user.RoleId = roleId;
+        if (userRoles.Contains(Enum.GetName(typeof(UserRoleEnum), roleId)))
+        {
+            throw new DuplicateException($"User already have {(UserRoleEnum)roleId} role.");
+        }
 
-        _context.UserRoles.Update(user);
+        await _userManager.AddToRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveFromRole(int userId, int roleId)
+    {
+        if (Enum.IsDefined(typeof(UserRoleEnum), roleId).Equals(false))
+        {
+            throw new EntityValidationException("Incorrect user role ID");
+        }
+
+        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        if (userRoles.Contains(Enum.GetName(typeof(UserRoleEnum), roleId)).Equals(false))
+        {
+            throw new NotFoundException($"User don`t have {(UserRoleEnum)roleId} role.");
+        }
+
+        await _userManager.RemoveFromRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
         await _context.SaveChangesAsync();
     }
 

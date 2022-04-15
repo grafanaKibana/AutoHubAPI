@@ -16,5 +16,6 @@ public static class AddServicesExtension
         services.AddScoped<ICarModelService, CarModelService>();
         services.AddScoped<ICarColorService, CarColorService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IEmailService, EmailService>();
     }
 }

@@ -18,7 +18,9 @@ public interface IUserService
 
     Task Update(int userId, UserUpdateRequestDTO updateUserDTO);
 
-    Task UpdateRole(int userId, int roleId);
+    Task AddToRole(int userId, int roleId);
+
+    Task RemoveFromRole(int userId, int roleId);
 
     Task Delete(int userId);
 
