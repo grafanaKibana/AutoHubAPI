@@ -75,14 +75,14 @@ public class UserService : IUserService
     {
         var user = await _userManager.FindByNameAsync(userModel.Username) ?? throw new NotFoundException($"User with username {userModel.Username} not found.");
 
-        //if (user.EmailConfirmed.Equals(false))
-        //{
-        //    throw new LoginFailedException("Please confirm registation via link in your email.");
-        //}
+        if (user.EmailConfirmed.Equals(false))
+        {
+            throw new LoginFailedException("Please confirm registration via link in your email.");
+        }
 
-        var isPasswordVerified = await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
+        var signInResult = await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
 
-        if (isPasswordVerified.Succeeded.Equals(true))
+        if (signInResult.Succeeded.Equals(true))
         {
             throw new LoginFailedException("Wrong password.");
         }

@@ -22,11 +22,11 @@ public static class AddIdentityExtension
             // Password settings.
             options.Password.RequireDigit = false;
             options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredLength = UserRestrictions.MinPasswordLenght;
+            options.Password.RequiredLength = UserRestrictions.MinPasswordLength;
 
             // Lockout settings.
-            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
-            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(UserRestrictions.LockoutDurationInMinutes);
+            options.Lockout.MaxFailedAccessAttempts = UserRestrictions.MaxFailedAccessAttempts;
             options.Lockout.AllowedForNewUsers = true;
 
             // User settings.
