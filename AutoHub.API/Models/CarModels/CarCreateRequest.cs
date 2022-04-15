@@ -1,6 +1,6 @@
 namespace AutoHub.API.Models.CarModels;
 
-public class CarCreateRequest : CarBaseRequest
+public record CarCreateRequest : CarBaseRequest
 {
-    public decimal CostPrice { get; set; }
+    public decimal CostPrice { get; init; }
 }

@@ -4,15 +4,15 @@ using System;
 
 namespace AutoHub.API.Models.BidModels;
 
-public class BidResponse
+public record BidResponse
 {
-    public int BidId { get; set; }
+    public int BidId { get; init; }
 
-    public UserResponse User { get; set; }
+    public UserResponse User { get; init; }
 
-    public LotResponse Lot { get; set; }
+    public LotResponse Lot { get; init; }
 
-    public decimal BidValue { get; set; }
+    public decimal BidValue { get; init; }
 
-    public DateTime BidTime { get; set; }
+    public DateTime BidTime { get; init; }
 }

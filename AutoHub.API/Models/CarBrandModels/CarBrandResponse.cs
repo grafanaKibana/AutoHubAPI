@@ -1,8 +1,8 @@
 namespace AutoHub.API.Models.CarBrandModels;
 
-public class CarBrandResponse
+public record CarBrandResponse
 {
-    public int CarBrandId { get; set; }
+    public int CarBrandId { get; init; }
 
-    public string CarBrandName { get; set; }
+    public string CarBrandName { get; init; }
 }

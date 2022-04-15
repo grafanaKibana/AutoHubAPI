@@ -6,11 +6,11 @@ namespace AutoHub.API.Models.LotModels;
 
 public class LotResponse
 {
-    public int LotId { get; set; }
-    public string LotStatus { get; set; }
-    public UserResponse Creator { get; set; }
-    public CarResponse Car { get; set; }
-    public UserResponse Winner { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime? EndTime { get; set; }
+    public int LotId { get; init; }
+    public string LotStatus { get; init; }
+    public UserResponse Creator { get; init; }
+    public CarResponse Car { get; init; }
+    public UserResponse Winner { get; init; }
+    public DateTime StartTime { get; init; }
+    public DateTime? EndTime { get; init; }
 }

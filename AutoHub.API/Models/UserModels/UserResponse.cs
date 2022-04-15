@@ -5,19 +5,19 @@ namespace AutoHub.API.Models.UserModels;
 
 public class UserResponse
 {
-    public int UserId { get; set; }
+    public int UserId { get; init; }
 
-    public string Username { get; set; }
+    public string Username { get; init; }
 
-    public IList<string> UserRoles { get; set; }
+    public IList<string> UserRoles { get; init; }
 
-    public string FirstName { get; set; }
+    public string FirstName { get; init; }
 
-    public string LastName { get; set; }
+    public string LastName { get; init; }
 
-    public string Email { get; set; }
+    public string Email { get; init; }
 
-    public string PhoneNumber { get; set; }
+    public string PhoneNumber { get; init; }
 
-    public DateTime RegistrationTime { get; set; }
+    public DateTime RegistrationTime { get; init; }
 }
