@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
 
-public class CarBrandCreateRequestDTO
+public record CarBrandCreateRequestDTO
 {
     public string CarBrandName { get; set; }
 }

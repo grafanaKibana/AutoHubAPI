@@ -8,7 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.API.Controllers;
 
@@ -38,12 +42,21 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAllUsers()
+    public async Task<IActionResult> GetAllUsers([FromQuery] PaginationParameters pagination)
     {
-        var users = await _userService.GetAll();
-        var mappedUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
+        var users = await _userService.GetAll(pagination);
 
-        return Ok(mappedUsers);
+        var result = new UserResponse
+        {
+            Users = users,
+            Paging = new PagingInfo
+            {
+                Next = Base64Helper.Encode(users.Max(x => x.UserId).ToString()),
+                Prev = Base64Helper.Encode(users.Min(x => x.UserId).ToString()),
+            }
+        };
+
+        return Ok(result);
     }
 
     /// <summary>
@@ -63,9 +76,8 @@ public class UserController : Controller
     public async Task<IActionResult> GetUserById(int userId)
     {
         var user = await _userService.GetById(userId);
-        var mappedUser = _mapper.Map<UserResponse>(user);
 
-        return Ok(mappedUser);
+        return Ok(user);
     }
 
     /// <summary>

@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -38,11 +40,36 @@ public class UserService : IUserService
         _signManager = signManager;
     }
 
-    public async Task<IEnumerable<UserResponseDTO>> GetAll()
+    public async Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters pagination)
     {
-        var users = await _context.Users.ToListAsync();
+        var limit = pagination.Limit ?? DefaultPaginationValues.DefaultLimit;
+        List<ApplicationUser> users;
 
-        var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users);
+        if (pagination.After is not null && pagination.Before is null)
+        {
+            users = await _context.Users
+                .OrderBy(x => x.Id)
+                .Where(x => x.Id > Convert.ToInt32(Base64Helper.Decode(pagination.After)))
+                .Take(limit)
+                .ToListAsync();
+        }
+        else if (pagination.After is null && pagination.Before is not null)
+        {
+            users = await _context.Users
+                .OrderBy(x => x.Id)
+                .Where(x => x.Id < Convert.ToInt32(Base64Helper.Decode(pagination.Before)))
+                .Take(limit)
+                .ToListAsync();
+        }
+        else
+        {
+            users = await _context.Users
+                .OrderBy(x => x.Id)
+                .Take(limit)
+                .ToListAsync();
+        }
+
+        var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users).ToList();
 
         foreach (var dto in mappedUsers)
         {

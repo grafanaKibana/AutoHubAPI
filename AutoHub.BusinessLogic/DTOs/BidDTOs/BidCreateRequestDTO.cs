@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.DTOs.BidDTOs;
 
-public class BidCreateRequestDTO
+public record BidCreateRequestDTO
 {
     public int UserId { get; set; }
 

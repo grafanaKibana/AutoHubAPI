@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.DTOs.CarColorDTOs;
 
-public class CarColorCreateRequestDTO
+public record CarColorCreateRequestDTO
 {
     public string CarColorName { get; set; }
 }

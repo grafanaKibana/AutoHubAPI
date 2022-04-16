@@ -4,7 +4,7 @@ using System;
 
 namespace AutoHub.BusinessLogic.DTOs.BidDTOs;
 
-public class BidResponseDTO
+public record BidResponseDTO
 {
     public int BidId { get; set; }
 

@@ -4,7 +4,7 @@ using System;
 
 namespace AutoHub.BusinessLogic.DTOs.LotDTOs;
 
-public class LotResponseDTO
+public record LotResponseDTO
 {
     public int LotId { get; set; }
     public string LotStatus { get; set; }
