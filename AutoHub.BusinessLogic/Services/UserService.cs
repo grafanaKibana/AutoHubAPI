@@ -43,17 +43,17 @@ public class UserService : IUserService
     public async Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
-        var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
-        var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
         var query = _context.Users.OrderBy(x => x.Id).AsQueryable();
         List<ApplicationUser> users;
 
         if (paginationParameters.After is not null && paginationParameters.Before is null)
         {
+            var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
             users = await query.Where(x => x.Id > after).Take(limit).ToListAsync();
         }
         else if (paginationParameters.After is null && paginationParameters.Before is not null)
         {
+            var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
             users = await query.Where(x => x.Id < before).Take(limit).ToListAsync();
         }
         else
@@ -101,7 +101,7 @@ public class UserService : IUserService
 
         var signInResult = await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
 
-        if (signInResult.Succeeded.Equals(true))
+        if (signInResult.Succeeded.Equals(false))
         {
             throw new LoginFailedException("Wrong password.");
         }

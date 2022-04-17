@@ -37,8 +37,6 @@ public class BidService : IBidService
         }
 
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
-        var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
-        var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
         var query = _context.Bids
             .Include(bid => bid.Lot.Car.CarBrand)
             .Include(bid => bid.Lot.Car.CarModel)
@@ -52,10 +50,12 @@ public class BidService : IBidService
 
         if (paginationParameters.After is not null && paginationParameters.Before is null)
         {
+            var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
             bids = await query.Where(bid => bid.BidId > after).Take(limit).ToListAsync();
         }
         else if (paginationParameters.After is null && paginationParameters.Before is not null)
         {
+            var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
             bids = await _context.Bids.Where(bid => bid.BidId < before).Take(limit).ToListAsync();
         }
         else

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using AutoHub.API.Models;
 using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -49,11 +50,11 @@ public class UserController : Controller
         var result = new UserResponse
         {
             Users = users,
-            Paging = new PagingInfo
+            Paging = !users.IsNullOrEmpty() ? new PagingInfo
             {
                 Next = Base64Helper.Encode(users.Max(x => x.UserId).ToString()),
                 Prev = Base64Helper.Encode(users.Min(x => x.UserId).ToString()),
-            }
+            } : null
         };
 
         return Ok(result);

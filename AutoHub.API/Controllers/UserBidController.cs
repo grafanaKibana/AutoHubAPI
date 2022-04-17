@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using AutoHub.API.Models;
 using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -51,11 +52,11 @@ public class UserBidController : Controller
         var result = new BidResponse
         {
             Bids = bids,
-            Paging = new PagingInfo
+            Paging = !bids.IsNullOrEmpty() ? new PagingInfo
             {
                 Next = Base64Helper.Encode(bids.Max(x => x.BidId).ToString()),
                 Prev = Base64Helper.Encode(bids.Max(x => x.BidId).ToString()),
-            }
+            } : null
         };
 
         return Ok(result);

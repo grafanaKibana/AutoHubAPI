@@ -29,16 +29,22 @@ public class PaginationValidator : AbstractValidator<PaginationParameters>
         When(p => !string.IsNullOrWhiteSpace(p.After), () =>
         {
             RuleFor(p => p.After)
-                .MustBeValidBase64String()
+                .MustBeValidBase64String();
+
+            RuleFor(p => p.After)
                 .Must(x => int.TryParse(Base64Helper.Decode(x), out _))
+                .When(p => Base64Helper.TryDecode(p.After, out _))
                 .WithMessage(p => $"When provided, value of '{nameof(p.After)}' should be numeric.");
         });
 
         When(p => !string.IsNullOrWhiteSpace(p.Before), () =>
         {
             RuleFor(p => p.Before)
-                .MustBeValidBase64String()
+                .MustBeValidBase64String();
+
+            RuleFor(p => p.Before)
                 .Must(x => int.TryParse(Base64Helper.Decode(x), out _))
+                .When(p => Base64Helper.TryDecode(p.Before, out _))
                 .WithMessage(p => $"When provided, value of '{nameof(p.Limit)}' should be numeric.");
         });
 

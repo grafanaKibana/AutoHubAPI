@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -24,28 +26,64 @@ public class LotService : ILotService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<LotResponseDTO>> GetAll()
+    public async Task<IEnumerable<LotResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
-        var lots = await _context.Lots
+        var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
+        var query = _context.Lots
             .Include(lot => lot.Car.CarBrand)
             .Include(lot => lot.Car.CarModel)
             .Include(lot => lot.Car.CarColor)
-            .Include(lot => lot.LotStatus)
-            .ToListAsync();
+            .OrderBy(x => x.LotId)
+            .Take(limit)
+            .AsQueryable();
+        List<Lot> lots;
+
+        if (paginationParameters.After is not null && paginationParameters.Before is null)
+        {
+            var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
+            lots = await query.Where(x => x.LotId > after).ToListAsync();
+        }
+        else if (paginationParameters.After is null && paginationParameters.Before is not null)
+        {
+            var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
+            lots = await query.Where(x => x.LotId < before).ToListAsync();
+        }
+        else
+        {
+            lots = await query.ToListAsync();
+        }
 
         var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
         return mappedLots;
     }
 
-    public async Task<IEnumerable<LotResponseDTO>> GetInProgress()
+    public async Task<IEnumerable<LotResponseDTO>> GetInProgress(PaginationParameters paginationParameters)
     {
-        var lots = await _context.Lots
+        var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
+        var query = _context.Lots
             .Include(lot => lot.Car.CarBrand)
             .Include(lot => lot.Car.CarModel)
             .Include(lot => lot.Car.CarColor)
-            .Include(lot => lot.LotStatus)
-            .Where(lot => lot.LotStatusId == LotStatusEnum.InProgress)
-            .ToListAsync();
+            .OrderBy(x => x.LotId)
+            .Where(x => x.LotStatusId == LotStatusEnum.InProgress)
+            .Take(limit)
+            .AsQueryable();
+        List<Lot> lots;
+
+        if (paginationParameters.After is not null && paginationParameters.Before is null)
+        {
+            var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
+            lots = await query.Where(x => x.LotId > after).ToListAsync();
+        }
+        else if (paginationParameters.After is null && paginationParameters.Before is not null)
+        {
+            var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
+            lots = await query.Where(x => x.LotId < before).ToListAsync();
+        }
+        else
+        {
+            lots = await query.ToListAsync();
+        }
 
         var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
         return mappedLots;
