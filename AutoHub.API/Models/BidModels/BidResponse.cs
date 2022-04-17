@@ -1,18 +1,14 @@
 using AutoHub.API.Models.LotModels;
 using AutoHub.API.Models.UserModels;
 using System;
+using System.Collections.Generic;
+using AutoHub.BusinessLogic.DTOs.BidDTOs;
 
 namespace AutoHub.API.Models.BidModels;
 
 public record BidResponse
 {
-    public int BidId { get; init; }
+    public IEnumerable<BidResponseDTO> Bids { get; set; }
 
-    public UserResponse User { get; init; }
-
-    public LotResponse Lot { get; init; }
-
-    public decimal BidValue { get; init; }
-
-    public DateTime BidTime { get; init; }
+    public PagingInfo Paging { get; set; }
 }

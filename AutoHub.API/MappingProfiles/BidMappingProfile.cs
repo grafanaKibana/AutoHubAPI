@@ -10,7 +10,6 @@ public class BidMappingProfile : Profile
     public BidMappingProfile()
     {
         //Model <-> DTO maps
-        CreateMap<BidResponseDTO, BidResponse>();
         CreateMap<BidCreateRequest, BidCreateRequestDTO>();
 
         //DTO <-> Entity maps

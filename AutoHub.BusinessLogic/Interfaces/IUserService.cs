@@ -7,7 +7,7 @@ namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface IUserService
 {
-    Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters pagination);
+    Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters paginationParameters);
 
     Task<UserResponseDTO> GetById(int userId);
 

@@ -34,18 +34,18 @@ public class UserController : Controller
     /// <summary>
     /// Gets all users.
     /// </summary>
+    /// <param name="paginationParameters"></param>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <returns>Returns list of users.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAllUsers([FromQuery] PaginationParameters pagination)
+    public async Task<IActionResult> GetAllUsers([FromQuery] PaginationParameters paginationParameters)
     {
-        var users = await _userService.GetAll(pagination);
-
+        var users = await _userService.GetAll(paginationParameters);
         var result = new UserResponse
         {
             Users = users,
@@ -68,7 +68,7 @@ public class UserController : Controller
     /// <response code="404">User not found.</response>
     /// <returns>Returns user.</returns>
     [HttpGet("{userId}")]
-    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

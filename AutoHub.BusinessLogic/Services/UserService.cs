@@ -40,33 +40,25 @@ public class UserService : IUserService
         _signManager = signManager;
     }
 
-    public async Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters pagination)
+    public async Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
-        var limit = pagination.Limit ?? DefaultPaginationValues.DefaultLimit;
+        var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
+        var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
+        var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
+        var query = _context.Users.OrderBy(x => x.Id).AsQueryable();
         List<ApplicationUser> users;
 
-        if (pagination.After is not null && pagination.Before is null)
+        if (paginationParameters.After is not null && paginationParameters.Before is null)
         {
-            users = await _context.Users
-                .OrderBy(x => x.Id)
-                .Where(x => x.Id > Convert.ToInt32(Base64Helper.Decode(pagination.After)))
-                .Take(limit)
-                .ToListAsync();
+            users = await query.Where(x => x.Id > after).Take(limit).ToListAsync();
         }
-        else if (pagination.After is null && pagination.Before is not null)
+        else if (paginationParameters.After is null && paginationParameters.Before is not null)
         {
-            users = await _context.Users
-                .OrderBy(x => x.Id)
-                .Where(x => x.Id < Convert.ToInt32(Base64Helper.Decode(pagination.Before)))
-                .Take(limit)
-                .ToListAsync();
+            users = await query.Where(x => x.Id < before).Take(limit).ToListAsync();
         }
         else
         {
-            users = await _context.Users
-                .OrderBy(x => x.Id)
-                .Take(limit)
-                .ToListAsync();
+            users = await query.Take(limit).ToListAsync();
         }
 
         var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users).ToList();
