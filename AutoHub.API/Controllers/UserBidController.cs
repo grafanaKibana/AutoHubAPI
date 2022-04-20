@@ -22,12 +22,10 @@ namespace AutoHub.API.Controllers;
 public class UserBidController : Controller
 {
     private readonly IBidService _bidService;
-    private readonly IMapper _mapper;
 
-    public UserBidController(IBidService bidService, IMapper mapper)
+    public UserBidController(IBidService bidService)
     {
         _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
-        _mapper = mapper;
     }
 
     /// <summary>
