@@ -8,8 +8,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -34,14 +39,24 @@ public class CarController : Controller
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns list of cars.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<CarResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CarResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAllCars()
+    public async Task<IActionResult> GetAllCars([FromQuery] PaginationParameters paginationParameters)
     {
-        var cars = await _carService.GetAll();
-        var mappedCars = _mapper.Map<IEnumerable<CarResponse>>(cars);
+        var cars = await _carService.GetAll(paginationParameters);
+        var result = new CarResponse
+        {
+            Cars = cars,
+            Paging = !cars.IsNullOrEmpty()
+                ? new PagingInfo
+                {
+                    First = Base64Helper.Encode(cars.Min(x => x.CarId).ToString()),
+                    Last = Base64Helper.Encode(cars.Max(x => x.CarId).ToString()),
+                }
+                : null,
+        };
 
-        return Ok(mappedCars);
+        return Ok(result);
     }
 
     /// <summary>

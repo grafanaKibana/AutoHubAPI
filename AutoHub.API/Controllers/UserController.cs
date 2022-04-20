@@ -52,8 +52,8 @@ public class UserController : Controller
             Users = users,
             Paging = !users.IsNullOrEmpty() ? new PagingInfo
             {
-                Next = Base64Helper.Encode(users.Max(x => x.UserId).ToString()),
-                Prev = Base64Helper.Encode(users.Min(x => x.UserId).ToString()),
+                First = Base64Helper.Encode(users.Min(x => x.UserId).ToString()),
+                Last = Base64Helper.Encode(users.Max(x => x.UserId).ToString()),
             } : null
         };
 

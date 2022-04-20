@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoHub.API.Models;
@@ -54,8 +53,8 @@ public class UserBidController : Controller
             Bids = bids,
             Paging = !bids.IsNullOrEmpty() ? new PagingInfo
             {
-                Next = Base64Helper.Encode(bids.Max(x => x.BidId).ToString()),
-                Prev = Base64Helper.Encode(bids.Max(x => x.BidId).ToString()),
+                First = Base64Helper.Encode(bids.Min(x => x.BidId).ToString()),
+                Last = Base64Helper.Encode(bids.Max(x => x.BidId).ToString()),
             } : null
         };
 
