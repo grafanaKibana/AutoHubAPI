@@ -10,7 +10,6 @@ public class CarColorProfile : Profile
     public CarColorProfile()
     {
         //Model <-> DTO maps
-        CreateMap<CarColorResponseDTO, CarColorResponse>();
         CreateMap<CarColorCreateRequest, CarColorCreateRequestDTO>();
         CreateMap<CarColorUpdateRequest, CarColorUpdateRequestDTO>();
 
