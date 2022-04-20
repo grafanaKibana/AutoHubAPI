@@ -8,7 +8,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -30,20 +35,29 @@ public class UserController : Controller
     /// <summary>
     /// Gets all users.
     /// </summary>
+    /// <param name="paginationParameters"></param>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <returns>Returns list of users.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAllUsers()
+    public async Task<IActionResult> GetAllUsers([FromQuery] PaginationParameters paginationParameters)
     {
-        var users = await _userService.GetAll();
-        var mappedUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
+        var users = await _userService.GetAll(paginationParameters);
+        var result = new UserResponse
+        {
+            Users = users,
+            Paging = !users.IsNullOrEmpty() ? new PagingInfo
+            {
+                First = Base64Helper.Encode(users.Min(x => x.UserId).ToString()),
+                Last = Base64Helper.Encode(users.Max(x => x.UserId).ToString()),
+            } : null
+        };
 
-        return Ok(mappedUsers);
+        return Ok(result);
     }
 
     /// <summary>
@@ -55,7 +69,7 @@ public class UserController : Controller
     /// <response code="404">User not found.</response>
     /// <returns>Returns user.</returns>
     [HttpGet("{userId}")]
-    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,9 +77,8 @@ public class UserController : Controller
     public async Task<IActionResult> GetUserById(int userId)
     {
         var user = await _userService.GetById(userId);
-        var mappedUser = _mapper.Map<UserResponse>(user);
 
-        return Ok(mappedUser);
+        return Ok(user);
     }
 
     /// <summary>

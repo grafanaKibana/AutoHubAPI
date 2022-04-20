@@ -1,12 +1,13 @@
 ﻿using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface IUserService
 {
-    Task<IEnumerable<UserResponseDTO>> GetAll();
+    Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters paginationParameters);
 
     Task<UserResponseDTO> GetById(int userId);
 

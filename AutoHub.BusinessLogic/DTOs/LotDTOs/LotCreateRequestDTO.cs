@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.DTOs.LotDTOs;
 
-public class LotCreateRequestDTO
+public record LotCreateRequestDTO
 {
     public int CreatorId { get; set; }
     public int CarId { get; set; }

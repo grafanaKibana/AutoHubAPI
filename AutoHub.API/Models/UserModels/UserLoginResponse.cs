@@ -2,11 +2,11 @@ namespace AutoHub.API.Models.UserModels;
 
 public class UserLoginResponse
 {
-    public string FullName { get; set; }
+    public string FullName { get; init; }
 
-    public string Email { get; set; }
+    public string Email { get; init; }
 
-    public string UserName { get; set; }
+    public string UserName { get; init; }
 
-    public string Token { get; set; }
+    public string Token { get; init; }
 }

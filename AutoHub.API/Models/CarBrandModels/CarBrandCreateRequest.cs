@@ -1,6 +1,6 @@
 namespace AutoHub.API.Models.CarBrandModels;
 
-public class CarBrandCreateRequest
+public record CarBrandCreateRequest
 {
-    public string CarBrandName { get; set; }
+    public string CarBrandName { get; init; }
 }

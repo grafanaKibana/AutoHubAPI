@@ -10,9 +10,8 @@ public class LotConfiguration : IEntityTypeConfiguration<Lot>
     {
         builder.ToTable(nameof(Lot)).HasKey(lot => lot.LotId);
 
-        builder.Navigation(lot => lot.LotStatus).AutoInclude();
-
         builder.Property(lot => lot.StartTime).IsRequired();
+        builder.Property(lot => lot.WinnerId).IsRequired(false);
 
         builder.HasOne(lot => lot.Creator)
             .WithMany(user => user.UserLots)

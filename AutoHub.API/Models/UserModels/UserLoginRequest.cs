@@ -1,10 +1,10 @@
 namespace AutoHub.API.Models.UserModels;
 
-public class UserLoginRequest
+public record UserLoginRequest
 {
-    public string Username { get; set; }
+    public string Username { get; init; }
 
-    public string Password { get; set; }
+    public string Password { get; init; }
 
-    public bool RememberMe { get; set; }
+    public bool RememberMe { get; init; }
 }

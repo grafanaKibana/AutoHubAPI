@@ -22,8 +22,8 @@ public class CarCreateRequestModelValidator : AbstractValidator<CarCreateRequest
 
         RuleFor(x => x.VIN)
             .NotEmpty()
-            .Length(CarRestrictions.VINLenght)
-            .WithMessage($"{nameof(CarCreateRequest.VIN)} length should be equal {CarRestrictions.VINLenght} characters");
+            .Length(CarRestrictions.VINLength)
+            .WithMessage($"{nameof(CarCreateRequest.VIN)} length should be equal {CarRestrictions.VINLength} characters");
 
         RuleFor(x => x.SellingPrice)
             .NotEmpty()
@@ -55,8 +55,8 @@ public class CarUpdateRequestModelValidator : AbstractValidator<CarUpdateRequest
 
         RuleFor(x => x.VIN)
             .NotEmpty()
-            .Length(CarRestrictions.VINLenght)
-            .WithMessage($"{nameof(CarUpdateRequest.VIN)} length should be equal {CarRestrictions.VINLenght} characters.");
+            .Length(CarRestrictions.VINLength)
+            .WithMessage($"{nameof(CarUpdateRequest.VIN)} length should be equal {CarRestrictions.VINLength} characters.");
 
         RuleFor(x => x.SellingPrice)
             .NotEmpty()

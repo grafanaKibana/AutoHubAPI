@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.DTOs.LotDTOs;
 
-public class LotUpdateRequestDTO
+public record LotUpdateRequestDTO
 {
     public int LotStatusId { get; set; }
     public int? WinnerId { get; set; }

@@ -1,12 +1,13 @@
 using AutoHub.BusinessLogic.DTOs.CarModelDTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 
 public interface ICarModelService
 {
-    Task<IEnumerable<CarModelResponseDTO>> GetAll();
+    Task<IEnumerable<CarModelResponseDTO>> GetAll(PaginationParameters paginationParameters);
 
     Task<CarModelResponseDTO> GetById(int carModelId);
 

@@ -1,6 +1,6 @@
 ﻿namespace AutoHub.BusinessLogic.Configuration;
 
-public class MailConfiguration
+public record MailConfiguration
 {
     public string Mail { get; set; }
 

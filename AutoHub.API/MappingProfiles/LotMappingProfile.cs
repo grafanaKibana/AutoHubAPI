@@ -10,7 +10,6 @@ public class LotMappingProfile : Profile
     public LotMappingProfile()
     {
         //Model <-> DTO maps
-        CreateMap<LotResponseDTO, LotResponse>();
         CreateMap<LotCreateRequest, LotCreateRequestDTO>();
         CreateMap<LotUpdateRequest, LotUpdateRequestDTO>();
 

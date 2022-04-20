@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.DTOs.CarDTOs;
 
-public class CarResponseDTO
+public record CarResponseDTO
 {
     public int CarId { get; set; }
     public string CarBrand { get; set; }

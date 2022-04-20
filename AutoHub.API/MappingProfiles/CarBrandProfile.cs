@@ -10,7 +10,6 @@ public class CarBrandProfile : Profile
     public CarBrandProfile()
     {
         //Model <-> DTO maps
-        CreateMap<CarBrandResponseDTO, CarBrandResponse>();
         CreateMap<CarBrandCreateRequest, CarBrandCreateRequestDTO>();
         CreateMap<CarBrandUpdateRequest, CarBrandUpdateRequestDTO>();
 

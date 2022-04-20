@@ -1,16 +1,13 @@
-using AutoHub.API.Models.CarModels;
-using AutoHub.API.Models.UserModels;
-using System;
+
+using System.Collections.Generic;
+using AutoHub.BusinessLogic.DTOs.LotDTOs;
 
 namespace AutoHub.API.Models.LotModels;
 
 public class LotResponse
 {
-    public int LotId { get; set; }
-    public string LotStatus { get; set; }
-    public UserResponse Creator { get; set; }
-    public CarResponse Car { get; set; }
-    public UserResponse Winner { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime? EndTime { get; set; }
+    public IEnumerable<LotResponseDTO> Lots { get; init; }
+
+    public PagingInfo Paging { get; init; }
+    
 }

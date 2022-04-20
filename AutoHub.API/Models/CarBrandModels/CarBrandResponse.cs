@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
+
 namespace AutoHub.API.Models.CarBrandModels;
 
-public class CarBrandResponse
+public record CarBrandResponse
 {
-    public int CarBrandId { get; set; }
+    public IEnumerable<CarBrandResponseDTO> CarBrands { get; init; }
 
-    public string CarBrandName { get; set; }
+    public PagingInfo Paging { get; init; }
 }

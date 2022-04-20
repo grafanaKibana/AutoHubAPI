@@ -25,7 +25,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers()
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
+            .AddFluentValidation(options => options.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
         services.AddAutoMapper(typeof(Startup).Assembly);
         services.AddRouting();
         services.AddDbContext<AutoHubContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnectionString")));

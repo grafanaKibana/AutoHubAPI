@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.Configuration;
 
-public class JwtConfiguration
+public record JwtConfiguration
 {
     public string Key { get; set; }
     public int ExpirationDate { get; set; }
