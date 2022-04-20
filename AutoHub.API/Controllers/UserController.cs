@@ -50,11 +50,7 @@ public class UserController : Controller
         var result = new UserResponse
         {
             Users = users,
-            Paging = !users.IsNullOrEmpty() ? new PagingInfo
-            {
-                First = Base64Helper.Encode(users.Min(x => x.UserId).ToString()),
-                Last = Base64Helper.Encode(users.Max(x => x.UserId).ToString()),
-            } : null
+            Paging = users.Any() ? new PagingInfo(users.Min(x => x.UserId), users.Max(x => x.UserId)) : null
         };
 
         return Ok(result);

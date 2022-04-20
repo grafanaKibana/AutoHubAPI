@@ -47,13 +47,7 @@ public class CarController : Controller
         var result = new CarResponse
         {
             Cars = cars,
-            Paging = !cars.IsNullOrEmpty()
-                ? new PagingInfo
-                {
-                    First = Base64Helper.Encode(cars.Min(x => x.CarId).ToString()),
-                    Last = Base64Helper.Encode(cars.Max(x => x.CarId).ToString()),
-                }
-                : null,
+            Paging = cars.Any() ? new PagingInfo(cars.Min(x => x.CarId), cars.Max(x => x.CarId)) : null,
         };
 
         return Ok(result);

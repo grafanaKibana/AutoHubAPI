@@ -47,13 +47,7 @@ public class CarColorController : Controller
         var result = new CarColorResponse
         {
             CarColors = carColors,
-            Paging = !carColors.IsNullOrEmpty()
-                ? new PagingInfo
-                {
-                    First = Base64Helper.Encode(carColors.Min(x => x.CarColorId).ToString()),
-                    Last = Base64Helper.Encode(carColors.Max(x => x.CarColorId).ToString()),
-                }
-                : null,
+            Paging = carColors.Any() ? new PagingInfo(carColors.Min(x => x.CarColorId), carColors.Max(x => x.CarColorId)) : null,
         };
         return Ok(result);
     }

@@ -51,11 +51,7 @@ public class UserBidController : Controller
         var result = new BidResponse
         {
             Bids = bids,
-            Paging = !bids.IsNullOrEmpty() ? new PagingInfo
-            {
-                First = Base64Helper.Encode(bids.Min(x => x.BidId).ToString()),
-                Last = Base64Helper.Encode(bids.Max(x => x.BidId).ToString()),
-            } : null
+            Paging = bids.Any() ? new PagingInfo(bids.Min(x => x.BidId), bids.Max(x => x.BidId)) : null
         };
 
         return Ok(result);

@@ -46,13 +46,7 @@ public class LotController : Controller
         var result = new LotResponse
         {
             Lots = lots,
-            Paging = !lots.IsNullOrEmpty()
-                ? new PagingInfo
-                {
-                    First = Base64Helper.Encode(lots.Min(x => x.LotId).ToString()),
-                    Last = Base64Helper.Encode(lots.Max(x => x.LotId).ToString()),
-                }
-                : null,
+            Paging = lots.Any() ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
         };
 
         return Ok(result);
@@ -73,13 +67,7 @@ public class LotController : Controller
         var result = new LotResponse
         {
             Lots = lots,
-            Paging = !lots.IsNullOrEmpty()
-                ? new PagingInfo
-                {
-                    First = Base64Helper.Encode(lots.Min(x => x.LotId).ToString()),
-                    Last = Base64Helper.Encode(lots.Max(x => x.LotId).ToString()),
-                }
-                : null,
+            Paging = lots.Any() ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
         };
 
         return Ok(result);

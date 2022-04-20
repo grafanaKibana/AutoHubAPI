@@ -47,13 +47,7 @@ public class CarBrandController : Controller
         var result = new CarBrandResponse
         {
             CarBrands = carBrands,
-            Paging = !carBrands.IsNullOrEmpty()
-                ? new PagingInfo
-                {
-                    First = Base64Helper.Encode(carBrands.Min(x => x.CarBrandId).ToString()),
-                    Last = Base64Helper.Encode(carBrands.Max(x => x.CarBrandId).ToString()),
-                }
-                : null,
+            Paging = carBrands.Any() ? new PagingInfo(carBrands.Min(x => x.CarBrandId), carBrands.Max(x => x.CarBrandId)) : null,
         };
         return Ok(result);
     }
