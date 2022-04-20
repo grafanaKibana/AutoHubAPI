@@ -1,4 +1,5 @@
 ﻿
+using System;
 using AutoHub.DataAccess.EntitySettings;
 using AutoHub.Domain.Entities;
 using AutoHub.Domain.Entities.Identity;
@@ -22,6 +23,12 @@ public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole
     public virtual DbSet<Bid> Bids { get; set; }
     public virtual DbSet<CarStatus> CarStatus { get; set; }
     public virtual DbSet<LotStatus> LotStatus { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxies();
+        optionsBuilder.LogTo(Console.WriteLine);
+    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

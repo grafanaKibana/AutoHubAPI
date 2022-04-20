@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using AutoHub.BusinessLogic.DTOs.CarColorDTOs;
+
 namespace AutoHub.API.Models.CarColorModels;
 
-public class CarColorResponse
+public record CarColorResponse
 {
-    public int CarColorId { get; set; }
+    public IEnumerable<CarColorResponseDTO> CarColors { get; init; }
 
-    public string CarColorName { get; set; }
+    public PagingInfo Paging { get; init; }
 }

@@ -1,6 +1,6 @@
-﻿namespace AutoHub.API.Constants;
+﻿namespace AutoHub.Domain.Constants;
 
 public static class LotRestrictions
 {
-    public static readonly int MinDurationInDays = 7;
+    public const int MinDurationInDays = 7;
 }

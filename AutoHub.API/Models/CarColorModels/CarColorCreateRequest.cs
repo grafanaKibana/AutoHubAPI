@@ -1,6 +1,6 @@
 namespace AutoHub.API.Models.CarColorModels;
 
-public class CarColorCreateRequest
+public record CarColorCreateRequest
 {
-    public string CarColorName { get; set; }
+    public string CarColorName { get; init; }
 }

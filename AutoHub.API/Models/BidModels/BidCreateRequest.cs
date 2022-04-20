@@ -1,8 +1,8 @@
 namespace AutoHub.API.Models.BidModels;
 
-public class BidCreateRequest
+public record BidCreateRequest
 {
-    public int UserId { get; set; }
+    public int UserId { get; init; }
 
-    public decimal BidValue { get; set; }
+    public decimal BidValue { get; init; }
 }

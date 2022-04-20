@@ -1,5 +1,5 @@
 ﻿using AutoHub.API.Models.BidModels;
-using AutoHub.API.Validators;
+using AutoHub.API.Validators.ModelValidators;
 using FluentValidation.TestHelper;
 using Xunit;
 

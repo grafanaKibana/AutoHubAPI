@@ -1,6 +1,6 @@
 namespace AutoHub.BusinessLogic.DTOs.UserDTOs;
 
-public class UserRegisterRequestDTO
+public record UserRegisterRequestDTO
 {
     public string FirstName { get; set; }
 

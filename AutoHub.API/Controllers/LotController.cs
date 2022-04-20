@@ -6,10 +6,14 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
+using AutoHub.API.Models;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -34,14 +38,18 @@ public class LotController : Controller
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns list of lots.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<LotResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(LotResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAllLots()
+    public async Task<IActionResult> GetAllLots([FromQuery] PaginationParameters paginationParameters)
     {
-        var lots = await _lotService.GetAll();
-        var mappedLots = _mapper.Map<IEnumerable<LotResponse>>(lots);
+        var lots = await _lotService.GetAll(paginationParameters);
+        var result = new LotResponse
+        {
+            Lots = lots,
+            Paging = lots.Any() ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
+        };
 
-        return Ok(mappedLots);
+        return Ok(result);
     }
 
     /// <summary>
@@ -50,15 +58,19 @@ public class LotController : Controller
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns list of lots with status "In progress".</returns>
     [HttpGet("Active")]
-    [ProducesResponseType(typeof(IEnumerable<LotResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(LotResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetLotsInProgress()
+    public async Task<IActionResult> GetLotsInProgress([FromQuery] PaginationParameters paginationParameters)
     {
-        var lots = await _lotService.GetInProgress();
-        var mappedLots = _mapper.Map<IEnumerable<LotResponse>>(lots);
+        var lots = await _lotService.GetInProgress(paginationParameters);
+        var result = new LotResponse
+        {
+            Lots = lots,
+            Paging = lots.Any() ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
+        };
 
-        return Ok(mappedLots);
+        return Ok(result);
     }
 
     /// <summary>
@@ -74,9 +86,8 @@ public class LotController : Controller
     public async Task<IActionResult> GetLotById(int lotId)
     {
         var lot = await _lotService.GetById(lotId);
-        var mappedLot = _mapper.Map<LotResponse>(lot);
 
-        return Ok(mappedLot);
+        return Ok(lot);
     }
 
     /// <summary>

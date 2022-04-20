@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using AutoHub.Domain.Constants;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -24,14 +27,29 @@ public class CarService : ICarService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CarResponseDTO>> GetAll()
+    public async Task<IEnumerable<CarResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
-        var cars = await _context.Cars
-            .Include(car => car.CarBrand)
-            .Include(car => car.CarModel)
-            .Include(car => car.CarColor)
-            .Include(car => car.CarStatus)
-            .ToListAsync();
+        List<Car> cars;
+        var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
+        var query = _context.Cars
+            .OrderBy(x => x.CarId)
+            .Take(limit)
+            .AsQueryable();
+
+        if (paginationParameters.After is not null && paginationParameters.Before is null)
+        {
+            var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
+            cars = await query.Where(x => x.CarId > after).ToListAsync();
+        }
+        else if (paginationParameters.After is null && paginationParameters.Before is not null)
+        {
+            var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
+            cars = await query.Where(x => x.CarId < before).ToListAsync();
+        }
+        else
+        {
+            cars = await query.ToListAsync();
+        }
 
         var mappedCars = _mapper.Map<IEnumerable<CarResponseDTO>>(cars);
         return mappedCars;
@@ -39,12 +57,7 @@ public class CarService : ICarService
 
     public async Task<CarResponseDTO> GetById(int carId)
     {
-        var car = await _context.Cars
-            .Include(car => car.CarBrand)
-            .Include(car => car.CarModel)
-            .Include(car => car.CarColor)
-            .Include(car => car.CarStatus)
-            .FirstOrDefaultAsync(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+        var car = await _context.Cars.FindAsync(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         var mappedCar = _mapper.Map<CarResponseDTO>(car);
         return mappedCar;
@@ -74,12 +87,7 @@ public class CarService : ICarService
             throw new EntityValidationException($"Incorrect {nameof(CarStatus.CarStatusId)} value.");
         }
 
-        var car = await _context.Cars
-            .Include(car => car.CarBrand)
-            .Include(car => car.CarModel)
-            .Include(car => car.CarColor)
-            .Include(car => car.CarStatus)
-            .FirstOrDefaultAsync(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+        var car = await _context.Cars.FindAsync(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         if (car.CarBrand.CarBrandName != updateCarDTO.CarBrand)
         {

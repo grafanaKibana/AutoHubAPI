@@ -1,23 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoHub.BusinessLogic.DTOs.UserDTOs;
 
 namespace AutoHub.API.Models.UserModels;
 
-public class UserResponse
+public record UserResponse
 {
-    public int UserId { get; set; }
+    public IEnumerable<UserResponseDTO> Users { get; init; }
 
-    public string Username { get; set; }
-
-    public IList<string> UserRoles { get; set; }
-
-    public string FirstName { get; set; }
-
-    public string LastName { get; set; }
-
-    public string Email { get; set; }
-
-    public string PhoneNumber { get; set; }
-
-    public DateTime RegistrationTime { get; set; }
+    public PagingInfo Paging { get; init; }
 }

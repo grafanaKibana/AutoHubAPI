@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AutoHub.BusinessLogic.DTOs.UserDTOs;
 
-public class UserResponseDTO
+public record UserResponseDTO
 {
     public int UserId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using AutoHub.API.Models.CarColorModels;
-using AutoHub.API.Validators;
+using AutoHub.API.Validators.ModelValidators;
 using FluentValidation.TestHelper;
 using Xunit;
 

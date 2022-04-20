@@ -1,3 +1,4 @@
+using System;
 using AutoHub.BusinessLogic.DTOs.CarModelDTOs;
 using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.DataAccess;
@@ -8,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using AutoHub.Domain.Constants;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -22,11 +26,32 @@ public class CarModelService : ICarModelService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CarModelResponseDTO>> GetAll()
+    public async Task<IEnumerable<CarModelResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
-        var models = await _context.CarModels.ToListAsync();
-        var mappedModels = _mapper.Map<IEnumerable<CarModelResponseDTO>>(models);
-        return mappedModels;
+        List<CarModel> carModels;
+        var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
+        var query = _context.CarModels
+            .OrderBy(x => x.CarModelId)
+            .Take(limit)
+            .AsQueryable();
+
+        if (paginationParameters.After is not null && paginationParameters.Before is null)
+        {
+            var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
+            carModels = await query.Where(x => x.CarModelId > after).ToListAsync();
+        }
+        else if (paginationParameters.After is null && paginationParameters.Before is not null)
+        {
+            var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
+            carModels = await query.Where(x => x.CarModelId < before).ToListAsync();
+        }
+        else
+        {
+            carModels = await query.ToListAsync();
+        }
+
+        var mappedCarModel = _mapper.Map<IEnumerable<CarModelResponseDTO>>(carModels);
+        return mappedCarModel;
     }
 
     public async Task<CarModelResponseDTO> GetById(int carModelId)

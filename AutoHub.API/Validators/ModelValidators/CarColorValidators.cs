@@ -1,7 +1,7 @@
 ﻿using AutoHub.API.Models.CarColorModels;
 using FluentValidation;
 
-namespace AutoHub.API.Validators;
+namespace AutoHub.API.Validators.ModelValidators;
 
 public class CarColorCreateRequestModelValidator : AbstractValidator<CarColorCreateRequest>
 {

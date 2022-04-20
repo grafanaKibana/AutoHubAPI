@@ -1,10 +1,10 @@
-﻿using AutoHub.API.Models.LotModels;
-using AutoHub.API.Constants;
-using FluentValidation;
-using System;
+﻿using System;
+using AutoHub.API.Models.LotModels;
+using AutoHub.Domain.Constants;
 using AutoHub.Domain.Enums;
+using FluentValidation;
 
-namespace AutoHub.API.Validators;
+namespace AutoHub.API.Validators.ModelValidators;
 
 public class LotCreateRequestModelValidator : AbstractValidator<LotCreateRequest>
 {

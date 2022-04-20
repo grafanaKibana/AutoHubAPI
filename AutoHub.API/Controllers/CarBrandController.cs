@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using Castle.Core.Internal;
 
 namespace AutoHub.API.Controllers;
 
@@ -34,15 +38,18 @@ public class CarBrandController : Controller
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns list of car brands</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<CarBrandResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CarBrandResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAllCarBrands()
+    public async Task<IActionResult> GetAllCarBrands([FromQuery] PaginationParameters paginationParameters)
     {
-        var carBrands = await _carBrandService.GetAll();
-        var mappedCarBrands = _mapper.Map<IEnumerable<CarBrandResponse>>(carBrands);
-
-        return Ok(mappedCarBrands);
+        var carBrands = await _carBrandService.GetAll(paginationParameters);
+        var result = new CarBrandResponse
+        {
+            CarBrands = carBrands,
+            Paging = carBrands.Any() ? new PagingInfo(carBrands.Min(x => x.CarBrandId), carBrands.Max(x => x.CarBrandId)) : null,
+        };
+        return Ok(result);
     }
 
     /// <summary>

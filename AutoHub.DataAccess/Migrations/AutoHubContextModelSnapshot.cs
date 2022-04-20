@@ -240,21 +240,21 @@ namespace AutoHub.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "d011c101-6eea-4922-8e7f-6a66551c3be4",
+                            ConcurrencyStamp = "2e779c84-06ec-424c-84f9-ac8ebf27ef2e",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "ec8f27d9-fe98-4e9e-bdda-34c6409e2d0e",
+                            ConcurrencyStamp = "4f2fd7b1-1642-4899-a05a-6dcc0a914798",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "42d1fed1-8303-4742-9828-763d75e04ae8",
+                            ConcurrencyStamp = "229e3ddf-bf53-43a6-86cf-38bfeef741cd",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -363,7 +363,6 @@ namespace AutoHub.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("WinnerId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("LotId");

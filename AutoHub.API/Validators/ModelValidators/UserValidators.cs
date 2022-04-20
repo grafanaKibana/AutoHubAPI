@@ -1,8 +1,8 @@
 ﻿using AutoHub.API.Models.UserModels;
-using AutoHub.API.Constants;
+using AutoHub.Domain.Constants;
 using FluentValidation;
 
-namespace AutoHub.API.Validators;
+namespace AutoHub.API.Validators.ModelValidators;
 
 public class UserLoginRequestModelValidator : AbstractValidator<UserLoginRequest>
 {
@@ -10,7 +10,7 @@ public class UserLoginRequestModelValidator : AbstractValidator<UserLoginRequest
     {
         RuleFor(x => x.Username).NotEmpty().MustNotHaveLeadingTrailingSpaces();
 
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(UserRestrictions.MinPasswordLenght);
+        RuleFor(x => x.Password).NotEmpty().MinimumLength(UserRestrictions.MinPasswordLength);
     }
 }
 
@@ -20,7 +20,7 @@ public class UserRegisterRequestModelValidator : AbstractValidator<UserRegisterR
     {
         RuleFor(x => x.Email).NotEmpty().EmailAddress().MustNotHaveLeadingTrailingSpaces();
 
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(UserRestrictions.MinPasswordLenght);
+        RuleFor(x => x.Password).NotEmpty().MinimumLength(UserRestrictions.MinPasswordLength);
 
         RuleFor(x => x.FirstName).NotEmpty().MustNotHaveLeadingTrailingSpaces();
 

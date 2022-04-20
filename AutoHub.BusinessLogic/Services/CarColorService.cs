@@ -1,3 +1,4 @@
+using System;
 using AutoHub.BusinessLogic.DTOs.CarColorDTOs;
 using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.DataAccess;
@@ -8,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using AutoHub.Domain.Constants;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -22,11 +26,32 @@ public class CarColorService : ICarColorService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CarColorResponseDTO>> GetAll()
+    public async Task<IEnumerable<CarColorResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
-        var colors = await _context.CarColors.ToListAsync();
-        var mappedColors = _mapper.Map<IEnumerable<CarColorResponseDTO>>(colors);
-        return mappedColors;
+        List<CarColor> carColors;
+        var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
+        var query = _context.CarColors
+            .OrderBy(x => x.CarColorId)
+            .Take(limit)
+            .AsQueryable();
+
+        if (paginationParameters.After is not null && paginationParameters.Before is null)
+        {
+            var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
+            carColors = await query.Where(x => x.CarColorId > after).ToListAsync();
+        }
+        else if (paginationParameters.After is null && paginationParameters.Before is not null)
+        {
+            var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
+            carColors = await query.Where(x => x.CarColorId < before).ToListAsync();
+        }
+        else
+        {
+            carColors = await query.ToListAsync();
+        }
+
+        var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponseDTO>>(carColors);
+        return mappedCarColors;
     }
 
     public async Task<CarColorResponseDTO> GetById(int carColorId)

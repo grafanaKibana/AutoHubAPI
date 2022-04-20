@@ -1,8 +1,8 @@
-﻿namespace AutoHub.API.Constants;
+﻿namespace AutoHub.Domain.Constants;
 
 public static class CarRestrictions
 {
-    public static readonly int VINLenght = 17;
+    public const int VINLength = 17;
 
-    public static readonly int MinYear = 1900;
+    public const int MinYear = 1900;
 }

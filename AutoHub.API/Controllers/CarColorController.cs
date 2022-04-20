@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -34,15 +38,18 @@ public class CarColorController : Controller
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns list of car colors.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<CarColorResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CarColorResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAllCarColors()
+    public async Task<IActionResult> GetAllCarColors([FromQuery] PaginationParameters paginationParameters)
     {
-        var carColors = await _carColorService.GetAll();
-        var mappedCarColors = _mapper.Map<IEnumerable<CarColorResponse>>(carColors);
-
-        return Ok(mappedCarColors);
+        var carColors = await _carColorService.GetAll(paginationParameters);
+        var result = new CarColorResponse
+        {
+            CarColors = carColors,
+            Paging = carColors.Any() ? new PagingInfo(carColors.Min(x => x.CarColorId), carColors.Max(x => x.CarColorId)) : null,
+        };
+        return Ok(result);
     }
 
     /// <summary>

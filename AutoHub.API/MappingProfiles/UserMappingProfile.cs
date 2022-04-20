@@ -10,7 +10,6 @@ public class UserMappingProfile : Profile
     public UserMappingProfile()
     {
         //Model <-> DTO maps
-        CreateMap<UserResponseDTO, UserResponse>();
         CreateMap<UserRegisterRequest, UserRegisterRequestDTO>();
         CreateMap<UserLoginRequest, UserLoginRequestDTO>();
         CreateMap<UserLoginResponseDTO, UserLoginResponse>();
