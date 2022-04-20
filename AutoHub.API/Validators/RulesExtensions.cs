@@ -38,7 +38,7 @@ public static class RulesExtensions
     /// <summary>
     /// Defines a 'PhoneNumber' validator on the current rule builder. 
     /// The validation will succeed if the property value matches universal phone number RegEx expression. 
-    /// The validation will fail if the property value  not match universal phone number RegEx expression.
+    /// The validation will fail if the property value not match universal phone number RegEx expression.
     /// </summary>
     /// <typeparam name="T">Type of entity being validated.</typeparam>
     /// <param name="ruleBuilder">The rule builder on which the validator should be defined.</param>
@@ -48,7 +48,14 @@ public static class RulesExtensions
         .Matches(UserRestrictions.UniversalPhoneNumberRegex)
         .WithMessage("Value must be a phone number.");
 
-    public static IRuleBuilder<T, string> MustBeValidBase64String<T>(this IRuleBuilder<T, string> ruleBuilder) => 
+    /// <summary>
+    /// Defines a 'MustBeValidBase64String' validator on the current rule builder. 
+    /// The validation will succeed if the property value is can be converted from base64 string to decoded value. 
+    /// The validation will fail if the property value is cannot be converted from base64 string to decoded value.
+    /// </summary>
+    /// <typeparam name="T">Type of entity being validated.</typeparam>
+    /// <param name="ruleBuilder">The rule builder on which the validator should be defined.</param>
+    public static IRuleBuilderOptions<T, string> MustBeValidBase64String<T>(this IRuleBuilder<T, string> ruleBuilder) => 
         ruleBuilder
             .Must(value => Convert.TryFromBase64String(value, new Span<byte>(new byte[value.Length]), out int _))
             .WithMessage("The input is not a valid Base - 64 string as it contains a non - base 64 character, more than two padding characters, or an illegal character among the padding characters.");

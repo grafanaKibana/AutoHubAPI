@@ -6,7 +6,7 @@ namespace AutoHub.API.Models.UserModels;
 
 public record UserResponse
 {
-    public IEnumerable<UserResponseDTO> Users { get; set; }
+    public IEnumerable<UserResponseDTO> Users { get; init; }
 
-    public PagingInfo Paging { get; set; }
+    public PagingInfo Paging { get; init; }
 }

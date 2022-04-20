@@ -4,11 +4,11 @@ namespace AutoHub.API.Models
 {
     public record ErrorDetails
     {
-        public string Instance { get; set; }
-        public string Message { get; set; }
-        public string Details { get; set; }
-        public string Type { get; set; }
-        public int StatusCode { get; set; }
+        public string Instance { get; init; }
+        public string Message { get; init; }
+        public string Details { get; init; }
+        public string Type { get; init; }
+        public int StatusCode { get; init; }
 
         public override string ToString()
         {
