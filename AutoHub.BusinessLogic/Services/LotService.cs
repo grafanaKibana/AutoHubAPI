@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
+using AutoHub.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -19,24 +21,23 @@ public class LotService : ILotService
 {
     private readonly AutoHubContext _context;
     private readonly IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public LotService(AutoHubContext context, IMapper mapper)
+    public LotService(AutoHubContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<IEnumerable<LotResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
+        List<Lot> lots;
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
         var query = _context.Lots
-            .Include(lot => lot.Car.CarBrand)
-            .Include(lot => lot.Car.CarModel)
-            .Include(lot => lot.Car.CarColor)
             .OrderBy(x => x.LotId)
             .Take(limit)
             .AsQueryable();
-        List<Lot> lots;
 
         if (paginationParameters.After is not null && paginationParameters.Before is null)
         {
@@ -53,22 +54,25 @@ public class LotService : ILotService
             lots = await query.ToListAsync();
         }
 
-        var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots);
+        var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots).ToList();
+
+        foreach (var user in mappedLots.Select(x => x.Creator))
+        {
+            user.UserRoles = await _userManager.GetRolesAsync(lots.Single(x => x.CreatorId == user.UserId).Creator);
+        }
+
         return mappedLots;
     }
 
     public async Task<IEnumerable<LotResponseDTO>> GetInProgress(PaginationParameters paginationParameters)
     {
+        List<Lot> lots;
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
         var query = _context.Lots
-            .Include(lot => lot.Car.CarBrand)
-            .Include(lot => lot.Car.CarModel)
-            .Include(lot => lot.Car.CarColor)
             .OrderBy(x => x.LotId)
             .Where(x => x.LotStatusId == LotStatusEnum.InProgress)
             .Take(limit)
             .AsQueryable();
-        List<Lot> lots;
 
         if (paginationParameters.After is not null && paginationParameters.Before is null)
         {
@@ -91,13 +95,8 @@ public class LotService : ILotService
 
     public async Task<LotResponseDTO> GetById(int lotId)
     {
-        var lot = await _context.Lots
-            .Include(lot => lot.Car.CarBrand)
-            .Include(lot => lot.Car.CarModel)
-            .Include(lot => lot.Car.CarColor)
-            .Include(lot => lot.LotStatus)
-            .FirstOrDefaultAsync(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
-
+        var lot = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        
         var mappedLot = _mapper.Map<LotResponseDTO>(lot);
         return mappedLot;
     }
@@ -121,17 +120,11 @@ public class LotService : ILotService
             throw new EntityValidationException($"Incorrect {nameof(LotStatus.LotStatusId)} value.");
         }
 
-        var lot = await _context.Lots
-            .Include(lot => lot.Car.CarBrand)
-            .Include(lot => lot.Car.CarModel)
-            .Include(lot => lot.Car.CarColor)
-            .Include(lot => lot.LotStatus)
-            .FirstOrDefaultAsync(lot => lot.LotId == lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        var lot = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
         if (updateLotDTO.WinnerId.HasValue)
         {
-            var winner = await _context.Users.FindAsync(updateLotDTO.WinnerId);
-            lot.Winner = winner ?? throw new NotFoundException($"User with ID {updateLotDTO.WinnerId} not exist.");
+            lot.Winner = await _context.Users.FindAsync(updateLotDTO.WinnerId) ?? throw new NotFoundException($"User with ID {updateLotDTO.WinnerId} not exist.");
         }
 
         lot.LotStatusId = (LotStatusEnum)updateLotDTO.LotStatusId;

@@ -26,6 +26,7 @@ public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.LogTo(Console.WriteLine);
     }
 

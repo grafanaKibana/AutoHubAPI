@@ -11,8 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
-using Org.BouncyCastle.Math.EC.Rfc7748;
-using Org.BouncyCastle.Utilities.Encoders;
+using AutoHub.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -20,33 +20,25 @@ public class BidService : IBidService
 {
     private readonly AutoHubContext _context;
     private readonly IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public BidService(AutoHubContext context, IMapper mapper)
+    public BidService(AutoHubContext context, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<IEnumerable<BidResponseDTO>> GetUserBids(int userId, PaginationParameters paginationParameters)
     {
-        var userExist = await _context.Users.AnyAsync(user => user.Id == userId);
+        _ = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
-        if (userExist.Equals(false))
-        {
-            throw new NotFoundException($"User with ID {userId} not exist.");
-        }
-
+        List<Bid> bids;
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
         var query = _context.Bids
-            .Include(bid => bid.Lot.Car.CarBrand)
-            .Include(bid => bid.Lot.Car.CarModel)
-            .Include(bid => bid.Lot.Car.CarColor)
-            .Include(bid => bid.Lot.Car.CarStatus)
-            .Include(bid => bid.Lot.LotStatus)
             .OrderBy(x => x.BidId)
             .Where(bid => bid.UserId == userId)
             .AsQueryable();
-        List<Bid> bids;
 
         if (paginationParameters.After is not null && paginationParameters.Before is null)
         {
@@ -69,26 +61,16 @@ public class BidService : IBidService
 
     public async Task<IEnumerable<BidResponseDTO>> GetLotBids(int lotId, PaginationParameters paginationParameters)
     {
-        var lotExist = await _context.Lots.AnyAsync(lot => lot.LotId == lotId);
+        _ = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
-        if (lotExist.Equals(false))
-        {
-            throw new NotFoundException($"Lot with ID {lotId} not exist.");
-        }
-
+        List<Bid> bids;
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
         var after = Convert.ToInt32(Base64Helper.Decode(paginationParameters.After));
         var before = Convert.ToInt32(Base64Helper.Decode(paginationParameters.Before));
         var query = _context.Bids
-            .Include(bid => bid.Lot.Car.CarBrand)
-            .Include(bid => bid.Lot.Car.CarModel)
-            .Include(bid => bid.Lot.Car.CarColor)
-            .Include(bid => bid.Lot.Car.CarStatus)
-            .Include(bid => bid.Lot.LotStatus)
             .OrderBy(x => x.BidId)
             .Where(bid => bid.LotId == lotId)
             .AsQueryable();
-        List<Bid> bids;
 
         if (paginationParameters.After is not null && paginationParameters.Before is null)
         {
@@ -109,19 +91,8 @@ public class BidService : IBidService
 
     public async Task Create(int lotId, BidCreateRequestDTO createBidDTO)
     {
-        var lotExist = await _context.Lots.AnyAsync(lot => lot.LotId == lotId);
-
-        if (lotExist.Equals(false))
-        {
-            throw new NotFoundException($"Lot with ID {lotId} not exist.");
-        }
-
-        var userExist = await _context.Users.AnyAsync(user => user.Id == createBidDTO.UserId);
-
-        if (userExist.Equals(false))
-        {
-            throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
-        }
+        _ = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        _ = await _userManager.FindByIdAsync(createBidDTO.UserId.ToString()) ?? throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
 
         var bid = _mapper.Map<Bid>(createBidDTO);
         bid.LotId = lotId;

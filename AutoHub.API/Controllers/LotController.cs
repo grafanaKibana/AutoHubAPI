@@ -94,9 +94,8 @@ public class LotController : Controller
     public async Task<IActionResult> GetLotById(int lotId)
     {
         var lot = await _lotService.GetById(lotId);
-        var mappedLot = _mapper.Map<LotResponse>(lot);
 
-        return Ok(mappedLot);
+        return Ok(lot);
     }
 
     /// <summary>

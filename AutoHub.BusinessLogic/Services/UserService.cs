@@ -65,7 +65,7 @@ public class UserService : IUserService
 
         foreach (var dto in mappedUsers)
         {
-            dto.UserRoles = await _userManager.GetRolesAsync(users.FirstOrDefault(x => x.Id == dto.UserId));
+            dto.UserRoles = await _userManager.GetRolesAsync(users.Single(x => x.Id == dto.UserId));
         }
 
         return mappedUsers;
@@ -83,7 +83,8 @@ public class UserService : IUserService
 
     public async Task<UserResponseDTO> GetByEmail(string email)
     {
-        var user = await (_context.Users.FirstOrDefaultAsync(user => user.Email == email) ?? throw new NotFoundException($"User with E-Mail {email} not exist."));
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException($"User with E-Mail {email} not exist.");
+
         var mappedUser = _mapper.Map<UserResponseDTO>(user);
         mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
 
@@ -119,19 +120,8 @@ public class UserService : IUserService
 
     public async Task Register(UserRegisterRequestDTO registerUserDTO)
     {
-        var emailExists = await _context.Users.AnyAsync(user => user.Email == registerUserDTO.Email);
-
-        if (emailExists.Equals(true))
-        {
-            throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists.");
-        }
-
-        var userNameExists = await _context.Users.AnyAsync(user => user.UserName == registerUserDTO.Username);
-
-        if (userNameExists.Equals(true))
-        {
-            throw new RegistrationFailedException($"User with username ({registerUserDTO.Username}) already exists.");
-        }
+        _ = await _userManager.FindByEmailAsync(registerUserDTO.Email) ?? throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists.");
+        _ = await _userManager.FindByNameAsync(registerUserDTO.Username) ?? throw new RegistrationFailedException($"User with username ({registerUserDTO.Username}) already exists.");
 
         var newUser = _mapper.Map<ApplicationUser>(registerUserDTO);
 
@@ -195,6 +185,7 @@ public class UserService : IUserService
         }
 
         var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+
         var userRoles = await _userManager.GetRolesAsync(user);
 
         if (userRoles.Contains(Enum.GetName(typeof(UserRoleEnum), roleId)))

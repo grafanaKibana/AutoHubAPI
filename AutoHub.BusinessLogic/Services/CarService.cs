@@ -26,12 +26,7 @@ public class CarService : ICarService
 
     public async Task<IEnumerable<CarResponseDTO>> GetAll()
     {
-        var cars = await _context.Cars
-            .Include(car => car.CarBrand)
-            .Include(car => car.CarModel)
-            .Include(car => car.CarColor)
-            .Include(car => car.CarStatus)
-            .ToListAsync();
+        var cars = await _context.Cars.ToListAsync();
 
         var mappedCars = _mapper.Map<IEnumerable<CarResponseDTO>>(cars);
         return mappedCars;
@@ -39,12 +34,7 @@ public class CarService : ICarService
 
     public async Task<CarResponseDTO> GetById(int carId)
     {
-        var car = await _context.Cars
-            .Include(car => car.CarBrand)
-            .Include(car => car.CarModel)
-            .Include(car => car.CarColor)
-            .Include(car => car.CarStatus)
-            .FirstOrDefaultAsync(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+        var car = await _context.Cars.FindAsync(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         var mappedCar = _mapper.Map<CarResponseDTO>(car);
         return mappedCar;
@@ -74,12 +64,7 @@ public class CarService : ICarService
             throw new EntityValidationException($"Incorrect {nameof(CarStatus.CarStatusId)} value.");
         }
 
-        var car = await _context.Cars
-            .Include(car => car.CarBrand)
-            .Include(car => car.CarModel)
-            .Include(car => car.CarColor)
-            .Include(car => car.CarStatus)
-            .FirstOrDefaultAsync(car => car.CarId == carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
+        var car = await _context.Cars.FindAsync(carId) ?? throw new NotFoundException($"Car with ID {carId} not exist.");
 
         if (car.CarBrand.CarBrandName != updateCarDTO.CarBrand)
         {

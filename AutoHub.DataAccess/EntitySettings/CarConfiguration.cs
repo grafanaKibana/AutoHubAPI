@@ -11,11 +11,6 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
     {
         builder.ToTable(nameof(Car)).HasKey(car => car.CarId);
 
-        builder.Navigation(car => car.CarBrand).AutoInclude();
-        builder.Navigation(car => car.CarModel).AutoInclude();
-        builder.Navigation(car => car.CarColor).AutoInclude();
-        builder.Navigation(car => car.CarStatus).AutoInclude();
-
         builder.Property(car => car.Description).IsRequired();
         builder.Property(car => car.Year).IsRequired().HasMaxLength(4);
         builder.Property(car => car.VIN).IsRequired().HasMaxLength(CarRestrictions.VINLength);
