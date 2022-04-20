@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
+using AutoHub.Domain.Constants;
 using AutoHub.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 

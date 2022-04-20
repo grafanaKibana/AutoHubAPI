@@ -1,7 +1,7 @@
 ﻿using AutoHub.API.Models.BidModels;
 using FluentValidation;
 
-namespace AutoHub.API.Validators;
+namespace AutoHub.API.Validators.ModelValidators;
 
 public class BidCreateRequestModelValidator : AbstractValidator<BidCreateRequest>
 {

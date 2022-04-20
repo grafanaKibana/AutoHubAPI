@@ -1,4 +1,4 @@
-namespace AutoHub.BusinessLogic.Services;
+namespace AutoHub.Domain.Constants;
 
 public static class DefaultPaginationValues
 {

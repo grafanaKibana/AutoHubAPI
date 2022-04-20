@@ -5,6 +5,8 @@ using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Models;
+
 namespace AutoHub.BusinessLogic.Services;
 
 public class EmailService : IEmailService

@@ -1,4 +1,4 @@
-﻿using AutoHub.API.Constants;
+﻿using AutoHub.Domain.Constants;
 using AutoHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

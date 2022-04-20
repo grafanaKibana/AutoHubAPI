@@ -1,4 +1,4 @@
-﻿namespace AutoHub.Domain.Entities;
+﻿namespace AutoHub.BusinessLogic.Models;
 
 public class SendMailRequest
 {

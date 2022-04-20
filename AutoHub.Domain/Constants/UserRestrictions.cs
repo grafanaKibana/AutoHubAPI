@@ -1,4 +1,4 @@
-﻿namespace AutoHub.API.Constants;
+﻿namespace AutoHub.Domain.Constants;
 
 public static class UserRestrictions
 {

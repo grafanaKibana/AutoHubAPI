@@ -1,8 +1,8 @@
 ﻿using AutoHub.API.Models.UserModels;
-using AutoHub.API.Constants;
+using AutoHub.Domain.Constants;
 using FluentValidation;
 
-namespace AutoHub.API.Validators;
+namespace AutoHub.API.Validators.ModelValidators;
 
 public class UserLoginRequestModelValidator : AbstractValidator<UserLoginRequest>
 {

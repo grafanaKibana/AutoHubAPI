@@ -1,10 +1,10 @@
-﻿using AutoHub.API.Models.CarModels;
-using AutoHub.API.Constants;
-using FluentValidation;
-using System;
+﻿using System;
+using AutoHub.API.Models.CarModels;
+using AutoHub.Domain.Constants;
 using AutoHub.Domain.Enums;
+using FluentValidation;
 
-namespace AutoHub.API.Validators;
+namespace AutoHub.API.Validators.ModelValidators;
 
 public class CarCreateRequestModelValidator : AbstractValidator<CarCreateRequest>
 {

@@ -1,7 +1,7 @@
 ﻿using AutoHub.API.Models.CarBrandModels;
 using FluentValidation;
 
-namespace AutoHub.API.Validators;
+namespace AutoHub.API.Validators.ModelValidators;
 
 public class CarBrandCreateRequestModelValidator : AbstractValidator<CarBrandCreateRequest>
 {

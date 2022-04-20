@@ -1,9 +1,7 @@
-﻿using System;
-using AutoHub.BusinessLogic.Common;
+﻿using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
-using AutoHub.BusinessLogic.Services;
+using AutoHub.Domain.Constants;
 using FluentValidation;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Validators;
