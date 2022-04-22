@@ -1,6 +1,8 @@
+using AutoHub.API.Models;
 using AutoHub.API.Models.BidModels;
 using AutoHub.BusinessLogic.DTOs.BidDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -10,10 +12,6 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -47,7 +45,7 @@ public class LotBidController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetLotBids(int lotId,[FromQuery] PaginationParameters paginationParameters)
+    public async Task<IActionResult> GetLotBids(int lotId, [FromQuery] PaginationParameters paginationParameters)
     {
         var bids = await _bidService.GetLotBids(lotId, paginationParameters);
         var result = new BidResponse

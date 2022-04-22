@@ -1,20 +1,20 @@
+using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.DTOs.LotDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.DataAccess;
+using AutoHub.Domain.Constants;
 using AutoHub.Domain.Entities;
+using AutoHub.Domain.Entities.Identity;
 using AutoHub.Domain.Enums;
 using AutoHub.Domain.Exceptions;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
-using AutoHub.Domain.Constants;
-using AutoHub.Domain.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -97,7 +97,7 @@ public class LotService : ILotService
     public async Task<LotResponseDTO> GetById(int lotId)
     {
         var lot = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
-        
+
         var mappedLot = _mapper.Map<LotResponseDTO>(lot);
         return mappedLot;
     }

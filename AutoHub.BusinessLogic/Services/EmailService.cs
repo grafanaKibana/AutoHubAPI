@@ -1,11 +1,10 @@
 ﻿using AutoHub.BusinessLogic.Configuration;
 using AutoHub.BusinessLogic.Interfaces;
-using AutoHub.Domain.Entities;
+using AutoHub.BusinessLogic.Models;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Threading.Tasks;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Services;
 

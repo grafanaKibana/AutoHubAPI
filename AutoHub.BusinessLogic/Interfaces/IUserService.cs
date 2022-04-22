@@ -1,7 +1,7 @@
 ﻿using AutoHub.BusinessLogic.DTOs.UserDTOs;
+using AutoHub.BusinessLogic.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 

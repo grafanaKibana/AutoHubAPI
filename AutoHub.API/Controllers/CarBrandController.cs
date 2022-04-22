@@ -1,6 +1,8 @@
+using AutoHub.API.Models;
 using AutoHub.API.Models.CarBrandModels;
 using AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -10,10 +12,6 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
-using Castle.Core.Internal;
 
 namespace AutoHub.API.Controllers;
 

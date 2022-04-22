@@ -1,7 +1,5 @@
-﻿using AutoHub.BusinessLogic.Services;
-using AutoHub.Domain.Entities;
+﻿using AutoHub.BusinessLogic.Models;
 using System.Threading.Tasks;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 

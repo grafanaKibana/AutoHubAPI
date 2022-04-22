@@ -7,4 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Major Code Smell", "S103:Lines should not be too long", Scope = "member", Target = "~F:AutoHub.API.Constants.UserRestrictions.UniversalPhoneNumberRegex")]
 [assembly: SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Scope = "namespaceanddescendants", Target = "~N:AutoHub.Domain.Exceptions")]
-[assembly: SuppressMessage("Minor Code Smell", "S2344:Enumeration type names should not have \"Flags\" or \"Enum\" suffixes", Scope = "namespaceanddescendants", Target = "~N:AutoHub.Domain.Enums")]
+[assembly: SuppressMessage("Minor Code Smell", "S2344:Enumeration type names should not have \"Flags\" or \"Enum\" suffixes", Scope = "namespaceanddescendants", Target = "~N:AutoHub.Domain.Enums")] 

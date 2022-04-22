@@ -1,6 +1,5 @@
-﻿using System;
+﻿using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using System.Collections.Generic;
-using AutoHub.BusinessLogic.DTOs.UserDTOs;
 
 namespace AutoHub.API.Models.UserModels;
 

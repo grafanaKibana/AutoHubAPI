@@ -1,6 +1,8 @@
+using AutoHub.API.Models;
 using AutoHub.API.Models.CarColorModels;
 using AutoHub.BusinessLogic.DTOs.CarColorDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -10,10 +12,6 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 

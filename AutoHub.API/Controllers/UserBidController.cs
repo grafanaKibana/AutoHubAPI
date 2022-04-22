@@ -43,7 +43,7 @@ public class UserBidController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetUserBids(int userId,[FromQuery] PaginationParameters paginationParameters)
+    public async Task<IActionResult> GetUserBids(int userId, [FromQuery] PaginationParameters paginationParameters)
     {
         var bids = await _bidService.GetUserBids(userId, paginationParameters);
         var result = new BidResponse

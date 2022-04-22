@@ -1,19 +1,16 @@
-﻿using AutoHub.API.Models.UserModels;
+﻿using AutoHub.API.Models;
+using AutoHub.API.Models.UserModels;
 using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 

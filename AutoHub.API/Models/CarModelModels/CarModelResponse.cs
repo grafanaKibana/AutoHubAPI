@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using AutoHub.BusinessLogic.DTOs.CarModelDTOs;
+using System.Collections.Generic;
 
 namespace AutoHub.API.Models.CarModelModels;
 

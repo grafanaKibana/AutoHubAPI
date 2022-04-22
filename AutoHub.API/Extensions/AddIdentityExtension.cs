@@ -1,9 +1,9 @@
 ﻿using AutoHub.DataAccess;
+using AutoHub.Domain.Constants;
 using AutoHub.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using AutoHub.Domain.Constants;
 
 namespace AutoHub.API.Extensions;
 

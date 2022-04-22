@@ -45,6 +45,5 @@ public class PaginationValidator : AbstractValidator<PaginationParameters>
                 .When(p => Base64Helper.TryDecode(p.Before, out _))
                 .WithMessage(p => $"When provided, value of '{nameof(p.Limit)}' should be numeric.");
         });
-
     }
 }

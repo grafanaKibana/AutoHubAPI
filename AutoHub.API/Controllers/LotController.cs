@@ -1,19 +1,17 @@
-﻿using AutoHub.API.Models.LotModels;
+﻿using AutoHub.API.Models;
+using AutoHub.API.Models.LotModels;
 using AutoHub.BusinessLogic.DTOs.LotDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Threading.Tasks;
 using System;
 using System.Linq;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers;
 

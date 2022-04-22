@@ -1,10 +1,9 @@
-﻿
-using System;
-using AutoHub.DataAccess.EntitySettings;
+﻿using AutoHub.DataAccess.EntitySettings;
 using AutoHub.Domain.Entities;
 using AutoHub.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AutoHub.DataAccess;
 
@@ -16,6 +15,7 @@ public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole
 
     //DbSets [Entities]
     public virtual DbSet<Car> Cars { get; set; }
+
     public virtual DbSet<CarBrand> CarBrands { get; set; }
     public virtual DbSet<CarModel> CarModels { get; set; }
     public virtual DbSet<CarColor> CarColors { get; set; }

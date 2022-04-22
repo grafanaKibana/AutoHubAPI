@@ -1,8 +1,8 @@
-﻿using System;
-using AutoHub.API.Models.CarModels;
+﻿using AutoHub.API.Models.CarModels;
 using AutoHub.Domain.Constants;
 using AutoHub.Domain.Enums;
 using FluentValidation;
+using System;
 
 namespace AutoHub.API.Validators.ModelValidators;
 

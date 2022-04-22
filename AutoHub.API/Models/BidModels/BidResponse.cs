@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using AutoHub.BusinessLogic.DTOs.BidDTOs;
+using System.Collections.Generic;
 
 namespace AutoHub.API.Models.BidModels;
 

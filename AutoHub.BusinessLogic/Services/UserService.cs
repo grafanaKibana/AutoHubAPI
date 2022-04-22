@@ -1,22 +1,19 @@
+using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.DataAccess;
 using AutoHub.Domain.Constants;
-using AutoHub.Domain.Entities;
 using AutoHub.Domain.Entities.Identity;
 using AutoHub.Domain.Enums;
 using AutoHub.Domain.Exceptions;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Services;
 
