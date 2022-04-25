@@ -117,12 +117,12 @@ public class UserService : IUserService
 
     public async Task Register(UserRegisterRequestDTO registerUserDTO)
     {
-        if (_userManager.FindByEmailAsync(registerUserDTO.Email) is not null)
+        if (await _userManager.FindByEmailAsync(registerUserDTO.Email) is not null)
         {
             throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists.");
         }
 
-        if (_userManager.FindByNameAsync(registerUserDTO.Username) is not null)
+        if (await _userManager.FindByNameAsync(registerUserDTO.Username) is not null)
         {
             throw new RegistrationFailedException($"User with username ({registerUserDTO.Username}) already exists.");
         }
