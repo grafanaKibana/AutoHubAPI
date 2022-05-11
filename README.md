@@ -1,4 +1,4 @@
-# AutoHubAPI (the Eleks .NET Camp project)
+# AutoHubAPI
 
 API to manage used car auction business
 -
