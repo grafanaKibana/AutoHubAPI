@@ -17,6 +17,7 @@ The project is being developed on the basis of a monolithic four-layer architect
 - FluentValidation
 - JWT Authentification
 - BCrypt
+- MailKit
 - xUnit
 - FluentAssertions
 - AutoFixture
