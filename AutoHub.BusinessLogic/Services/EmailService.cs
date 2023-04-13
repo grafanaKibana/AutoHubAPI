@@ -1,6 +1,5 @@
 ﻿using AutoHub.BusinessLogic.Configuration;
 using AutoHub.BusinessLogic.Interfaces;
-using AutoHub.Domain.Entities;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;

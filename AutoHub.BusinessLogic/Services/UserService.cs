@@ -2,7 +2,6 @@ using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.DataAccess;
 using AutoHub.Domain.Constants;
-using AutoHub.Domain.Entities;
 using AutoHub.Domain.Entities.Identity;
 using AutoHub.Domain.Enums;
 using AutoHub.Domain.Exceptions;
@@ -99,7 +98,7 @@ public class UserService : IUserService
         {
             throw new LoginFailedException("Please confirm registration via link in your email.");
         }
-
+        
         var signInResult = await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
 
         if (signInResult.Succeeded.Equals(false))

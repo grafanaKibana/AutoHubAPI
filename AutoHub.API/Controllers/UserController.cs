@@ -7,13 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -35,7 +32,7 @@ public class UserController : Controller
     /// <summary>
     /// Gets all users.
     /// </summary>
-    /// <param name="paginationParameters"></param>
+    /// <param name="paginationParameters">Pagination parameters model.</param>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <returns>Returns list of users.</returns>
@@ -46,7 +43,7 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllUsers([FromQuery] PaginationParameters paginationParameters)
     {
-        var users = await _userService.GetAll(paginationParameters);
+        var users = (await _userService.GetAll(paginationParameters)).ToList();
         var result = new UserResponse
         {
             Users = users,
@@ -59,7 +56,7 @@ public class UserController : Controller
     /// <summary>
     /// Gets a user by ID.
     /// </summary>
-    /// <param name="userId"></param>
+    /// <param name="userId">Id of a user.</param>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">User not found.</response>
@@ -80,28 +77,14 @@ public class UserController : Controller
     /// <summary>
     /// Updates user.
     /// </summary>
-    /// /// <remarks>
-    /// Sample request:
-    ///
-    ///     PUT /User
-    ///     {
-    ///         "userRoleId": 3
-    ///         "firstName": "John",
-    ///         "lastName": "Walker",
-    ///         "email": "user@mail.com",
-    ///         "phoneNumber": "+380000000000"
-    ///     }
-    ///
-    /// </remarks>
-    /// <param name="userId"></param>
-    /// <param name="model"></param>
+    /// <param name="userId">Id of a user.</param>
+    /// <param name="model">User update request model,</param>
     /// <response code="204">User was updated successfully.</response>
     /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">User not found.</response>
     /// <response code="422">Invalid user role ID.</response>
-    /// <returns></returns>
     [HttpPut("{userId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -121,14 +104,13 @@ public class UserController : Controller
     /// <summary>
     /// Adds role to user.
     /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="roleId"></param>
+    /// <param name="userId">Id of a user.</param>
+    /// <param name="roleId">Id of a role.</param>
     /// <response code="204">User role was updated successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="404">User not found.</response>
     /// <response code="409">User already have specified role.</response>
     /// <response code="422">Invalid role ID.</response>
-    /// <returns></returns>
     [HttpPatch("{userId}/AddToRole")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -146,13 +128,12 @@ public class UserController : Controller
     /// <summary>
     /// Removes role from user.
     /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="roleId"></param>
+    /// <param name="userId">Id of a user.</param>
+    /// <param name="roleId">Id of a role.</param>
     /// <response code="204">User role was updated successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="404">User not found or user not have specified role.</response>
     /// <response code="422">Invalid role ID.</response>
-    /// <returns></returns>
     [HttpPatch("{userId}/RemoveFromRole")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -169,12 +150,11 @@ public class UserController : Controller
     /// <summary>
     /// Deletes user.
     /// </summary>
-    /// <param name="userId"></param>
+    /// <param name="userId">Id of a user.</param>
     /// <response code="204">User was deleted successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">User not found.</response>
-    /// <returns></returns>
     [HttpDelete("{userId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

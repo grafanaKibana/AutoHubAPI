@@ -11,9 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -35,8 +33,8 @@ public class LotBidController : Controller
     /// <summary>
     /// Get all bids of specific lot.
     /// </summary>
-    /// <param name="lotId"></param>
-    /// <param name="paginationParameters"></param>
+    /// <param name="lotId">Id of a lot bid.</param>
+    /// <param name="paginationParameters">Pagination parameters model.</param>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Lot not found.</response>
@@ -47,9 +45,9 @@ public class LotBidController : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetLotBids(int lotId,[FromQuery] PaginationParameters paginationParameters)
+    public async Task<IActionResult> GetLotBids(int lotId, [FromQuery] PaginationParameters paginationParameters)
     {
-        var bids = await _bidService.GetLotBids(lotId, paginationParameters);
+        var bids = (await _bidService.GetLotBids(lotId, paginationParameters)).ToList();
         var result = new BidResponse
         {
             Bids = bids,
@@ -62,23 +60,12 @@ public class LotBidController : Controller
     /// <summary>
     /// Create lot bid.
     /// </summary>
-    /// <param name="lotId"></param>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     POST /Lots/1
-    ///     {
-    ///         "userId": 1,
-    ///         "bidValue": 50000
-    ///     }
-    ///
-    /// </remarks>
-    /// <response code="201">Bid was created successfully</response>
-    /// <response code="400">Invalid model</response>
+    /// <param name="lotId">Id of a lot bid.</param>
+    /// <param name="model">Lot bid create request model.</param>
+    /// <response code="201">Bid was created successfully.</response>
+    /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
-    /// <response code="404">Lot not found</response>
-    /// <returns></returns>
+    /// <response code="404">Lot not found.</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

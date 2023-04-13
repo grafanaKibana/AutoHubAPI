@@ -12,9 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -36,6 +34,7 @@ public class CarController : Controller
     /// <summary>
     /// Get all cars.
     /// </summary>
+    /// <param name="paginationParameters">Pagination parameters model.</param>
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns list of cars.</returns>
     [HttpGet]
@@ -43,7 +42,7 @@ public class CarController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCars([FromQuery] PaginationParameters paginationParameters)
     {
-        var cars = await _carService.GetAll(paginationParameters);
+        var cars = (await _carService.GetAll(paginationParameters)).ToList();
         var result = new CarResponse
         {
             Cars = cars,
@@ -56,10 +55,10 @@ public class CarController : Controller
     /// <summary>
     /// Get a car by ID.
     /// </summary>
-    /// <param name="carId"></param>
+    /// <param name="carId">Id of a car.</param>
     /// <response code="401">Unauthorized Access.</response>
-    /// <response code="404">Car not found</response>
-    /// <returns>Returns car</returns>
+    /// <response code="404">Car not found.</response>
+    /// <returns>Returns a car.</returns>
     [HttpGet("{carId}")]
     [ProducesResponseType(typeof(IEnumerable<CarResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -76,30 +75,11 @@ public class CarController : Controller
     /// <summary>
     /// Create car.
     /// </summary>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     POST /Cars
-    ///     {
-    ///         "carBrand": "Audi",
-    ///         "carModel": "RS6 Avant",
-    ///         "carColor": "Magenta",
-    ///         "imgUrl": "shorturl.at/oyCFN",
-    ///         "description": "Audi endows the RS6 Avant with a twin-turbocharged 4.0-liter V-8, which generates 591 horsepower and 590 pound-feet of torque",
-    ///         "year": 2021,
-    ///         "vin": "WAUFMBFC0GN059183",
-    ///         "mileage": 15550,
-    ///         "sellingPrice": 137000,
-    ///         "costPrice": 129500
-    ///     }
-    ///
-    /// </remarks>
+    /// <param name="model">Car create request model.</param>
     /// <response code="201">Car was created successfully.</response>
     /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin or Seller access only.</response>
-    /// <returns></returns>
     [HttpPost]
     [Authorize(Roles = AuthorizationRoles.Seller)]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
@@ -119,34 +99,14 @@ public class CarController : Controller
     /// <summary>
     /// Update car.
     /// </summary>
-    /// <param name="carId"></param>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     PUT /Cars/1
-    ///     {
-    ///         "carBrand": "Audi",
-    ///         "carModel": "RS6 Avant",
-    ///         "carColor": "Magenta",
-    ///         "imgUrl": "shorturl.at/oyCFN",
-    ///         "description": "Audi endows the RS6 Avant with a twin-turbocharged 4.0-liter V-8, which generates 591 horsepower and 590 pound-feet of torque",
-    ///         "year": 2021,
-    ///         "vin": "WAUFMBFC0GN059183",
-    ///         "mileage": 15550,
-    ///         "sellingPrice": 137000,
-    ///         "costPrice": 129500,
-    ///         "carStatusId": 2
-    ///     }
-    ///
-    /// </remarks>
+    /// <param name="carId">Id of a car.</param>
+    /// <param name="model">Car update request model.</param>
     /// <response code="204">Car was updated successfully.</response>
     /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Car not found.</response>
     /// <response code="422">Invalid status ID.</response>
-    /// <returns></returns>
     [HttpPut("{carId}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -167,8 +127,8 @@ public class CarController : Controller
     /// <summary>
     /// Update car status.
     /// </summary>
-    /// <param name="carId"></param>
-    /// <param name="statusId"></param>
+    /// <param name="carId">Id of a car.</param>
+    /// <param name="statusId">Id of a status of car.</param>
     /// <response code="204">Car status was updated successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
@@ -193,12 +153,11 @@ public class CarController : Controller
     /// <summary>
     /// Delete car.
     /// </summary>
-    /// <param name="carId"></param>
+    /// <param name="carId">Id of a car.</param>
     /// <response code="204">Car was deleted successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Car not found.</response>
-    /// <returns></returns>
     [HttpDelete("{carId}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

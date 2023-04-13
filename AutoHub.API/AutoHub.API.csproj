@@ -2,7 +2,7 @@
 
     <PropertyGroup>
 	    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
       <UserSecretsId>d05e2abf-9390-4c8d-8b73-ec1fade60694</UserSecretsId>
   </PropertyGroup>
 
@@ -19,28 +19,28 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="11.0.1" />
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="FluentValidation" Version="10.4.0" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
-        <PackageReference Include="MailKit" Version="3.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="FluentValidation" Version="11.5.2" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="MailKit" Version="3.6.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.37.0.45539">
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.55.0.65544">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
     </ItemGroup>
 
     <ItemGroup>

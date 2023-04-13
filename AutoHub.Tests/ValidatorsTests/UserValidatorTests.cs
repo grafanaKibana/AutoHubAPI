@@ -8,14 +8,12 @@ namespace AutoHub.Tests.ValidatorsTests;
 
 public class UserValidatorTests
 {
-    private readonly Fixture _fixture;
     private readonly UserRegisterRequestModelValidator _registerValidator;
     private readonly UserLoginRequestModelValidator _loginValidator;
     private readonly UserUpdateRequestModelValidator _updateValidator;
 
     public UserValidatorTests()
     {
-        _fixture = new Fixture();
         _registerValidator = new UserRegisterRequestModelValidator();
         _loginValidator = new UserLoginRequestModelValidator();
         _updateValidator = new UserUpdateRequestModelValidator();
