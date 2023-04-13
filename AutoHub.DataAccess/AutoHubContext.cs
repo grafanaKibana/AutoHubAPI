@@ -10,6 +10,10 @@ namespace AutoHub.DataAccess;
 
 public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
 {
+    public AutoHubContext()
+    {
+        
+    }
     public AutoHubContext(DbContextOptions<AutoHubContext> options) : base(options)
     {
     }
@@ -26,6 +30,7 @@ public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=AutoHubDb;Username=postgres;Password=admin");
         optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.LogTo(Console.WriteLine);
     }

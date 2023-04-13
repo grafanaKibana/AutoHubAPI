@@ -29,7 +29,7 @@ public class AuthenticationService : IAuthenticationService
     public Task<string> GenerateWebTokenForUser(ApplicationUser user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenKey = Encoding.UTF8.GetBytes(_jwtOptions.Key);
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key)); 
         var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
@@ -41,9 +41,8 @@ public class AuthenticationService : IAuthenticationService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(_jwtOptions.ExpirationDate),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),
-                SecurityAlgorithms.HmacSha256),
+            Expires = DateTime.UtcNow.AddHours(_jwtOptions.HoursToExpire),
+            SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature),
             Audience = _jwtOptions.Audience,
             Issuer = _jwtOptions.Issuer
         };

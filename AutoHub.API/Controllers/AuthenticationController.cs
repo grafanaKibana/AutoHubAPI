@@ -29,18 +29,7 @@ public class AuthenticationController : Controller
     /// <summary>
     /// Log-in with credentials.
     /// </summary>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     POST /User/Login
-    ///     {
-    ///         "username": "nightWalker",
-    ///         "password": "PasSw0Rd666",
-    ///         "rememberMe": true
-    ///     }
-    ///
-    /// </remarks>
+    /// <param name="model">User login request model.</param>
     /// <response code="200">Logged in successfully.</response>
     /// <response code="400">Invalid model.</response>
     /// <response code="404">User not found.</response>
@@ -65,20 +54,6 @@ public class AuthenticationController : Controller
     /// Register new user.
     /// </summary>
     /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     POST /User/Register
-    ///     {
-    ///         "firstName": "John",
-    ///         "lastName": "Walker",
-    ///         "username": "nightWalker",
-    ///         "email": "user@mail.com",
-    ///         "phoneNumber": "+380000000000",
-    ///         "password": "PasSw0Rd666"
-    ///     }
-    ///
-    /// </remarks>
     /// <response code="201">Successfully registered.</response>
     /// <response code="400">Invalid model.</response>
     /// <returns></returns>

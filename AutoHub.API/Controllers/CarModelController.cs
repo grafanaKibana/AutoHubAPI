@@ -11,9 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -35,15 +33,16 @@ public class CarModelController : Controller
     /// <summary>
     /// Get all car models.
     /// </summary>
+    /// <param name="paginationParameters">Pagination parameters model.</param>
     /// <response code="401">Unauthorized Access.</response>
-    /// <returns>Returns list of car models</returns>
+    /// <returns>Returns list of car models.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(CarModelResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCarModels([FromQuery] PaginationParameters paginationParameters)
     {
-        var carModels = await _carModelService.GetAll(paginationParameters);
+        var carModels = (await _carModelService.GetAll(paginationParameters)).ToList();
         var result = new CarModelResponse
         {
             CarModels = carModels,
@@ -55,21 +54,11 @@ public class CarModelController : Controller
     /// <summary>
     /// Create car model.
     /// </summary>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     POST /CarModels
-    ///     {
-    ///         "carModelName": "RS6 Avant"
-    ///     }
-    ///
-    /// </remarks>
-    /// <response code="201">Model was created successfully</response>
-    /// <response code="400">Invalid model</response>
+    /// <param name="model">Car model create request model.</param>
+    /// <response code="201">Model was created successfully.</response>
+    /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
-    /// <returns></returns>
     [HttpPost]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -86,25 +75,15 @@ public class CarModelController : Controller
     }
 
     /// <summary>
-    /// Updates car model
+    /// Updates car model.
     /// </summary>
-    /// <param name="carModelId"></param>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     PUT /CarModels
-    ///     {
-    ///         "carModelName": "RS6 Avant"
-    ///     }
-    ///
-    /// </remarks>
-    /// <response code="204">Model was updated successfully</response>
-    /// <response code="400">Invalid model</response>
+    /// <param name="carModelId">Id of a car model.</param>
+    /// <param name="model">Car model update request model.</param>
+    /// <response code="204">Model was updated successfully.</response>
+    /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
-    /// <response code="404">Model not found</response>
-    /// <returns></returns>
+    /// <response code="404">Model not found.</response>
     [HttpPut("{carModelId}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -122,14 +101,13 @@ public class CarModelController : Controller
     }
 
     /// <summary>
-    /// Deletes car model
+    /// Deletes car model.
     /// </summary>
-    /// <param name="carModelId"></param>
-    /// <response code="204">Model was deleted successfully</response>
+    /// <param name="carModelId">Id of a car model.</param>
+    /// <response code="204">Model was deleted successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
-    /// <response code="404">Model not found</response>
-    /// <returns></returns>
+    /// <response code="404">Model not found.</response>
     [HttpDelete("{carModelId}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

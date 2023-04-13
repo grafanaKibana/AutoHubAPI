@@ -11,9 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.Models;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Controllers;
 
@@ -35,6 +33,7 @@ public class CarColorController : Controller
     /// <summary>
     /// Get all car colors.
     /// </summary>
+    /// <param name="paginationParameters">Pagination parameters model.</param>
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns list of car colors.</returns>
     [HttpGet]
@@ -43,7 +42,7 @@ public class CarColorController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCarColors([FromQuery] PaginationParameters paginationParameters)
     {
-        var carColors = await _carColorService.GetAll(paginationParameters);
+        var carColors = (await _carColorService.GetAll(paginationParameters)).ToList();
         var result = new CarColorResponse
         {
             CarColors = carColors,
@@ -55,16 +54,7 @@ public class CarColorController : Controller
     /// <summary>
     /// Create car color.
     /// </summary>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     POST /CarColors
-    ///     {
-    ///         "carColorName": "Magenta"
-    ///     }
-    ///
-    /// </remarks>
+    /// <param name="model">Car color create request model.</param>
     /// <response code="201">Color was created successfully.</response>
     /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
@@ -88,17 +78,8 @@ public class CarColorController : Controller
     /// <summary>
     /// Update car color.
     /// </summary>
-    /// <param name="carColorId"></param>
-    /// <param name="model"></param>
-    /// <remarks>
-    /// Sample request:
-    ///
-    ///     PUT /CarColors
-    ///     {
-    ///         "carColorName": "Magenta"
-    ///     }
-    ///
-    /// </remarks>
+    /// <param name="carColorId">Id of a car color.</param>
+    /// <param name="model">Car color update request model.</param>
     /// <response code="204">Color was updated successfully.</response>
     /// <response code="400">Invalid model.</response>
     /// <response code="401">Unauthorized Access.</response>
@@ -124,7 +105,7 @@ public class CarColorController : Controller
     /// <summary>
     /// Delete car color.
     /// </summary>
-    /// <param name="carColorId"></param>
+    /// <param name="carColorId">Id of a car color.</param>
     /// <response code="204">Color was deleted successfully.</response>
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>

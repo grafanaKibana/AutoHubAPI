@@ -1,8 +1,8 @@
+
 using AutoHub.API.Extensions;
 using AutoHub.API.Middlewares;
 using AutoHub.BusinessLogic.Configuration;
 using AutoHub.DataAccess;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +24,11 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllers()
-            .AddFluentValidation(options => options.RegisterValidatorsFromAssembly(typeof(Startup).Assembly));
+        services.AddControllers();
+        services.AddFluentValidation();
         services.AddAutoMapper(typeof(Startup).Assembly);
         services.AddRouting();
-        services.AddDbContext<AutoHubContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnectionString")));
+        services.AddDbContext<AutoHubContext>(options => options.UseNpgsql(Configuration.GetConnectionString("PostgresConnectionString")));
         services.AddServices();
         services.AddSwagger();
         services.AddIdentity();
