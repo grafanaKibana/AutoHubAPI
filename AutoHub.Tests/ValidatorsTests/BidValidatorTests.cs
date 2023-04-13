@@ -33,7 +33,7 @@ public class BidValidatorTests
     }
 
     [Fact]
-    public void CreateBidTestValidate_InvalidModel_ShouldNotHaveError()
+    public void CreateBidTestValidate_InvalidModel_ShouldHaveError()
     {
         //Arrange
         var model = new BidCreateRequest
