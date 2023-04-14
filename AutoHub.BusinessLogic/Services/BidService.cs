@@ -99,7 +99,7 @@ public class BidService : IBidService
 
         if (createBidDTO.BidValue < biggestLotBid)
         {
-            throw new InvalidValueException($"Bid value: {createBidDTO.BidValue} less than the biggest lot bid value: {biggestLotBid}.");
+            throw new InvalidValueException($"Bid value: {createBidDTO.BidValue} less than the biggest lot bid: {biggestLotBid}.");
         }
         
         var bid = _mapper.Map<Bid>(createBidDTO);
