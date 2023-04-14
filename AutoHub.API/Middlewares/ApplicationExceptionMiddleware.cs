@@ -42,6 +42,10 @@ public class ApplicationExceptionMiddleware
         {
             await HandleExceptionAsync(httpContext, HttpStatusCode.Conflict, dEx);
         }
+        catch (InvalidValueException ivEx)
+        {
+            await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ivEx);
+        }
         catch (Exception ex)
         {
             await HandleExceptionAsync(httpContext, HttpStatusCode.InternalServerError, ex);
@@ -59,7 +63,8 @@ public class ApplicationExceptionMiddleware
             Instance = context.Request.Path,
             Type = ex.GetType().ToString(),
             Message = ex.Message,
-            Details = ex.GetBaseException().Message
+            Details = ex.GetBaseException().Message,
+            StackTrace = ex.StackTrace,
         }.ToString());
     }
 }

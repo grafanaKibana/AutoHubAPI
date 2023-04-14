@@ -32,7 +32,10 @@ public class BidService : IBidService
 
     public async Task<IEnumerable<BidResponseDTO>> GetUserBids(int userId, PaginationParameters paginationParameters)
     {
-        _ = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        if (await _userManager.FindByIdAsync(userId.ToString()) is null)
+        {
+            throw new NotFoundException($"User with ID {userId} not exist.");
+        }
 
         List<Bid> bids;
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
@@ -62,7 +65,10 @@ public class BidService : IBidService
 
     public async Task<IEnumerable<BidResponseDTO>> GetLotBids(int lotId, PaginationParameters paginationParameters)
     {
-        _ = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        if (await _context.Lots.FindAsync(lotId) is null)
+        {
+            throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        }
 
         List<Bid> bids;
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
@@ -92,9 +98,23 @@ public class BidService : IBidService
 
     public async Task Create(int lotId, BidCreateRequestDTO createBidDTO)
     {
-        _ = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
-        _ = await _userManager.FindByIdAsync(createBidDTO.UserId.ToString()) ?? throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
+        if (await _context.Lots.FindAsync(lotId) is null)
+        {
+            throw new NotFoundException($"Lot with ID {lotId} not exist.");
+        }
 
+        if (await _userManager.FindByIdAsync(createBidDTO.UserId.ToString()) is null)
+        {
+            throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
+        }
+
+        var biggestLotBid = _context.Bids.OrderBy(x => x.BidValue).Last().BidValue;
+
+        if (createBidDTO.BidValue < biggestLotBid)
+        {
+            throw new InvalidValueException($"Bid value: {createBidDTO.BidValue} less than the biggest lot bid: {biggestLotBid}.");
+        }
+        
         var bid = _mapper.Map<Bid>(createBidDTO);
         bid.LotId = lotId;
         bid.BidTime = DateTime.UtcNow;
