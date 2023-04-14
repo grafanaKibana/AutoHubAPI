@@ -95,6 +95,13 @@ public class BidService : IBidService
         _ = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
         _ = await _userManager.FindByIdAsync(createBidDTO.UserId.ToString()) ?? throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
 
+        var biggestLotBid = _context.Bids.OrderBy(x => x.BidValue).Last().BidValue;
+
+        if (createBidDTO.BidValue < biggestLotBid)
+        {
+            throw new InvalidValueException($"Bid value: {createBidDTO.BidValue} less than the biggest lot bid value: {biggestLotBid}.");
+        }
+        
         var bid = _mapper.Map<Bid>(createBidDTO);
         bid.LotId = lotId;
         bid.BidTime = DateTime.UtcNow;
