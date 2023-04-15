@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using AutoHub.DataAccess.EntitySettings;
 using AutoHub.Domain.Entities;
 using AutoHub.Domain.Entities.Identity;
@@ -30,7 +29,7 @@ public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=AutoHubDb;Username=postgres;Password=admin");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=AutoHubDb;Username=postgres;Password=admin;Include Error Detail=true;");
         optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.LogTo(Console.WriteLine);
     }

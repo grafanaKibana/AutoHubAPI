@@ -1,4 +1,3 @@
-
 using AutoHub.API.Extensions;
 using AutoHub.API.Middlewares;
 using AutoHub.BusinessLogic.Configuration;
@@ -33,6 +32,7 @@ public class Startup
         services.AddSwagger();
         services.AddIdentity();
         services.AddAuth(Configuration);
+        services.AddQuartz();
         services.Configure<MailConfiguration>(Configuration.GetSection("MailConfiguration"));
     }
 

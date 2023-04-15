@@ -108,11 +108,15 @@ public class BidService : IBidService
             throw new NotFoundException($"User with ID {createBidDTO.UserId} not exist.");
         }
 
-        var biggestLotBid = _context.Bids.OrderBy(x => x.BidValue).Last().BidValue;
-
-        if (createBidDTO.BidValue < biggestLotBid)
+        var lotBids = _context.Bids.Where(x => x.LotId == lotId); 
+        if (lotBids.Any())
         {
-            throw new InvalidValueException($"Bid value: {createBidDTO.BidValue} less than the biggest lot bid: {biggestLotBid}.");
+            var biggestLotBid = lotBids.OrderBy(x => x.BidValue).Last().BidValue;
+
+            if (createBidDTO.BidValue < biggestLotBid)
+            {
+                throw new InvalidValueException($"Bid value: {createBidDTO.BidValue} less than the biggest lot bid: {biggestLotBid}.");
+            }
         }
         
         var bid = _mapper.Map<Bid>(createBidDTO);
