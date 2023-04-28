@@ -57,8 +57,12 @@ public static class AddSwaggerExtension
 
     public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
     {
-        app.UseSwagger(options => options.SerializeAsV2 = true);
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AutoHub.API v1"));
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.DefaultModelsExpandDepth(-1);
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "AutoHub.API v1");
+        });
         return app;
     }
 }

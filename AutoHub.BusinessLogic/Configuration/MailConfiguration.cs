@@ -2,7 +2,7 @@
 
 public record MailConfiguration
 {
-    public string Mail { get; set; }
+    public string SenderMail { get; set; }
 
     public string DisplayName { get; set; }
 

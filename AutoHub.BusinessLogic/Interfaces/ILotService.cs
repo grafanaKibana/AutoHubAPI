@@ -9,6 +9,8 @@ public interface ILotService
 {
     Task<IEnumerable<LotResponseDTO>> GetAll(PaginationParameters paginationParameters);
 
+    Task<IEnumerable<LotResponseDTO>> GetRequiredOfDeterminingWinner();
+    
     Task<IEnumerable<LotResponseDTO>> GetInProgress(PaginationParameters paginationParameters);
 
     Task<LotResponseDTO> GetById(int lotId);

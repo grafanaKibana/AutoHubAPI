@@ -57,11 +57,26 @@ public class LotService : ILotService
 
         var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lots).ToList();
 
-        foreach (var user in mappedLots.Select(x => x.Creator))
+        foreach (var lot in mappedLots)
         {
-            user.UserRoles = await _userManager.GetRolesAsync(lots.Single(x => x.CreatorId == user.UserId).Creator);
+            var creatorRoles = await _userManager.GetRolesAsync(lots.Single(x => x.CreatorId == lot.Creator.UserId).Creator);
+            lot.Creator.UserRoles = creatorRoles;
+
+            if (lot.Winner is not null)
+            {
+                var winnerRoles =
+                    await _userManager.GetRolesAsync(lots.Single(x => x.WinnerId == lot.Winner.UserId).Winner);
+                lot.Winner.UserRoles = winnerRoles;
+            }
         }
 
+        return mappedLots;
+    }
+
+    public async Task<IEnumerable<LotResponseDTO>> GetRequiredOfDeterminingWinner()
+    {
+        var lotsToDefineWinner = await _context.Lots.Where(x => x.EndTime.HasValue && x.EndTime.Value < DateTime.UtcNow && x.Winner == null).ToListAsync();
+        var mappedLots = _mapper.Map<IEnumerable<LotResponseDTO>>(lotsToDefineWinner);
         return mappedLots;
     }
 
@@ -116,21 +131,28 @@ public class LotService : ILotService
 
     public async Task Update(int lotId, LotUpdateRequestDTO updateLotDTO)
     {
-        if (Enum.IsDefined(typeof(LotStatusEnum), updateLotDTO.LotStatusId).Equals(false))
+        if (Enum.IsDefined(typeof(LotStatusEnum), updateLotDTO.LotStatusId.Value).Equals(false))
         {
             throw new EntityValidationException($"Incorrect {nameof(LotStatus.LotStatusId)} value.");
         }
 
         var lot = await _context.Lots.FindAsync(lotId) ?? throw new NotFoundException($"Lot with ID {lotId} not exist.");
 
+        if (updateLotDTO.LotStatusId.HasValue)
+        {
+            lot.LotStatusId = (LotStatusEnum)updateLotDTO.LotStatusId.Value;
+        }
+        
         if (updateLotDTO.WinnerId.HasValue)
         {
             lot.Winner = await _context.Users.FindAsync(updateLotDTO.WinnerId) ?? throw new NotFoundException($"User with ID {updateLotDTO.WinnerId} not exist.");
         }
 
-        lot.LotStatusId = (LotStatusEnum)updateLotDTO.LotStatusId;
-        lot.EndTime = lot.StartTime.AddDays(updateLotDTO.DurationInDays);
-
+        if (updateLotDTO.DurationInDays.HasValue)
+        {
+            lot.EndTime = lot.StartTime.AddDays(updateLotDTO.DurationInDays.Value);
+        }
+        
         _context.Lots.Update(lot);
         await _context.SaveChangesAsync();
     }
