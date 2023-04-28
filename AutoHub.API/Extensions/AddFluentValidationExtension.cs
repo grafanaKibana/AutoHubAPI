@@ -10,6 +10,6 @@ public static class AddFluentValidationExtension
     {
         services.AddFluentValidationAutoValidation();
         services.AddFluentValidationClientsideAdapters();
-        services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
+        services.AddValidatorsFromAssembly(typeof(Program).Assembly);
     }
 }

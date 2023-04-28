@@ -1,45 +1,62 @@
 using System;
-using System.Threading.Tasks;
+using AutoHub.API.Extensions;
+using AutoHub.API.Middlewares;
+using AutoHub.BusinessLogic.Configuration;
 using AutoHub.BusinessLogic.DataSeeding;
+using AutoHub.DataAccess;
 using AutoHub.Domain.Entities.Identity;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace AutoHub.API;
+var builder = WebApplication.CreateBuilder(args);
 
-public class Program
+builder.Services.AddDbContext<AutoHubContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
+builder.Configuration.AddEnvironmentVariables().AddUserSecrets<Program>();
+builder.Services.AddControllers();
+builder.Services.AddServices();
+builder.Services.AddFluentValidation();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddRouting();
+builder.Services.AddSwagger();
+builder.Services.AddIdentity();
+builder.Services.AddAuth(builder.Configuration);
+builder.Services.AddQuartz();
+builder.Services.Configure<MailConfiguration>(builder.Configuration.GetSection("MailConfiguration"));
+
+var app = builder.Build();
+
+if (builder.Environment.IsDevelopment())
 {
-    public static async Task Main(string[] args)
+    using (var scope = app.Services.CreateScope())
     {
-        var host = CreateHostBuilder(args).ConfigureAppConfiguration((hostContext, builder) =>
-        {
-            if (hostContext.HostingEnvironment.IsDevelopment())
-            {
-                builder.AddUserSecrets<Program>();
-            }
-        }).Build();
+        var services = scope.ServiceProvider;
         
-        using (var scope = host.Services.CreateScope())
+        try
         {
-            var services = scope.ServiceProvider;
-            try
-            {
-                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                await UserDataSeeding.AddDefaultAdmin(userManager);
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred while seeding the database.");
-            }
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            await UserDataSeeding.AddDefaultAdmin(userManager);
         }
-        
-        await host.RunAsync();
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred while seeding the database.");
+        }
     }
-
-    public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+    
+    app.UseDeveloperExceptionPage();
+    app.UseSwaggerDocumentation();
 }
+
+app.UseMiddleware<ApplicationExceptionMiddleware>();
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
