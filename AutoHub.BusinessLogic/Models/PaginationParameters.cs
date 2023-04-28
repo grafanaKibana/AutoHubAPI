@@ -4,7 +4,11 @@ namespace AutoHub.BusinessLogic.Models;
 
 public record PaginationParameters
 {
-    public PaginationParameters(int limit = DefaultPaginationValues.DefaultLimit)
+    public PaginationParameters()
+    {
+        Limit = DefaultPaginationValues.DefaultLimit;
+    }
+    public PaginationParameters(int limit)
     {
         Limit = limit;
     }

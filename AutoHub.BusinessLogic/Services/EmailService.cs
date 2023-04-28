@@ -1,4 +1,5 @@
-﻿using AutoHub.BusinessLogic.Configuration;
+﻿using System.IO;
+using AutoHub.BusinessLogic.Configuration;
 using AutoHub.BusinessLogic.Interfaces;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
@@ -26,7 +27,7 @@ public class EmailService : IEmailService
 
         var email = new MimeMessage
         {
-            Sender = MailboxAddress.Parse(_mailConfiguration.Mail),
+            Sender = MailboxAddress.Parse(_mailConfiguration.SenderMail),
             Subject = mailRequest.Subject,
             Body = builder.ToMessageBody(),
         };
@@ -38,7 +39,7 @@ public class EmailService : IEmailService
         smtp.AuthenticationMechanisms.Remove("XOAUTH2");
 
         await smtp.ConnectAsync(_mailConfiguration.Host, _mailConfiguration.Port, true);
-        await smtp.AuthenticateAsync(_mailConfiguration.Mail, _mailConfiguration.Password);
+        await smtp.AuthenticateAsync(_mailConfiguration.SenderMail, _mailConfiguration.Password);
         await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
     }
