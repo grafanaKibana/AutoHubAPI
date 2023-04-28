@@ -25,6 +25,6 @@ public record CarBaseRequest
     /// <example>56752</example>
     public int Mileage { get; init; }
     
-    /// <example>93500</example>
+    /// <example>100500</example>
     public decimal SellingPrice { get; init; }
 }
