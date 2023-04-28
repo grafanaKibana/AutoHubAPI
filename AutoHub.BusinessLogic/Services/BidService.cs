@@ -109,9 +109,10 @@ public class BidService : IBidService
         }
 
         var lotBids = _context.Bids.Where(x => x.LotId == lotId); 
+        
         if (lotBids.Any())
         {
-            var biggestLotBid = lotBids.OrderBy(x => x.BidValue).Last().BidValue;
+            var biggestLotBid = lotBids.Max(x => x.BidValue);
 
             if (createBidDTO.BidValue < biggestLotBid)
             {
