@@ -57,7 +57,7 @@ public static class AddSwaggerExtension
 
     public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
     {
-        app.UseSwagger(options => options.SerializeAsV2 = true);
+        app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
             c.DefaultModelsExpandDepth(-1);
