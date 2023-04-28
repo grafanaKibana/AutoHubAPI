@@ -13,37 +13,32 @@ public class LotWinnerDeterminantJob : IJob
 {
     private readonly ILotService _lotService;
     private readonly IBidService _bidService;
-    
+
     public LotWinnerDeterminantJob(ILotService lotService, IBidService bidService)
     {
         _lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
         _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
     }
-    
+
     public async Task Execute(IJobExecutionContext context)
     {
         Console.WriteLine("JobTriggered");
-        var lots = await _lotService.GetRequiredOfDeterminingWinner();
+        var lotIdsToDeterminate = (await _lotService.GetRequiredOfDeterminingWinner())
+            .Where(lot => lot.EndTime < DateTime.UtcNow)
+            .Select(lot => lot.LotId);
 
-        foreach (var lot in lots)
+        foreach (var lotId in lotIdsToDeterminate)
         {
-            if (lot.EndTime < DateTime.UtcNow)
+            var lotBids = (await _bidService.GetLotBids(lotId, new PaginationParameters(int.MaxValue))).ToList();
+            if (lotBids.Any())
             {
-                var lotBids = (await _bidService.GetLotBids(lot.LotId, new PaginationParameters
-                {
-                    Limit = int.MaxValue
-                })).ToList();
+                var maxBid = lotBids.MaxBy(x => x.BidValue);
 
-                if (lotBids.Any())
+                await _lotService.Update(lotId, new LotUpdateRequestDTO
                 {
-                    var maxBid = lotBids.OrderBy(x => x.BidValue).Last();
-
-                    await _lotService.Update(lot.LotId, new LotUpdateRequestDTO
-                    {
-                        WinnerId = maxBid.User.UserId,
-                        LotStatusId = (int)LotStatusEnum.EndedUp
-                    });
-                }
+                    WinnerId = maxBid.User.UserId,
+                    LotStatusId = (int)LotStatusEnum.EndedUp
+                });
             }
         }
     }

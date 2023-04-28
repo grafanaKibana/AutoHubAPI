@@ -1,7 +1,14 @@
-﻿namespace AutoHub.BusinessLogic.Models;
+﻿using AutoHub.Domain.Constants;
+
+namespace AutoHub.BusinessLogic.Models;
 
 public record PaginationParameters
 {
+    public PaginationParameters(int limit = DefaultPaginationValues.DefaultLimit)
+    {
+        Limit = limit;
+    }
+    
     /// <example>100</example>
     public int? Limit { get; init; }
 
