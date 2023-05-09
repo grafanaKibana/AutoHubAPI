@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using AutoHub.API.Filters;
 
 namespace AutoHub.API.Extensions;
 
@@ -35,20 +35,8 @@ public static class AddSwaggerExtension
                 Scheme = JwtBearerDefaults.AuthenticationScheme,
                 BearerFormat = "JWT",
             });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Id = JwtBearerDefaults.AuthenticationScheme,
-                                Type = ReferenceType.SecurityScheme
-                            }
-                        },
-                        new List<string>()
-                    }
-            });
+            
+            c.OperationFilter<SecurityOperationRequirementsFilter>();
 
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
