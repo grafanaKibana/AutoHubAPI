@@ -50,6 +50,7 @@ if (builder.Environment.IsDevelopment())
     
     app.UseDeveloperExceptionPage();
     app.UseSwaggerDocumentation();
+    app.UseRedocDocumentation();
 }
 
 app.UseMiddleware<ApplicationExceptionMiddleware>();

@@ -9,7 +9,9 @@ using AutoHub.API.Filters;
 
 namespace AutoHub.API.Extensions;
 
-public static class AddSwaggerExtension
+using Swashbuckle.AspNetCore.ReDoc;
+
+public static class AddDocumentationExtension
 {
     public static void AddSwagger(this IServiceCollection services)
     {
@@ -50,6 +52,22 @@ public static class AddSwaggerExtension
         {
             c.DefaultModelsExpandDepth(-1);
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "AutoHub.API v1");
+        });
+        return app;
+    }
+
+    public static IApplicationBuilder UseRedocDocumentation(this IApplicationBuilder app)
+    {
+        app.UseReDoc(c =>
+        {
+            c.SpecUrl("/swagger/v1/swagger.json");
+            c.DocumentTitle = "AutoHub.API";
+            c.RoutePrefix = "redoc";
+            c.ConfigObject = new ConfigObject
+            {
+                HideHostname = true,
+                HideDownloadButton = true
+            };
         });
         return app;
     }
