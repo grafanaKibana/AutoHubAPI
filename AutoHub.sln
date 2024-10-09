@@ -12,6 +12,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{253F40F1-053B-4212-B27E-54182928D15E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHub.BusinessLogic", "AutoHub.BusinessLogic\AutoHub.BusinessLogic.csproj", "{BDCDD86A-CA38-4D40-A727-7003001F3F22}"

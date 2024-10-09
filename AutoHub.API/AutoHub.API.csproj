@@ -5,6 +5,7 @@
 		<TargetFramework>net8.0</TargetFramework>
       <UserSecretsId>d05e2abf-9390-4c8d-8b73-ec1fade60694</UserSecretsId>
       <LangVersion>latestmajor</LangVersion>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
