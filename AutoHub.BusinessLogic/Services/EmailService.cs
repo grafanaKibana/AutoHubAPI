@@ -9,14 +9,9 @@ using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Services;
 
-public class EmailService : IEmailService
+public class EmailService(IOptions<MailConfiguration> mailConfiguration) : IEmailService
 {
-    private readonly MailConfiguration _mailConfiguration;
-
-    public EmailService(IOptions<MailConfiguration> mailConfiguration)
-    {
-        _mailConfiguration = mailConfiguration.Value;
-    }
+    private readonly MailConfiguration _mailConfiguration = mailConfiguration.Value;
 
     public async Task SendEmail(SendMailRequest mailRequest)
     {

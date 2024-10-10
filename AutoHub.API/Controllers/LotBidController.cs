@@ -19,16 +19,9 @@ namespace AutoHub.API.Controllers;
 [Authorize]
 [Route("api/Lots/{lotId}/Bids")]
 [Produces("application/json")]
-public class LotBidController : Controller
+public class LotBidController(IBidService bidService, IMapper mapper) : ControllerBase
 {
-    private readonly IBidService _bidService;
-    private readonly IMapper _mapper;
-
-    public LotBidController(IBidService bidService, IMapper mapper)
-    {
-        _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
-        _mapper = mapper;
-    }
+    private readonly IBidService _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
 
     /// <summary>
     /// Get all bids of specific lot.
@@ -74,7 +67,7 @@ public class LotBidController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateBid(int lotId, [FromBody] BidCreateRequest model)
     {
-        var mappedBid = _mapper.Map<BidCreateRequestDTO>(model);
+        var mappedBid = mapper.Map<BidCreateRequestDTO>(model);
         await _bidService.Create(lotId, mappedBid);
 
         return StatusCode((int)HttpStatusCode.Created);

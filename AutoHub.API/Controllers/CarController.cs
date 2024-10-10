@@ -20,16 +20,9 @@ namespace AutoHub.API.Controllers;
 [Authorize]
 [Route("api/[controller]s")]
 [Produces("application/json")]
-public class CarController : Controller
+public class CarController(ICarService carService, IMapper mapper) : ControllerBase
 {
-    private readonly ICarService _carService;
-    private readonly IMapper _mapper;
-
-    public CarController(ICarService carService, IMapper mapper)
-    {
-        _carService = carService ?? throw new ArgumentNullException(nameof(carService));
-        _mapper = mapper;
-    }
+    private readonly ICarService _carService = carService ?? throw new ArgumentNullException(nameof(carService));
 
     /// <summary>
     /// Get all cars.
@@ -67,7 +60,7 @@ public class CarController : Controller
     public async Task<IActionResult> GetCarById(int carId)
     {
         var car = await _carService.GetById(carId);
-        var mappedCar = _mapper.Map<CarResponse>(car);
+        var mappedCar = mapper.Map<CarResponse>(car);
 
         return Ok(mappedCar);
     }
@@ -90,7 +83,7 @@ public class CarController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateCar([FromBody] CarCreateRequest model)
     {
-        var mappedCar = _mapper.Map<CarCreateRequestDTO>(model);
+        var mappedCar = mapper.Map<CarCreateRequestDTO>(model);
         await _carService.Create(mappedCar);
 
         return StatusCode((int)HttpStatusCode.Created);
@@ -118,7 +111,7 @@ public class CarController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateCar(int carId, [FromBody] CarUpdateRequest model)
     {
-        var mappedCar = _mapper.Map<CarUpdateRequestDTO>(model);
+        var mappedCar = mapper.Map<CarUpdateRequestDTO>(model);
         await _carService.Update(carId, mappedCar);
 
         return NoContent();

@@ -7,20 +7,13 @@ using System.Threading.Tasks;
 
 namespace AutoHub.API.Middlewares;
 
-public class ApplicationExceptionMiddleware
+public class ApplicationExceptionMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public ApplicationExceptionMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext httpContext)
     {
         try
         {
-            await _next(httpContext);
+            await next(httpContext);
         }
         catch (NotFoundException nfEx)
         {

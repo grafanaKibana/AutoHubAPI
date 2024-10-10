@@ -15,16 +15,9 @@ namespace AutoHub.API.Controllers;
 [AllowAnonymous]
 [Route("api/[controller]")]
 [Produces("application/json")]
-public class AuthenticationController : Controller
+public class AuthenticationController(IUserService userService, IMapper mapper) : ControllerBase
 {
-    private readonly IMapper _mapper;
-    private readonly IUserService _userService;
-
-    public AuthenticationController(IUserService userService, IMapper mapper)
-    {
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-        _mapper = mapper;
-    }
+    private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
     /// <summary>
     /// Log-in with credentials.
@@ -43,9 +36,9 @@ public class AuthenticationController : Controller
     {
         await _userService.Logout();
 
-        var mappedUser = _mapper.Map<UserLoginRequestDTO>(model);
+        var mappedUser = mapper.Map<UserLoginRequestDTO>(model);
         var authModel = await _userService.Login(mappedUser);
-        var mappedAuthModel = _mapper.Map<UserLoginResponse>(authModel);
+        var mappedAuthModel = mapper.Map<UserLoginResponse>(authModel);
 
         return Ok(mappedAuthModel);
     }
@@ -63,7 +56,7 @@ public class AuthenticationController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegisterRequest model)
     {
-        var mappedUser = _mapper.Map<UserRegisterRequestDTO>(model);
+        var mappedUser = mapper.Map<UserRegisterRequestDTO>(model);
         await _userService.Register(mappedUser);
 
         return StatusCode((int)HttpStatusCode.Created);

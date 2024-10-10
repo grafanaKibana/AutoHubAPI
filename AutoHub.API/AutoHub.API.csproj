@@ -21,32 +21,31 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="12.0.1" />
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageReference Include="FluentValidation" Version="11.5.2" />
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="FluentValidation" Version="11.10.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-        <PackageReference Include="MailKit" Version="3.6.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+        <PackageReference Include="MailKit" Version="4.8.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
-        <PackageReference Include="Quartz" Version="3.6.2" />
-        <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.2" />
-        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.6.2" />
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.55.0.65544">
+        <PackageReference Include="Newtonsoft.Json.Schema" Version="4.0.1" />
+        <PackageReference Include="Quartz" Version="3.13.0" />
+        <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.13.0" />
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.13.0" />
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="9.32.0.97167">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.8.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.8.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.8.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.8.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
     </ItemGroup>
 
     <ItemGroup>

@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AutoHubContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
+builder.Services.AddDbContext<AutoHubContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlServerConnectionString")));
 builder.Configuration.AddEnvironmentVariables().AddUserSecrets<Program>();
 builder.Services.AddControllers();
 builder.Services.AddServices();
@@ -49,10 +49,10 @@ if (builder.Environment.IsDevelopment())
     }
     
     app.UseDeveloperExceptionPage();
-    app.UseSwaggerDocumentation();
-    app.UseRedocDocumentation();
 }
 
+app.UseSwaggerDocumentation();
+app.UseRedocDocumentation();
 app.UseMiddleware<ApplicationExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
@@ -60,4 +60,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
+
