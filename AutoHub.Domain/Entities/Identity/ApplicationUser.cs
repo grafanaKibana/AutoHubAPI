@@ -5,13 +5,6 @@ namespace AutoHub.Domain.Entities.Identity;
 
 public class ApplicationUser : IdentityUser<int>
 {
-    public ApplicationUser()
-    {
-        UserBids = new List<Bid>();
-        UserLots = new List<Lot>();
-        VictoryLots = new List<Lot>();
-    }
-
     [PersonalData, Required]
     public string FirstName { get; set; }
 
@@ -22,9 +15,9 @@ public class ApplicationUser : IdentityUser<int>
 
     public DateTime RegistrationTime { get; set; }
 
-    public virtual IEnumerable<Bid> UserBids { get; set; }
+    public virtual IEnumerable<Bid> UserBids { get; set; } = new List<Bid>();
 
-    public virtual IEnumerable<Lot> UserLots { get; set; }
+    public virtual IEnumerable<Lot> UserLots { get; set; } = new List<Lot>();
 
-    public virtual IEnumerable<Lot> VictoryLots { get; set; }
+    public virtual IEnumerable<Lot> VictoryLots { get; set; } = new List<Lot>();
 }

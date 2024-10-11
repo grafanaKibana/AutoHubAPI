@@ -9,16 +9,10 @@ using Quartz;
 
 namespace AutoHub.BusinessLogic.Jobs;
 
-public class LotWinnerDeterminantJob : IJob
+public class LotWinnerDeterminantJob(ILotService lotService, IBidService bidService) : IJob
 {
-    private readonly ILotService _lotService;
-    private readonly IBidService _bidService;
-
-    public LotWinnerDeterminantJob(ILotService lotService, IBidService bidService)
-    {
-        _lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
-        _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
-    }
+    private readonly ILotService _lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
+    private readonly IBidService _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
 
     public async Task Execute(IJobExecutionContext context)
     {

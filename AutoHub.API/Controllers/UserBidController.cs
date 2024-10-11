@@ -16,14 +16,9 @@ namespace AutoHub.API.Controllers;
 [Authorize(Roles = AuthorizationRoles.Administrator)]
 [Route("api/Users/{userId}/Bids")]
 [Produces("application/json")]
-public class UserBidController : Controller
+public class UserBidController(IBidService bidService) : ControllerBase
 {
-    private readonly IBidService _bidService;
-
-    public UserBidController(IBidService bidService)
-    {
-        _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
-    }
+    private readonly IBidService _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
 
     /// <summary>
     /// Returns all bids created by user.

@@ -19,30 +19,22 @@ using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Services;
 
-public class UserService : IUserService
+public class UserService(
+    AutoHubContext context,
+    IMapper mapper,
+    IAuthenticationService authService,
+    IEmailService emailService,
+    UserManager<ApplicationUser> userManager,
+    SignInManager<ApplicationUser> signManager)
+    : IUserService
 {
-    private readonly IAuthenticationService _authService;
-    private readonly IEmailService _emailService;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signManager;
-    private readonly AutoHubContext _context;
-    private readonly IMapper _mapper;
-
-    public UserService(AutoHubContext context, IMapper mapper, IAuthenticationService authService, IEmailService emailService,
-        UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signManager)
-    {
-        _context = context;
-        _mapper = mapper;
-        _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-        _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
-        _userManager = userManager;
-        _signManager = signManager;
-    }
+    private readonly IAuthenticationService _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+    private readonly IEmailService _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
 
     public async Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
         var limit = paginationParameters.Limit ?? DefaultPaginationValues.DefaultLimit;
-        var query = _context.Users.OrderBy(x => x.Id).AsQueryable();
+        var query = context.Users.OrderBy(x => x.Id).AsQueryable();
         List<ApplicationUser> users;
 
         if (paginationParameters.After is not null && paginationParameters.Before is null)
@@ -60,11 +52,11 @@ public class UserService : IUserService
             users = await query.Take(limit).ToListAsync();
         }
 
-        var mappedUsers = _mapper.Map<IEnumerable<UserResponseDTO>>(users).ToList();
+        var mappedUsers = mapper.Map<IEnumerable<UserResponseDTO>>(users).ToList();
 
         foreach (var dto in mappedUsers)
         {
-            dto.UserRoles = await _userManager.GetRolesAsync(users.Single(x => x.Id == dto.UserId));
+            dto.UserRoles = await userManager.GetRolesAsync(users.Single(x => x.Id == dto.UserId));
         }
 
         return mappedUsers;
@@ -72,34 +64,34 @@ public class UserService : IUserService
 
     public async Task<UserResponseDTO> GetById(int userId)
     {
-        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
-        var mappedUser = _mapper.Map<UserResponseDTO>(user);
-        mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
+        var mappedUser = mapper.Map<UserResponseDTO>(user);
+        mappedUser.UserRoles = await userManager.GetRolesAsync(user);
 
         return mappedUser;
     }
 
     public async Task<UserResponseDTO> GetByEmail(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException($"User with E-Mail {email} not exist.");
+        var user = await userManager.FindByEmailAsync(email) ?? throw new NotFoundException($"User with E-Mail {email} not exist.");
 
-        var mappedUser = _mapper.Map<UserResponseDTO>(user);
-        mappedUser.UserRoles = await _userManager.GetRolesAsync(user);
+        var mappedUser = mapper.Map<UserResponseDTO>(user);
+        mappedUser.UserRoles = await userManager.GetRolesAsync(user);
 
         return mappedUser;
     }
 
     public async Task<UserLoginResponseDTO> Login(UserLoginRequestDTO userModel)
     {
-        var user = await _userManager.FindByNameAsync(userModel.Username) ?? throw new NotFoundException($"User with username {userModel.Username} not found.");
+        var user = await userManager.FindByNameAsync(userModel.Username) ?? throw new NotFoundException($"User with username {userModel.Username} not found.");
 
         if (user.EmailConfirmed.Equals(false))
         {
             throw new LoginFailedException("Please confirm registration via link in your email.");
         }
         
-        var signInResult = await _signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
+        var signInResult = await signManager.PasswordSignInAsync(userModel.Username, userModel.Password, userModel.RememberMe, false);
 
         if (signInResult.Succeeded.Equals(false))
         {
@@ -119,31 +111,31 @@ public class UserService : IUserService
 
     public async Task Register(UserRegisterRequestDTO registerUserDTO)
     {
-        if (await _userManager.FindByEmailAsync(registerUserDTO.Email) is not null)
+        if (await userManager.FindByEmailAsync(registerUserDTO.Email) is not null)
         {
             throw new RegistrationFailedException($"User with E-Mail ({registerUserDTO.Email}) already exists.");
         }
 
-        if (await _userManager.FindByNameAsync(registerUserDTO.Username) is not null)
+        if (await userManager.FindByNameAsync(registerUserDTO.Username) is not null)
         {
             throw new RegistrationFailedException($"User with username ({registerUserDTO.Username}) already exists.");
         }
 
-        var newUser = _mapper.Map<ApplicationUser>(registerUserDTO);
+        var newUser = mapper.Map<ApplicationUser>(registerUserDTO);
 
         newUser.RegistrationTime = DateTime.UtcNow;
         newUser.SecurityStamp = Guid.NewGuid().ToString();
 
         try
         {
-            var result = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
+            var result = await userManager.CreateAsync(newUser, registerUserDTO.Password);
 
             if (result.Succeeded.Equals(true))
             {
-                var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                var confirmationCode = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
                 confirmationCode = Base64Helper.Encode(confirmationCode);
 
-                await _userManager.ConfirmEmailAsync(newUser, Base64Helper.Decode(confirmationCode));
+                await userManager.ConfirmEmailAsync(newUser, Base64Helper.Decode(confirmationCode));
 
                 await _emailService.SendEmail(new SendMailRequest
                 {
@@ -154,8 +146,8 @@ public class UserService : IUserService
                     $"<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">{confirmationCode}</a>."
                 });
 
-                await _userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
-                await _signManager.SignInAsync(newUser, isPersistent: false);
+                await userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
+                await signManager.SignInAsync(newUser, isPersistent: false);
             }
             else
             {
@@ -164,14 +156,14 @@ public class UserService : IUserService
         }
         catch (Exception)
         {
-            await _userManager.DeleteAsync(newUser);
+            await userManager.DeleteAsync(newUser);
             throw;
         }
     }
 
     public async Task Update(int userId, UserUpdateRequestDTO updateUserDTO)
     {
-        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
         user.FirstName = updateUserDTO.FirstName;
         user.LastName = updateUserDTO.LastName;
@@ -179,8 +171,8 @@ public class UserService : IUserService
         user.Email = updateUserDTO.Email;
         user.PhoneNumber = updateUserDTO.PhoneNumber;
 
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
+        context.Users.Update(user);
+        await context.SaveChangesAsync();
     }
 
     public async Task AddToRole(int userId, int roleId)
@@ -190,17 +182,17 @@ public class UserService : IUserService
             throw new EntityValidationException("Incorrect user role ID");
         }
 
-        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
-        var userRoles = await _userManager.GetRolesAsync(user);
+        var userRoles = await userManager.GetRolesAsync(user);
 
         if (userRoles.Contains(Enum.GetName(typeof(UserRoleEnum), roleId)))
         {
             throw new DuplicateException($"User already have {(UserRoleEnum)roleId} role.");
         }
 
-        await _userManager.AddToRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
-        await _context.SaveChangesAsync();
+        await userManager.AddToRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
+        await context.SaveChangesAsync();
     }
 
     public async Task RemoveFromRole(int userId, int roleId)
@@ -210,26 +202,26 @@ public class UserService : IUserService
             throw new EntityValidationException("Incorrect user role ID");
         }
 
-        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
-        var userRoles = await _userManager.GetRolesAsync(user);
+        var userRoles = await userManager.GetRolesAsync(user);
 
         if (userRoles.Contains(Enum.GetName(typeof(UserRoleEnum), roleId)).Equals(false))
         {
             throw new NotFoundException($"User don`t have {(UserRoleEnum)roleId} role.");
         }
 
-        await _userManager.RemoveFromRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
-        await _context.SaveChangesAsync();
+        await userManager.RemoveFromRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
+        await context.SaveChangesAsync();
     }
 
     public async Task Delete(int userId)
     {
-        var user = await _context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
+        var user = await context.Users.FindAsync(userId) ?? throw new NotFoundException($"User with ID {userId} not exist.");
 
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
+        context.Users.Remove(user);
+        await context.SaveChangesAsync();
     }
 
-    public async Task Logout() => await _signManager.SignOutAsync();
+    public async Task Logout() => await signManager.SignOutAsync();
 }

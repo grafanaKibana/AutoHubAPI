@@ -19,16 +19,9 @@ namespace AutoHub.API.Controllers;
 [Authorize]
 [Route("api/[controller]s")]
 [Produces("application/json")]
-public class CarColorController : Controller
+public class CarColorController(ICarColorService carColorService, IMapper mapper) : ControllerBase
 {
-    private readonly ICarColorService _carColorService;
-    private readonly IMapper _mapper;
-
-    public CarColorController(ICarColorService carColorService, IMapper mapper)
-    {
-        _carColorService = carColorService ?? throw new ArgumentNullException(nameof(carColorService));
-        _mapper = mapper;
-    }
+    private readonly ICarColorService _carColorService = carColorService ?? throw new ArgumentNullException(nameof(carColorService));
 
     /// <summary>
     /// Get all car colors.
@@ -69,7 +62,7 @@ public class CarColorController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateCarColor([FromBody] CarColorCreateRequest model)
     {
-        var mappedCarColor = _mapper.Map<CarColorCreateRequestDTO>(model);
+        var mappedCarColor = mapper.Map<CarColorCreateRequestDTO>(model);
         await _carColorService.Create(mappedCarColor);
 
         return StatusCode((int)HttpStatusCode.Created);
@@ -96,7 +89,7 @@ public class CarColorController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequest model)
     {
-        var mappedCarColor = _mapper.Map<CarColorUpdateRequestDTO>(model);
+        var mappedCarColor = mapper.Map<CarColorUpdateRequestDTO>(model);
         await _carColorService.Update(carColorId, mappedCarColor);
 
         return NoContent();

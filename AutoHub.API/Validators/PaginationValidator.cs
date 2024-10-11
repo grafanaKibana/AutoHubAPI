@@ -11,7 +11,7 @@ public class PaginationValidator : AbstractValidator<PaginationParameters>
     public PaginationValidator()
     {
         RuleFor(p => p)
-            .Must(p => p.After.IsNullOrEmpty() || p.Before.IsNullOrEmpty())
+            .Must(p => string.IsNullOrEmpty(p.After) || string.IsNullOrEmpty(p.Before))
             .WithMessage(p => $"Only '{nameof(p.After)}' OR '{nameof(p.Before)}' can be provided, but not both.")
             .WithName(nameof(PaginationParameters));
 

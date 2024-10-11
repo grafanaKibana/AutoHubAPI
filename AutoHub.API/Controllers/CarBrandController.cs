@@ -19,16 +19,9 @@ namespace AutoHub.API.Controllers;
 [Authorize]
 [Route("api/[controller]s")]
 [Produces("application/json")]
-public class CarBrandController : Controller
+public class CarBrandController(ICarBrandService carBrandService, IMapper mapper) : ControllerBase
 {
-    private readonly ICarBrandService _carBrandService;
-    private readonly IMapper _mapper;
-
-    public CarBrandController(ICarBrandService carBrandService, IMapper mapper)
-    {
-        _carBrandService = carBrandService ?? throw new ArgumentNullException(nameof(carBrandService));
-        _mapper = mapper;
-    }
+    private readonly ICarBrandService _carBrandService = carBrandService ?? throw new ArgumentNullException(nameof(carBrandService));
 
     /// <summary>
     /// Get all car brands.
@@ -68,7 +61,7 @@ public class CarBrandController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateCarBrand([FromBody] CarBrandCreateRequest model)
     {
-        var mappedCarBrand = _mapper.Map<CarBrandCreateRequestDTO>(model);
+        var mappedCarBrand = mapper.Map<CarBrandCreateRequestDTO>(model);
         await _carBrandService.Create(mappedCarBrand);
 
         return StatusCode((int)HttpStatusCode.Created);
@@ -95,7 +88,7 @@ public class CarBrandController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequest model)
     {
-        var mappedCarBrand = _mapper.Map<CarBrandUpdateRequestDTO>(model);
+        var mappedCarBrand = mapper.Map<CarBrandUpdateRequestDTO>(model);
         await _carBrandService.Update(carBrandId, mappedCarBrand);
 
         return NoContent();

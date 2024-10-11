@@ -15,16 +15,11 @@ using Crypto = BCrypt.Net.BCrypt;
 
 namespace AutoHub.BusinessLogic.Services;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService(IOptions<JwtConfiguration> jwtOptions, RoleManager<ApplicationRole> roleManager)
+    : IAuthenticationService
 {
-    private readonly JwtConfiguration _jwtOptions;
-    private readonly IList<ApplicationRole> _roles;
-
-    public AuthenticationService(IOptions<JwtConfiguration> jwtOptions, RoleManager<ApplicationRole> roleManager)
-    {
-        _jwtOptions = jwtOptions.Value;
-        _roles = roleManager.Roles.ToList();
-    }
+    private readonly JwtConfiguration _jwtOptions = jwtOptions.Value;
+    private readonly IList<ApplicationRole> _roles = roleManager.Roles.ToList();
 
     public Task<string> GenerateWebTokenForUser(ApplicationUser user)
     {
@@ -32,11 +27,11 @@ public class AuthenticationService : IAuthenticationService
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key)); 
         var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                new Claim(JwtRegisteredClaimNames.NameId, user.UserName ?? throw new ArgumentNullException(user.UserName)),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? throw new ArgumentNullException(user.Email))
             };
 
-        claims.AddRange(_roles.Select(r => new Claim(ClaimTypes.Role, r.Name)));
+        claims.AddRange(_roles.Select(role => new Claim(ClaimTypes.Role, role.Name ?? throw new ArgumentNullException(user.Email))));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

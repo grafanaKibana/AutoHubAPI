@@ -19,16 +19,9 @@ namespace AutoHub.API.Controllers;
 [Authorize]
 [Route("api/[controller]s")]
 [Produces("application/json")]
-public class LotController : Controller
+public class LotController(ILotService lotService, IMapper mapper) : ControllerBase
 {
-    private readonly ILotService _lotService;
-    private readonly IMapper _mapper;
-
-    public LotController(ILotService lotService, IMapper mapper)
-    {
-        _lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
-        _mapper = mapper;
-    }
+    private readonly ILotService _lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
 
     /// <summary>
     /// Get all lots.
@@ -108,7 +101,7 @@ public class LotController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateLot([FromBody] LotCreateRequest model)
     {
-        var mappedLot = _mapper.Map<LotCreateRequestDTO>(model);
+        var mappedLot = mapper.Map<LotCreateRequestDTO>(model);
         await _lotService.Create(mappedLot);
 
         return StatusCode((int)HttpStatusCode.Created);
@@ -136,7 +129,7 @@ public class LotController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateLot(int lotId, [FromBody] LotUpdateRequest model)
     {
-        var mappedLot = _mapper.Map<LotUpdateRequestDTO>(model);
+        var mappedLot = mapper.Map<LotUpdateRequestDTO>(model);
         await _lotService.Update(lotId, mappedLot);
 
         return NoContent();

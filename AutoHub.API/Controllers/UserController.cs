@@ -18,16 +18,9 @@ namespace AutoHub.API.Controllers;
 [Authorize(Roles = AuthorizationRoles.Administrator)]
 [Route("api/[controller]s")]
 [Produces("application/json")]
-public class UserController : Controller
+public class UserController(IUserService userService, IMapper mapper) : ControllerBase
 {
-    private readonly IMapper _mapper;
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService, IMapper mapper)
-    {
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-        _mapper = mapper;
-    }
+    private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
     /// <summary>
     /// Gets all users.
@@ -95,7 +88,7 @@ public class UserController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateUser(int userId, [FromBody] UserUpdateRequest model)
     {
-        var mappedUser = _mapper.Map<UserUpdateRequestDTO>(model);
+        var mappedUser = mapper.Map<UserUpdateRequestDTO>(model);
         await _userService.Update(userId, mappedUser);
 
         return NoContent();
