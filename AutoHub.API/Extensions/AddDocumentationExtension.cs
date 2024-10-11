@@ -50,6 +50,7 @@ public static class AddDocumentationExtension
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
+            c.RoutePrefix = string.Empty;
             c.DefaultModelsExpandDepth(-1);
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "AutoHub.API v1");
         });
@@ -62,7 +63,7 @@ public static class AddDocumentationExtension
         {
             c.SpecUrl("/swagger/v1/swagger.json");
             c.DocumentTitle = "AutoHub.API";
-            c.RoutePrefix = "redoc";
+            c.RoutePrefix = "docs";
             c.ConfigObject = new ConfigObject
             {
                 HideHostname = true,
