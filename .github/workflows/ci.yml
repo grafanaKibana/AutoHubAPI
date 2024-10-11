@@ -64,5 +64,5 @@ jobs:
         with:
           app-name: 'AutoHubAPI'
           slot-name: 'Production'
-          package: ./publish
+          package: .
           
