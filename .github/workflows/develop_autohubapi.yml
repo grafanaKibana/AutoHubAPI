@@ -17,9 +17,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: AutoHubAPI/setup-dotnet@v4
         with:
-          global-json-file: csharp/global.json
+          dotnet-version: 8.x
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
