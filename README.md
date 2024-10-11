@@ -6,10 +6,9 @@ The project is being developed on the basis of a monolithic four-layer architect
 
 ## Framework & Libs that was used:
 
-  - NET 6.0 
-  - ASP.NET Core 6
-  - Entity Framework Core 6
-  - C# 10
+  - NET 8.0 + C#
+  - ASP.NET Core 8
+  - Entity Framework Core 8
   - Identity
   - Quartz
   - AutoMapper
