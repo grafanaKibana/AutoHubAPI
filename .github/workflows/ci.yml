@@ -11,6 +11,7 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: windows-latest
 
     steps:
@@ -54,13 +55,15 @@ jobs:
 
 
   deploy:
+    name: Deploy to Azure
     runs-on: windows-latest
-    needs: build
+    needs: test
+
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write
 
     steps:
       - name: Download artifact from build job
