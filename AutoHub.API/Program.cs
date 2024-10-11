@@ -49,12 +49,12 @@ if (builder.Environment.IsDevelopment())
     }
     
     app.UseDeveloperExceptionPage();
+    app.UseHttpsRedirection();
 }
 
 app.UseSwaggerDocumentation();
 app.UseRedocDocumentation();
 app.UseMiddleware<ApplicationExceptionMiddleware>();
-app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

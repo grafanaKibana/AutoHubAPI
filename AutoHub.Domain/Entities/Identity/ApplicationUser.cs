@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoHub.Domain.Entities.Identity;
 
-public sealed class ApplicationUser : IdentityUser<int>
+public class ApplicationUser : IdentityUser<int>
 {
     [PersonalData, Required]
     public string FirstName { get; set; }
@@ -15,9 +15,9 @@ public sealed class ApplicationUser : IdentityUser<int>
 
     public DateTime RegistrationTime { get; set; }
 
-    public IEnumerable<Bid> UserBids { get; set; } = new List<Bid>();
+    public virtual IEnumerable<Bid> UserBids { get; set; } = new List<Bid>();
 
-    public IEnumerable<Lot> UserLots { get; set; } = new List<Lot>();
+    public virtual IEnumerable<Lot> UserLots { get; set; } = new List<Lot>();
 
-    public IEnumerable<Lot> VictoryLots { get; set; } = new List<Lot>();
+    public virtual IEnumerable<Lot> VictoryLots { get; set; } = new List<Lot>();
 }
