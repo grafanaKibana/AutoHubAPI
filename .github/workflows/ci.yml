@@ -22,7 +22,7 @@ jobs:
       - name: Read SDK version from global.json
         id: read-sdk-version
         run: |
-          SDK_VERSION=$(jq -r '.sdk.version' global.json | cut -d. -f1).X
+          $SDK_VERSION = (jq -r '.sdk.version' global.json | cut -d. -f1) + ".X"
           echo "sdk_version=$SDK_VERSION" >> $GITHUB_ENV
 
       - name: Set up .NET Core
