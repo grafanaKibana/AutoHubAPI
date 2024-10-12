@@ -10,6 +10,7 @@ public class RedirectMiddleware(RequestDelegate next)
         if (httpContext.Request.Path == "/")
         {
             httpContext.Response.Redirect("/index.html");
+            return;
         }
 
         await next(httpContext);
