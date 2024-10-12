@@ -1,5 +1,4 @@
-﻿using System.IO;
-using AutoHub.BusinessLogic.Configuration;
+﻿using AutoHub.BusinessLogic.Configuration;
 using AutoHub.BusinessLogic.Interfaces;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;

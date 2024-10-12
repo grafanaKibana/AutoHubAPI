@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using AutoHub.API.Models.UserModels;
+﻿using AutoHub.API.Models.UserModels;
 using AutoHub.API.Validators.ModelValidators;
 using FluentValidation.TestHelper;
 using Xunit;
