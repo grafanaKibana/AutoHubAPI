@@ -16,7 +16,7 @@ env:
   AZURE_WEBAPP_NAME: 'AutoHubApp'    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8.x' # set this to the dot net version to use
-  SLOT_NAME: 'Production'
+  SLOT_NAME: 'Production' # set this to the slot name to use
 
 jobs:
   build:
