@@ -16,7 +16,6 @@ env:
   AZURE_WEBAPP_NAME: 'AutoHubApp'    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8.x' # set this to the dot net version to use
-  SLOT_NAME: 'Production' # set this to the slot name to use
 
 jobs:
   build:
@@ -71,7 +70,7 @@ jobs:
     needs: test
 
     environment:
-      name: ${{ env.SLOT_NAME }}
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write
@@ -94,6 +93,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: ${{ env.SLOT_NAME }}
+          slot-name: 'Production'
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/.publish
           
