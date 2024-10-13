@@ -25,16 +25,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
+      - name: Set up .NET Core SDK ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build with dotnet
+      - name: Restore packages
+        run: dotnet restore
+
+      - name: Build application
         run: dotnet build --configuration Release
 
       - name: Publish artifact
-        run: dotnet publish -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: dotnet publish -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --self-contained --no-build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
