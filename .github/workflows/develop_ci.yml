@@ -37,7 +37,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Publish artifact
-        run: dotnet publish -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --self-contained
+        run: dotnet publish -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --self-contained true
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
