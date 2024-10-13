@@ -6,7 +6,7 @@ name: Build and deploy
 on:
   push:
     branches:
-      - master
+      - develop
   pull_request:
     branches:
       - '*'
@@ -63,36 +63,3 @@ jobs:
 
       - name: Run tests with dotnet
         run: dotnet test --no-build --no-restore --configuration Release
-
-  deploy:
-    name: Deploy to Azure
-    runs-on: windows-latest
-    needs: test
-
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.AZURE_WEBAPP_NAME }}
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5BD849A4FE6E4C0DB7AD0EB5E846624D }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_178D5841557B44B6846E2B87FE48DD59 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_028CAC2C085347419D18855B1FF0AC4C }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: 'Production'
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          
