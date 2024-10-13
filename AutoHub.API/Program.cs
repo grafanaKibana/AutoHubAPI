@@ -55,6 +55,7 @@ if (builder.Environment.IsDevelopment())
 app.UseSwaggerDocumentation();
 app.UseRedocDocumentation();
 app.UseMiddleware<ApplicationExceptionMiddleware>();
+app.UseMiddleware<RedirectMiddleware>();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

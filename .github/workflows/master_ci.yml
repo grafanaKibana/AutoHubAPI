@@ -1,13 +1,21 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy
+name: Build, test and deploy
 
 on:
   push:
     branches:
-      - master
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
   workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: 'AutoHubApp'    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './publish'      # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '8.x' # set this to the dot net version to use
 
 jobs:
   build:
@@ -20,19 +28,19 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.x"
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
       - name: Publish artifact
-        run: dotnet publish -c Release -o ./publish
+        run: dotnet publish -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: .autohub-artifacts
-          path: ./publish
+          name: ${{ env.AZURE_WEBAPP_NAME }}
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   test:
     name: Test
@@ -45,7 +53,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.x"
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -55,7 +63,6 @@ jobs:
 
       - name: Run tests with dotnet
         run: dotnet test --no-build --no-restore --configuration Release
-
 
   deploy:
     name: Deploy to Azure
@@ -72,20 +79,20 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .autohub-artifacts
+          name: ${{ env.AZURE_WEBAPP_NAME }}
       
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C858A91760294A7E968810EBCA7F4CFD }}	
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E46CDD63D0554EE68973979DDB7E5095 }}	
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_96C8763478B642DF952093578964EE66 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_D8F08FF4580C4308A9B851754C2EB53A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_20D1A7B5198E45CB92C2D3AC6AEF683E }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6503C5D792634D21975C28A9B4896C84 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'AutoHubApp'
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'Production'
           package: .
           

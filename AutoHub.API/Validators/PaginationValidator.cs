@@ -2,7 +2,6 @@
 using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using FluentValidation;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AutoHub.API.Validators;
 
