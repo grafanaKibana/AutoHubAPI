@@ -6,10 +6,10 @@ name: Build and test
 on:
   push:
     branches:
-      - develop
+      - '!master'
   pull_request:
     branches:
-      - '*'
+      - 'develop'
   workflow_dispatch:
 
 env:
