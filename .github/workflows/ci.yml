@@ -13,8 +13,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'AutoHubApp'    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_NAME: '.auto-hub-app'    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './.publish'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8.x' # set this to the dot net version to use
 
 jobs:
@@ -34,13 +34,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Publish artifact
-        run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/.publish'
+        run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.AZURE_WEBAPP_NAME }}
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/.publish
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   test:
     name: Test
