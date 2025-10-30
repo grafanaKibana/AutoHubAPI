@@ -1,9 +1,9 @@
-using AutoHub.API.Models;
-using AutoHub.Domain.Exceptions;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.Domain.Exceptions;
+using Microsoft.AspNetCore.Http;
 
 namespace AutoHub.API.Middlewares;
 
@@ -48,16 +48,15 @@ public class ApplicationExceptionMiddleware(RequestDelegate next)
     private static Task HandleExceptionAsync(HttpContext context, HttpStatusCode httpStatusCode, Exception ex)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)httpStatusCode;
+        context.Response.StatusCode = (int) httpStatusCode;
 
-        return context.Response.WriteAsync(new ErrorDetails
-        {
-            StatusCode = (int)httpStatusCode,
-            Instance = context.Request.Path,
-            Type = ex.GetType().ToString(),
-            Message = ex.Message,
-            Details = ex.GetBaseException().Message,
-            StackTrace = ex.StackTrace,
-        }.ToString());
+        return context.Response.WriteAsync(
+            new ErrorDetails(
+                StatusCode: (int) httpStatusCode,
+                Instance: context.Request.Path,
+                Type: ex.GetType().ToString(),
+                Message: ex.Message,
+                Details: ex.GetBaseException().Message,
+                StackTrace: ex.StackTrace).ToString());
     }
 }

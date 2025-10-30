@@ -1,5 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.BusinessLogic.Common;
 using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.DataAccess;
 using AutoHub.Domain.Constants;
 using AutoHub.Domain.Entities.Identity;
@@ -8,12 +14,6 @@ using AutoHub.Domain.Exceptions;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoHub.BusinessLogic.Common;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -26,8 +26,8 @@ public class UserService(
     SignInManager<ApplicationUser> signManager)
     : IUserService
 {
-    private readonly IAuthenticationService _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-    private readonly IEmailService _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+    private readonly IAuthenticationService authService = authService ?? throw new ArgumentNullException(nameof(authService));
+    private readonly IEmailService emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
 
     public async Task<IEnumerable<UserResponseDTO>> GetAll(PaginationParameters paginationParameters)
     {
@@ -101,7 +101,7 @@ public class UserService(
             FullName = user.FullName,
             UserName = user.UserName,
             Email = user.Email,
-            Token = await _authService.GenerateWebTokenForUser(user)
+            Token = await authService.GenerateWebTokenForUser(user)
         };
 
         return mappedUser;
@@ -135,15 +135,12 @@ public class UserService(
 
                 await userManager.ConfirmEmailAsync(newUser, Base64Helper.Decode(confirmationCode));
 
-                await _emailService.SendEmail(new SendMailRequest
-                {
-                    ToEmail = registerUserDTO.Email,
-                    Subject = "Confirm your account.",
-                    Body = $"<div>Hi, {newUser.FullName}!</div>" +
-                    $"Confirm registration by clicking the folowing link: " +
-                    $"<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">{confirmationCode}</a>."
-                });
-
+                var emailBody = $"""
+                                <div>Hi, {newUser.FullName}!</div>
+                                confirm registration by clicking the folowing link:
+                                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">{confirmationCode}</a>.
+                                """;
+                await emailService.SendEmail(new SendMailRequest(registerUserDTO.Email, "Confirm your registration.", emailBody));
                 await userManager.AddToRoleAsync(newUser, AuthorizationRoles.Customer);
                 await signManager.SignInAsync(newUser, isPersistent: false);
             }
@@ -189,7 +186,7 @@ public class UserService(
             throw new DuplicateException($"User already have {(UserRoleEnum)roleId} role.");
         }
 
-        await userManager.AddToRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
+        await userManager.AddToRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId)!);
         await context.SaveChangesAsync();
     }
 
@@ -209,7 +206,7 @@ public class UserService(
             throw new NotFoundException($"User don`t have {(UserRoleEnum)roleId} role.");
         }
 
-        await userManager.RemoveFromRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId));
+        await userManager.RemoveFromRoleAsync(user, Enum.GetName(typeof(UserRoleEnum), roleId)!);
         await context.SaveChangesAsync();
     }
 

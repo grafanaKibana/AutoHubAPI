@@ -7,15 +7,15 @@ namespace AutoHub.Tests.ValidatorsTests;
 
 public class UserValidatorTests
 {
-    private readonly UserRegisterRequestModelValidator _registerValidator;
-    private readonly UserLoginRequestModelValidator _loginValidator;
-    private readonly UserUpdateRequestModelValidator _updateValidator;
+    private readonly UserRegisterRequestModelValidator registerValidator;
+    private readonly UserLoginRequestModelValidator loginValidator;
+    private readonly UserUpdateRequestModelValidator updateValidator;
 
     public UserValidatorTests()
     {
-        _registerValidator = new UserRegisterRequestModelValidator();
-        _loginValidator = new UserLoginRequestModelValidator();
-        _updateValidator = new UserUpdateRequestModelValidator();
+        registerValidator = new UserRegisterRequestModelValidator();
+        loginValidator = new UserLoginRequestModelValidator();
+        updateValidator = new UserUpdateRequestModelValidator();
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class UserValidatorTests
         };
 
         //Act
-        var result = _registerValidator.TestValidate(model);
+        var result = registerValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Email);
@@ -56,7 +56,7 @@ public class UserValidatorTests
         };
 
         //Act
-        var result = _registerValidator.TestValidate(model);
+        var result = registerValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.Email);
@@ -77,7 +77,7 @@ public class UserValidatorTests
         };
 
         //Act
-        var result = _loginValidator.TestValidate(model);
+        var result = loginValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Username);
@@ -95,7 +95,7 @@ public class UserValidatorTests
         };
 
         //Act
-        var result = _loginValidator.TestValidate(model);
+        var result = loginValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.Username);
@@ -115,7 +115,7 @@ public class UserValidatorTests
         };
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Email);
@@ -137,7 +137,7 @@ public class UserValidatorTests
         };
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.Email);

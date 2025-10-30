@@ -1,13 +1,12 @@
-﻿using AutoHub.API.Models.UserModels;
+﻿using System;
+using System.Threading.Tasks;
+using AutoHub.API.Models.UserModels;
 using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace AutoHub.API.Controllers;
 
@@ -17,7 +16,7 @@ namespace AutoHub.API.Controllers;
 [Produces("application/json")]
 public class AuthenticationController(IUserService userService, IMapper mapper) : ControllerBase
 {
-    private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    private readonly IUserService userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
     /// <summary>
     /// Log-in with credentials.
@@ -34,10 +33,10 @@ public class AuthenticationController(IUserService userService, IMapper mapper) 
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> LoginUser([FromBody] UserLoginRequest model)
     {
-        await _userService.Logout();
+        await userService.Logout();
 
         var mappedUser = mapper.Map<UserLoginRequestDTO>(model);
-        var authModel = await _userService.Login(mappedUser);
+        var authModel = await userService.Login(mappedUser);
         var mappedAuthModel = mapper.Map<UserLoginResponse>(authModel);
 
         return Ok(mappedAuthModel);
@@ -57,9 +56,9 @@ public class AuthenticationController(IUserService userService, IMapper mapper) 
     public async Task<IActionResult> RegisterUser([FromBody] UserRegisterRequest model)
     {
         var mappedUser = mapper.Map<UserRegisterRequestDTO>(model);
-        await _userService.Register(mappedUser);
+        await userService.Register(mappedUser);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        return Created();
     }
 
     /// <summary>
@@ -73,7 +72,7 @@ public class AuthenticationController(IUserService userService, IMapper mapper) 
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> LogoutUser()
     {
-        await _userService.Logout();
+        await userService.Logout();
 
         return NoContent();
     }

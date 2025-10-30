@@ -1,24 +1,24 @@
-using AutoHub.API.Models.BidModels;
-using AutoHub.BusinessLogic.Interfaces;
-using AutoHub.Domain.Constants;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoHub.API.Models;
+using AutoHub.API.Models.BidModels;
+using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.BusinessLogic.Models;
+using AutoHub.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.API.Controllers;
 
 [ApiController]
 [Authorize(Roles = AuthorizationRoles.Administrator)]
-[Route("api/Users/{userId}/Bids")]
+[Route("api/Users/{userId:int}/Bids")]
 [Produces("application/json")]
 public class UserBidController(IBidService bidService) : ControllerBase
 {
-    private readonly IBidService _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
+    private readonly IBidService bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
 
     /// <summary>
     /// Returns all bids created by user.
@@ -37,11 +37,11 @@ public class UserBidController(IBidService bidService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetUserBids(int userId, [FromQuery] PaginationParameters paginationParameters)
     {
-        var bids = (await _bidService.GetUserBids(userId, paginationParameters)).ToList();
+        var bids = (await bidService.GetUserBids(userId, paginationParameters)).ToList();
         var result = new BidResponse
         {
             Bids = bids,
-            Paging = bids.Any() ? new PagingInfo(bids.Min(x => x.BidId), bids.Max(x => x.BidId)) : null
+            Paging = bids.Count != 0 ? new PagingInfo(bids.Min(x => x.BidId), bids.Max(x => x.BidId)) : null
         };
 
         return Ok(result);

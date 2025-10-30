@@ -1,9 +1,9 @@
+using System.Text;
 using AutoHub.BusinessLogic.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace AutoHub.API.Extensions;
 
@@ -11,9 +11,10 @@ public static class AddAuthenticationExtension
 {
     public static void AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtConfiguration>(configuration.GetSection("JwtConfiguration"));
+        var jwtSection = configuration.GetSection(nameof(JwtConfiguration));
+        var jwtOptions = jwtSection.Get<JwtConfiguration>();
 
-        var jwtOptions = configuration.GetSection(nameof(JwtConfiguration)).Get<JwtConfiguration>();
+        services.Configure<JwtConfiguration>(jwtSection);
 
         services.AddAuthentication(options =>
             {
