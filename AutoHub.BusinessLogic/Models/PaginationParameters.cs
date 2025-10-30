@@ -6,11 +6,11 @@ public record PaginationParameters
 {
     public PaginationParameters()
     {
-        Limit = DefaultPaginationValues.DefaultLimit;
+        this.Limit = DefaultPaginationValues.DefaultLimit;
     }
     public PaginationParameters(int limit)
     {
-        Limit = limit;
+        this.Limit = limit;
     }
     
     /// <example>100</example>

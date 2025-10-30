@@ -1,17 +1,16 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.API.Models;
 using AutoHub.API.Models.CarColorModels;
 using AutoHub.BusinessLogic.DTOs.CarColorDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.API.Controllers;
 
@@ -21,7 +20,7 @@ namespace AutoHub.API.Controllers;
 [Produces("application/json")]
 public class CarColorController(ICarColorService carColorService, IMapper mapper) : ControllerBase
 {
-    private readonly ICarColorService _carColorService = carColorService ?? throw new ArgumentNullException(nameof(carColorService));
+    private readonly ICarColorService carColorService = carColorService ?? throw new ArgumentNullException(nameof(carColorService));
 
     /// <summary>
     /// Get all car colors.
@@ -35,11 +34,11 @@ public class CarColorController(ICarColorService carColorService, IMapper mapper
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCarColors([FromQuery] PaginationParameters paginationParameters)
     {
-        var carColors = (await _carColorService.GetAll(paginationParameters)).ToList();
+        var carColors = (await carColorService.GetAll(paginationParameters)).ToList();
         var result = new CarColorResponse
         {
             CarColors = carColors,
-            Paging = carColors.Any() ? new PagingInfo(carColors.Min(x => x.CarColorId), carColors.Max(x => x.CarColorId)) : null,
+            Paging = carColors.Count != 0 ? new PagingInfo(carColors.Min(x => x.CarColorId), carColors.Max(x => x.CarColorId)) : null,
         };
         return Ok(result);
     }
@@ -63,9 +62,9 @@ public class CarColorController(ICarColorService carColorService, IMapper mapper
     public async Task<IActionResult> CreateCarColor([FromBody] CarColorCreateRequest model)
     {
         var mappedCarColor = mapper.Map<CarColorCreateRequestDTO>(model);
-        await _carColorService.Create(mappedCarColor);
+        await carColorService.Create(mappedCarColor);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        return Created();
     }
 
     /// <summary>
@@ -79,7 +78,7 @@ public class CarColorController(ICarColorService carColorService, IMapper mapper
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Color not found.</response>
     /// <returns></returns>
-    [HttpPut("{carColorId}")]
+    [HttpPut("{carColorId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -90,7 +89,7 @@ public class CarColorController(ICarColorService carColorService, IMapper mapper
     public async Task<IActionResult> UpdateCarColor(int carColorId, [FromBody] CarColorUpdateRequest model)
     {
         var mappedCarColor = mapper.Map<CarColorUpdateRequestDTO>(model);
-        await _carColorService.Update(carColorId, mappedCarColor);
+        await carColorService.Update(carColorId, mappedCarColor);
 
         return NoContent();
     }
@@ -104,7 +103,7 @@ public class CarColorController(ICarColorService carColorService, IMapper mapper
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Color not found.</response>
     /// <returns></returns>
-    [HttpDelete("{carColorId}")]
+    [HttpDelete("{carColorId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -113,7 +112,7 @@ public class CarColorController(ICarColorService carColorService, IMapper mapper
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteCarColor(int carColorId)
     {
-        await _carColorService.Delete(carColorId);
+        await carColorService.Delete(carColorId);
 
         return NoContent();
     }

@@ -8,25 +8,25 @@ namespace AutoHub.Tests.ValidatorsTests;
 
 public class CarModelValidatorTests
 {
-    private readonly Fixture _fixture;
-    private readonly CarModelCreateRequestModelValidator _createModelValidator;
-    private readonly CarModelUpdateRequestModelValidator _updateModelValidator;
+    private readonly Fixture fixture;
+    private readonly CarModelCreateRequestModelValidator createModelValidator;
+    private readonly CarModelUpdateRequestModelValidator updateModelValidator;
 
     public CarModelValidatorTests()
     {
-        _fixture = new Fixture();
-        _createModelValidator = new CarModelCreateRequestModelValidator();
-        _updateModelValidator = new CarModelUpdateRequestModelValidator();
+        fixture = new Fixture();
+        createModelValidator = new CarModelCreateRequestModelValidator();
+        updateModelValidator = new CarModelUpdateRequestModelValidator();
     }
 
     [Fact]
     public void CreateModelTestValidate_ValidModel_ShouldNotHaveError()
     {
         //Arrange
-        var model = _fixture.Create<CarModelCreateRequest>();
+        var model = fixture.Create<CarModelCreateRequest>();
 
         //Act
-        var result = _createModelValidator.TestValidate(model);
+        var result = createModelValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.CarModelName);
@@ -39,7 +39,7 @@ public class CarModelValidatorTests
         var model = new CarModelCreateRequest { CarModelName = null };
 
         //Act
-        var result = _createModelValidator.TestValidate(model);
+        var result = createModelValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.CarModelName);
@@ -49,10 +49,10 @@ public class CarModelValidatorTests
     public void UpdateModelTestValidate_ValidModel_ShouldNotHaveError()
     {
         //Arrange
-        var model = _fixture.Create<CarModelUpdateRequest>();
+        var model = fixture.Create<CarModelUpdateRequest>();
 
         //Act
-        var result = _updateModelValidator.TestValidate(model);
+        var result = updateModelValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.CarModelName);
@@ -65,7 +65,7 @@ public class CarModelValidatorTests
         var model = new CarModelUpdateRequest { CarModelName = null };
 
         //Act
-        var result = _updateModelValidator.TestValidate(model);
+        var result = updateModelValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.CarModelName);

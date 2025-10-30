@@ -1,17 +1,16 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.API.Models;
 using AutoHub.API.Models.CarModelModels;
 using AutoHub.BusinessLogic.DTOs.CarModelDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.API.Controllers;
 
@@ -21,7 +20,7 @@ namespace AutoHub.API.Controllers;
 [Produces("application/json")]
 public class CarModelController(ICarModelService carModelService, IMapper mapper) : ControllerBase
 {
-    private readonly ICarModelService _carModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));
+    private readonly ICarModelService carModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));
 
     /// <summary>
     /// Get all car models.
@@ -35,11 +34,11 @@ public class CarModelController(ICarModelService carModelService, IMapper mapper
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCarModels([FromQuery] PaginationParameters paginationParameters)
     {
-        var carModels = (await _carModelService.GetAll(paginationParameters)).ToList();
+        var carModels = (await carModelService.GetAll(paginationParameters)).ToList();
         var result = new CarModelResponse
         {
             CarModels = carModels,
-            Paging = carModels.Any() ? new PagingInfo(carModels.Min(x => x.CarModelId), carModels.Max(x => x.CarModelId)) : null,
+            Paging = carModels.Count != 0 ? new PagingInfo(carModels.Min(x => x.CarModelId), carModels.Max(x => x.CarModelId)) : null,
         };
         return Ok(result);
     }
@@ -62,9 +61,9 @@ public class CarModelController(ICarModelService carModelService, IMapper mapper
     public async Task<IActionResult> CreateCarModel([FromBody] CarModelCreateRequest model)
     {
         var mappedCarModel = mapper.Map<CarModelCreateRequestDTO>(model);
-        await _carModelService.Create(mappedCarModel);
+        await carModelService.Create(mappedCarModel);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        return Created();
     }
 
     /// <summary>
@@ -77,7 +76,7 @@ public class CarModelController(ICarModelService carModelService, IMapper mapper
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Model not found.</response>
-    [HttpPut("{carModelId}")]
+    [HttpPut("{carModelId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -88,7 +87,7 @@ public class CarModelController(ICarModelService carModelService, IMapper mapper
     public async Task<IActionResult> UpdateCarModel(int carModelId, [FromBody] CarModelUpdateRequest model)
     {
         var mappedCarModel = mapper.Map<CarModelUpdateRequestDTO>(model);
-        await _carModelService.Update(carModelId, mappedCarModel);
+        await carModelService.Update(carModelId, mappedCarModel);
 
         return NoContent();
     }
@@ -101,7 +100,7 @@ public class CarModelController(ICarModelService carModelService, IMapper mapper
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Model not found.</response>
-    [HttpDelete("{carModelId}")]
+    [HttpDelete("{carModelId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -110,7 +109,7 @@ public class CarModelController(ICarModelService carModelService, IMapper mapper
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteCarModel(int carModelId)
     {
-        await _carModelService.Delete(carModelId);
+        await carModelService.Delete(carModelId);
 
         return NoContent();
     }

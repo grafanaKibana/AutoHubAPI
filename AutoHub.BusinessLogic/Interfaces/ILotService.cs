@@ -1,6 +1,6 @@
-﻿using AutoHub.BusinessLogic.DTOs.LotDTOs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.DTOs.LotDTOs;
 using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Interfaces;

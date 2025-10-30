@@ -34,7 +34,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Publish artifact
-        run: dotnet publish -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: dotnet publish ./AutoHub.API/AutoHub.API.csproj -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -55,11 +55,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
       - name: Restore dependencies
         run: dotnet restore
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
       - name: Run tests with dotnet
         run: dotnet test --no-build --no-restore --configuration Release
@@ -95,4 +95,3 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'Production'
           package: .
-          

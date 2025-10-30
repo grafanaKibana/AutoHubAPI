@@ -1,6 +1,6 @@
+using System;
 using AutoHub.BusinessLogic.DTOs.LotDTOs;
 using AutoHub.BusinessLogic.DTOs.UserDTOs;
-using System;
 
 namespace AutoHub.BusinessLogic.DTOs.BidDTOs;
 

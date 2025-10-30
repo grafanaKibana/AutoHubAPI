@@ -1,6 +1,6 @@
-﻿using FluentValidation;
-using System;
+﻿using System;
 using AutoHub.Domain.Constants;
+using FluentValidation;
 
 namespace AutoHub.API.Validators;
 

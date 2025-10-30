@@ -5,11 +5,6 @@ namespace AutoHub.Domain.Entities;
 
 public class Lot
 {
-    public Lot()
-    {
-        Bids = new List<Bid>();
-    }
-
     public int LotId { get; set; }
 
     public LotStatusEnum LotStatusId { get; set; }
@@ -24,7 +19,7 @@ public class Lot
     public int? WinnerId { get; set; }
     public virtual ApplicationUser Winner { get; set; }
 
-    public virtual IEnumerable<Bid> Bids { get; set; }
+    public virtual IEnumerable<Bid> Bids { get; set; } = new List<Bid>();
 
     public DateTime StartTime { get; set; }
 

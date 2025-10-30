@@ -1,20 +1,20 @@
-using AutoHub.BusinessLogic.DTOs.LotDTOs;
-using AutoHub.BusinessLogic.Interfaces;
-using AutoHub.DataAccess;
-using AutoHub.Domain.Entities;
-using AutoHub.Domain.Enums;
-using AutoHub.Domain.Exceptions;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoHub.BusinessLogic.Common;
+using AutoHub.BusinessLogic.DTOs.LotDTOs;
+using AutoHub.BusinessLogic.Interfaces;
 using AutoHub.BusinessLogic.Models;
+using AutoHub.DataAccess;
 using AutoHub.Domain.Constants;
+using AutoHub.Domain.Entities;
 using AutoHub.Domain.Entities.Identity;
+using AutoHub.Domain.Enums;
+using AutoHub.Domain.Exceptions;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoHub.BusinessLogic.Services;
 
@@ -65,7 +65,11 @@ public class LotService(AutoHubContext context, IMapper mapper, UserManager<Appl
 
     public async Task<IEnumerable<LotResponseDTO>> GetRequiredOfDeterminingWinner()
     {
-        var lotsToDefineWinner = await context.Lots.Where(x => x.EndTime.HasValue && x.EndTime.Value < DateTime.UtcNow && x.Winner == null).ToListAsync();
+        var lotsToDefineWinner = await context.Lots.Where(x =>
+            x.EndTime.HasValue &&
+            x.EndTime.Value < DateTime.UtcNow &&
+            x.LotStatus.LotStatusId == LotStatusEnum.InProgress &&
+            x.Winner == null).ToListAsync();
         var mappedLots = mapper.Map<IEnumerable<LotResponseDTO>>(lotsToDefineWinner);
         return mappedLots;
     }

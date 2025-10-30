@@ -1,9 +1,9 @@
-﻿using AutoHub.Domain.Entities;
+﻿using System;
+using System.Linq;
+using AutoHub.Domain.Entities;
 using AutoHub.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Linq;
 
 namespace AutoHub.DataAccess.EntitySettings;
 
