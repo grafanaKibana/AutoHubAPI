@@ -7,23 +7,24 @@ namespace AutoHub.API.Extensions;
 
 public static class AddQuartzExtension
 {
-    public static void AddQuartz(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddQuartz(options =>
+        public void AddQuartz()
         {
-            options.UseMicrosoftDependencyInjectionJobFactory();
+            services.AddQuartz(options =>
+            {
+                var jobKey = new JobKey(nameof(LotWinnerDeterminantJob));
 
-            var jobKey = new JobKey(nameof(LotWinnerDeterminantJob));
-
-            options.AddJob<LotWinnerDeterminantJob>(opts => opts.WithIdentity(jobKey));
-            options.AddTrigger(opts => opts
-                .ForJob(jobKey)
-                .WithIdentity($"{jobKey}Trigger")
-                .WithSimpleSchedule(x => x
-                    .WithInterval(TimeSpan.FromMinutes(1))
-                    .RepeatForever()));
-        });
+                options.AddJob<LotWinnerDeterminantJob>(opts => opts.WithIdentity(jobKey));
+                options.AddTrigger(opts => opts
+                    .ForJob(jobKey)
+                    .WithIdentity($"{jobKey}Trigger")
+                    .WithSimpleSchedule(x => x
+                        .WithInterval(TimeSpan.FromMinutes(1))
+                        .RepeatForever()));
+            });
         
-        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+            services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+        }
     }
 }

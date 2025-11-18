@@ -17,7 +17,6 @@ namespace AutoHub.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/[controller]s")]
-[Produces("application/json")]
 public class CarColorController(ICarColorService carColorService, IMapper mapper) : ControllerBase
 {
     private readonly ICarColorService carColorService = carColorService ?? throw new ArgumentNullException(nameof(carColorService));

@@ -17,7 +17,6 @@ namespace AutoHub.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/Lots/{lotId:int}/Bids")]
-[Produces("application/json")]
 public class LotBidController(IBidService bidService, IMapper mapper) : ControllerBase
 {
     private readonly IBidService bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));

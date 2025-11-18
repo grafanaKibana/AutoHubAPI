@@ -15,7 +15,6 @@ namespace AutoHub.API.Controllers;
 [ApiController]
 [Authorize(Roles = AuthorizationRoles.Administrator)]
 [Route("api/Users/{userId:int}/Bids")]
-[Produces("application/json")]
 public class UserBidController(IBidService bidService) : ControllerBase
 {
     private readonly IBidService bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));

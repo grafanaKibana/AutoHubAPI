@@ -17,7 +17,6 @@ namespace AutoHub.API.Controllers;
 [ApiController]
 [Authorize(Roles = AuthorizationRoles.Administrator)]
 [Route("api/[controller]s")]
-[Produces("application/json")]
 public class UserController(IUserService userService, IMapper mapper) : ControllerBase
 {
     private readonly IUserService userService = userService ?? throw new ArgumentNullException(nameof(userService));

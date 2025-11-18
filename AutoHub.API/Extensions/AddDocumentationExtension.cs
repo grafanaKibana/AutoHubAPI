@@ -15,63 +15,69 @@ public static class AddDocumentationExtension
 {
     private static string SwaggerPath => "/swagger/v1/swagger.json";
 
-    public static void AddSwagger(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddSwaggerGen(c =>
+        public void AddSwagger()
         {
-            c.SwaggerDoc("v1", new OpenApiInfo
+            services.AddSwaggerGen(c =>
             {
-                Title = "AutoHub.API",
-                Version = "v1",
-                Contact = new OpenApiContact
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Name = "Nikita Reshetnik",
-                    Email = "reshetnik.nikita@gmail.com"
-                }
-            });
+                    Title = "AutoHub.API",
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Nikita Reshetnik",
+                        Email = "reshetnik.nikita@gmail.com"
+                    }
+                });
 
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                In = ParameterLocation.Header,
-                Description = "Please insert JWT token into field (without \"Bearer\")",
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = JwtBearerDefaults.AuthenticationScheme,
-                BearerFormat = "JWT",
-            });
-            
-            c.OperationFilter<SecurityOperationRequirementsFilter>();
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT token into field (without \"Bearer\")",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT",
+                });
 
-            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-        });
+                c.OperationFilter<SecurityOperationRequirementsFilter>();
+
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
+        }
     }
 
-    public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
+    extension(IApplicationBuilder app)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
+        public IApplicationBuilder UseSwaggerDocumentation()
         {
-            c.RoutePrefix = string.Empty;
-            c.DefaultModelsExpandDepth(-1);
-            c.SwaggerEndpoint(SwaggerPath, "AutoHub.API v1");
-        });
-        return app;
-    }
-
-    public static IApplicationBuilder UseRedocDocumentation(this IApplicationBuilder app)
-    {
-        app.UseReDoc(c =>
-        {
-            c.SpecUrl(SwaggerPath);
-            c.DocumentTitle = "AutoHub.API";
-            c.RoutePrefix = "docs";
-            c.ConfigObject = new ConfigObject
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                HideHostname = true,
-                HideDownloadButton = true
-            };
-        });
-        return app;
+                c.RoutePrefix = string.Empty;
+                c.DefaultModelsExpandDepth(-1);
+                c.SwaggerEndpoint(SwaggerPath, "AutoHub.API v1");
+            });
+            return app;
+        }
+
+        public IApplicationBuilder UseRedocDocumentation()
+        {
+            app.UseReDoc(c =>
+            {
+                c.SpecUrl(SwaggerPath);
+                c.DocumentTitle = "AutoHub.API";
+                c.RoutePrefix = "docs";
+                c.ConfigObject = new ConfigObject
+                {
+                    HideHostname = true,
+                    HideDownloadButton = true
+                };
+            });
+            return app;
+        }
     }
 }

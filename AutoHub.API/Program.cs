@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using AutoHub.API.Conventions;
 using AutoHub.API.Extensions;
 using AutoHub.API.Middlewares;
 using AutoHub.BusinessLogic.Configuration;
@@ -17,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AutoHubContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlServerConnectionString")));
 builder.Configuration.AddEnvironmentVariables().AddUserSecrets<Program>();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Conventions.Add(new ControllerModelConvention()));
 builder.Services.AddServices();
 builder.Services.AddFluentValidation();
 builder.Services.AddAutoMapper(typeof(Program));
@@ -26,7 +28,7 @@ builder.Services.AddSwagger();
 builder.Services.AddIdentity();
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddQuartz();
-builder.Services.Configure<MailConfiguration>(builder.Configuration.GetSection("MailConfiguration"));
+builder.Services.Configure<MailConfiguration>(builder.Configuration.GetSection(nameof(MailConfiguration)));
 
 var app = builder.Build();
 
@@ -62,4 +64,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 await app.RunAsync();
-

@@ -6,10 +6,13 @@ namespace AutoHub.API.Extensions;
 
 public static class AddFluentValidationExtension
 {
-    public static void AddFluentValidation(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddFluentValidationAutoValidation();
-        services.AddFluentValidationClientsideAdapters();
-        services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+        public void AddFluentValidation()
+        {
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
+            services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+        }
     }
 }

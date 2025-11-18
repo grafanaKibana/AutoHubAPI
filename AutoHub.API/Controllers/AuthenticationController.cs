@@ -13,7 +13,6 @@ namespace AutoHub.API.Controllers;
 [ApiController]
 [AllowAnonymous]
 [Route("api/[controller]")]
-[Produces("application/json")]
 public class AuthenticationController(IUserService userService, IMapper mapper) : ControllerBase
 {
     private readonly IUserService userService = userService ?? throw new ArgumentNullException(nameof(userService));

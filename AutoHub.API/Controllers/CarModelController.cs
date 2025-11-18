@@ -17,7 +17,6 @@ namespace AutoHub.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/[controller]s")]
-[Produces("application/json")]
 public class CarModelController(ICarModelService carModelService, IMapper mapper) : ControllerBase
 {
     private readonly ICarModelService carModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));

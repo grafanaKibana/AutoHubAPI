@@ -17,7 +17,6 @@ namespace AutoHub.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/[controller]s")]
-[Produces("application/json")]
 public class LotController(ILotService lotService, IMapper mapper) : ControllerBase
 {
     private readonly ILotService lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
