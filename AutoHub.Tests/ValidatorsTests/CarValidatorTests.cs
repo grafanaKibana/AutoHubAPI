@@ -7,13 +7,13 @@ namespace AutoHub.Tests.ValidatorsTests;
 
 public class CarValidatorTests
 {
-    private readonly CarCreateRequestModelValidator _createValidator;
-    private readonly CarUpdateRequestModelValidator _updateValidator;
+    private readonly CarCreateRequestModelValidator createValidator;
+    private readonly CarUpdateRequestModelValidator updateValidator;
 
     public CarValidatorTests()
     {
-        _createValidator = new CarCreateRequestModelValidator();
-        _updateValidator = new CarUpdateRequestModelValidator();
+        createValidator = new CarCreateRequestModelValidator();
+        updateValidator = new CarUpdateRequestModelValidator();
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class CarValidatorTests
         };
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.CostPrice);
@@ -69,7 +69,7 @@ public class CarValidatorTests
         };
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.CostPrice);
@@ -102,7 +102,7 @@ public class CarValidatorTests
         };
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.CarStatusId);
@@ -138,7 +138,7 @@ public class CarValidatorTests
         };
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.CostPrice);

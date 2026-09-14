@@ -10,9 +10,10 @@ public static class UserDataSeeding
 {
     public static async Task AddDefaultAdmin(UserManager<ApplicationUser> userManager)
     {
-        var adminUsername = "admin";
-        var adminEmail = "reshetnik.nikita@gmail.com";
-        var adminPassword = "adminPasSw0Rd!@#";
+        const string adminUsername = "admin";
+        const string adminEmail = "reshetnik.nikita@gmail.com";
+        const string adminPassword = "adminPasSw0Rd!@#";
+
         if (await userManager.FindByEmailAsync(adminEmail) is null)
         {
             var admin = new ApplicationUser
@@ -31,7 +32,7 @@ public static class UserDataSeeding
 
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(admin, UserRoleEnum.Administrator.ToString());
+                await userManager.AddToRoleAsync(admin, nameof(UserRoleEnum.Administrator));
             }
         }
     }

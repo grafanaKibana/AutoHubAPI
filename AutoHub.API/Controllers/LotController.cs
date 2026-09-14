@@ -1,17 +1,16 @@
-﻿using AutoHub.API.Models.LotModels;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.API.Models.LotModels;
 using AutoHub.BusinessLogic.DTOs.LotDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Threading.Tasks;
-using System;
-using System.Linq;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.API.Controllers;
 
@@ -21,7 +20,7 @@ namespace AutoHub.API.Controllers;
 [Produces("application/json")]
 public class LotController(ILotService lotService, IMapper mapper) : ControllerBase
 {
-    private readonly ILotService _lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
+    private readonly ILotService lotService = lotService ?? throw new ArgumentNullException(nameof(lotService));
 
     /// <summary>
     /// Get all lots.
@@ -34,11 +33,11 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllLots([FromQuery] PaginationParameters paginationParameters)
     {
-        var lots = (await _lotService.GetAll(paginationParameters)).ToList();
+        var lots = (await lotService.GetAll(paginationParameters)).ToList();
         var result = new LotResponse
         {
             Lots = lots,
-            Paging = lots.Any() ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
+            Paging = lots.Count != 0 ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
         };
 
         return Ok(result);
@@ -56,11 +55,11 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetLotsInProgress([FromQuery] PaginationParameters paginationParameters)
     {
-        var lots = (await _lotService.GetInProgress(paginationParameters)).ToList();
+        var lots = (await lotService.GetInProgress(paginationParameters)).ToList();
         var result = new LotResponse
         {
             Lots = lots,
-            Paging = lots.Any() ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
+            Paging = lots.Count != 0 ? new PagingInfo(lots.Min(x => x.LotId), lots.Max(x => x.LotId)) : null,
         };
 
         return Ok(result);
@@ -72,13 +71,13 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     /// <param name="lotId">Id of a lot.</param>
     /// <response code="401">Unauthorized Access.</response>
     /// <returns>Returns a lot.</returns>
-    [HttpGet("{lotId}")]
+    [HttpGet("{lotId:int}")]
     [ProducesResponseType(typeof(LotResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetLotById(int lotId)
     {
-        var lot = await _lotService.GetById(lotId);
+        var lot = await lotService.GetById(lotId);
 
         return Ok(lot);
     }
@@ -102,9 +101,9 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     public async Task<IActionResult> CreateLot([FromBody] LotCreateRequest model)
     {
         var mappedLot = mapper.Map<LotCreateRequestDTO>(model);
-        await _lotService.Create(mappedLot);
+        await lotService.Create(mappedLot);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        return Created();
     }
 
     /// <summary>
@@ -118,7 +117,7 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Lot not found.</response>
     /// <response code="422">Invalid status ID.</response>
-    [HttpPut("{lotId}")]
+    [HttpPut("{lotId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -130,7 +129,7 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     public async Task<IActionResult> UpdateLot(int lotId, [FromBody] LotUpdateRequest model)
     {
         var mappedLot = mapper.Map<LotUpdateRequestDTO>(model);
-        await _lotService.Update(lotId, mappedLot);
+        await lotService.Update(lotId, mappedLot);
 
         return NoContent();
     }
@@ -155,7 +154,7 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateLotStatus(int lotId, int statusId)
     {
-        await _lotService.UpdateStatus(lotId, statusId);
+        await lotService.UpdateStatus(lotId, statusId);
 
         return NoContent();
     }
@@ -168,7 +167,7 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Lot not found.</response>
-    [HttpDelete("{lotId}")]
+    [HttpDelete("{lotId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -177,7 +176,7 @@ public class LotController(ILotService lotService, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteLot(int lotId)
     {
-        await _lotService.Delete(lotId);
+        await lotService.Delete(lotId);
 
         return NoContent();
     }

@@ -1,6 +1,6 @@
-using AutoHub.BusinessLogic.DTOs.BidDTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoHub.BusinessLogic.DTOs.BidDTOs;
 using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.BusinessLogic.Interfaces;

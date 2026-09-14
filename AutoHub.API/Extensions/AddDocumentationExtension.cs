@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
 using AutoHub.API.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace AutoHub.API.Extensions;
 
@@ -13,6 +13,8 @@ using Swashbuckle.AspNetCore.ReDoc;
 
 public static class AddDocumentationExtension
 {
+    private static string SwaggerPath => "/swagger/v1/swagger.json";
+
     public static void AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
@@ -52,7 +54,7 @@ public static class AddDocumentationExtension
         {
             c.RoutePrefix = string.Empty;
             c.DefaultModelsExpandDepth(-1);
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "AutoHub.API v1");
+            c.SwaggerEndpoint(SwaggerPath, "AutoHub.API v1");
         });
         return app;
     }
@@ -61,7 +63,7 @@ public static class AddDocumentationExtension
     {
         app.UseReDoc(c =>
         {
-            c.SpecUrl("/swagger/v1/swagger.json");
+            c.SpecUrl(SwaggerPath);
             c.DocumentTitle = "AutoHub.API";
             c.RoutePrefix = "docs";
             c.ConfigObject = new ConfigObject

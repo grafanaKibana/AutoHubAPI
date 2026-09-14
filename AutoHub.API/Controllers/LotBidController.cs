@@ -1,27 +1,26 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.API.Models;
 using AutoHub.API.Models.BidModels;
 using AutoHub.BusinessLogic.DTOs.BidDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.API.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/Lots/{lotId}/Bids")]
+[Route("api/Lots/{lotId:int}/Bids")]
 [Produces("application/json")]
 public class LotBidController(IBidService bidService, IMapper mapper) : ControllerBase
 {
-    private readonly IBidService _bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
+    private readonly IBidService bidService = bidService ?? throw new ArgumentNullException(nameof(bidService));
 
     /// <summary>
     /// Get all bids of specific lot.
@@ -40,11 +39,11 @@ public class LotBidController(IBidService bidService, IMapper mapper) : Controll
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetLotBids(int lotId, [FromQuery] PaginationParameters paginationParameters)
     {
-        var bids = (await _bidService.GetLotBids(lotId, paginationParameters)).ToList();
+        var bids = (await bidService.GetLotBids(lotId, paginationParameters)).ToList();
         var result = new BidResponse
         {
             Bids = bids,
-            Paging = bids.Any() ? new PagingInfo(bids.Min(x => x.BidId), bids.Max(x => x.BidId)) : null
+            Paging = bids.Count != 0 ? new PagingInfo(bids.Min(x => x.BidId), bids.Max(x => x.BidId)) : null
         };
 
         return Ok(result);
@@ -68,8 +67,8 @@ public class LotBidController(IBidService bidService, IMapper mapper) : Controll
     public async Task<IActionResult> CreateBid(int lotId, [FromBody] BidCreateRequest model)
     {
         var mappedBid = mapper.Map<BidCreateRequestDTO>(model);
-        await _bidService.Create(lotId, mappedBid);
+        await bidService.Create(lotId, mappedBid);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        return Created();
     }
 }

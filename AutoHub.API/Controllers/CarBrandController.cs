@@ -1,17 +1,16 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.API.Models;
 using AutoHub.API.Models.CarBrandModels;
 using AutoHub.BusinessLogic.DTOs.CarBrandDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.API.Controllers;
 
@@ -21,7 +20,7 @@ namespace AutoHub.API.Controllers;
 [Produces("application/json")]
 public class CarBrandController(ICarBrandService carBrandService, IMapper mapper) : ControllerBase
 {
-    private readonly ICarBrandService _carBrandService = carBrandService ?? throw new ArgumentNullException(nameof(carBrandService));
+    private readonly ICarBrandService carBrandService = carBrandService ?? throw new ArgumentNullException(nameof(carBrandService));
 
     /// <summary>
     /// Get all car brands.
@@ -35,11 +34,11 @@ public class CarBrandController(ICarBrandService carBrandService, IMapper mapper
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCarBrands([FromQuery] PaginationParameters paginationParameters)
     {
-        var carBrands = (await _carBrandService.GetAll(paginationParameters)).ToList();
+        var carBrands = (await carBrandService.GetAll(paginationParameters)).ToList();
         var result = new CarBrandResponse
         {
             CarBrands = carBrands,
-            Paging = carBrands.Any() ? new PagingInfo(carBrands.Min(x => x.CarBrandId), carBrands.Max(x => x.CarBrandId)) : null,
+            Paging = carBrands.Count != 0 ? new PagingInfo(carBrands.Min(x => x.CarBrandId), carBrands.Max(x => x.CarBrandId)) : null,
         };
         return Ok(result);
     }
@@ -62,9 +61,9 @@ public class CarBrandController(ICarBrandService carBrandService, IMapper mapper
     public async Task<IActionResult> CreateCarBrand([FromBody] CarBrandCreateRequest model)
     {
         var mappedCarBrand = mapper.Map<CarBrandCreateRequestDTO>(model);
-        await _carBrandService.Create(mappedCarBrand);
+        await carBrandService.Create(mappedCarBrand);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        return Created();
     }
 
     /// <summary>
@@ -78,7 +77,7 @@ public class CarBrandController(ICarBrandService carBrandService, IMapper mapper
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Brand not found</response>
     /// <returns></returns>
-    [HttpPut("{carBrandId}")]
+    [HttpPut("{carBrandId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -89,7 +88,7 @@ public class CarBrandController(ICarBrandService carBrandService, IMapper mapper
     public async Task<IActionResult> UpdateCarBrand(int carBrandId, [FromBody] CarBrandUpdateRequest model)
     {
         var mappedCarBrand = mapper.Map<CarBrandUpdateRequestDTO>(model);
-        await _carBrandService.Update(carBrandId, mappedCarBrand);
+        await carBrandService.Update(carBrandId, mappedCarBrand);
 
         return NoContent();
     }
@@ -103,7 +102,7 @@ public class CarBrandController(ICarBrandService carBrandService, IMapper mapper
     /// <response code="403">Admin access only.</response>
     /// <response code="404">Brand not found</response>
     /// <returns></returns>
-    [HttpDelete("{carBrandId}")]
+    [HttpDelete("{carBrandId:int}")]
     [Authorize(Roles = AuthorizationRoles.Administrator)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -112,7 +111,7 @@ public class CarBrandController(ICarBrandService carBrandService, IMapper mapper
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteCarBrand(int carBrandId)
     {
-        await _carBrandService.Delete(carBrandId);
+        await carBrandService.Delete(carBrandId);
 
         return NoContent();
     }

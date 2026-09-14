@@ -7,8 +7,7 @@ public class ApplicationRole : IdentityRole<int>
     public ApplicationRole()
     { }
 
-    public ApplicationRole(string name)
+    public ApplicationRole(string name) : base(name)
     {
-        Name = name;
     }
 }

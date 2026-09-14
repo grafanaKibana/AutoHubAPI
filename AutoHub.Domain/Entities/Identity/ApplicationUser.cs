@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutoHub.Domain.Entities.Identity;
 
@@ -11,7 +11,7 @@ public class ApplicationUser : IdentityUser<int>
     [PersonalData, Required]
     public string LastName { get; set; }
 
-    public string FullName => $"{FirstName} {LastName}";
+    public string FullName => $"{this.FirstName} {this.LastName}";
 
     public DateTime RegistrationTime { get; set; }
 

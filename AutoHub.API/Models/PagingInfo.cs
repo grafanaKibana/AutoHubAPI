@@ -6,8 +6,8 @@ public record PagingInfo
 {
     public PagingInfo(int firstId, int lastId)
     {
-        First = Base64Helper.Encode(firstId.ToString());
-        Last = Base64Helper.Encode(lastId.ToString());
+        this.First = Base64Helper.Encode(firstId.ToString());
+        this.Last = Base64Helper.Encode(lastId.ToString());
     }
 
     public string First { get; init; }

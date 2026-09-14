@@ -7,13 +7,13 @@ namespace AutoHub.Tests.ValidatorsTests;
 
 public class LotValidatorTests
 {
-    private readonly LotCreateRequestModelValidator _createValidator;
-    private readonly LotUpdateRequestModelValidator _updateValidator;
+    private readonly LotCreateRequestModelValidator createValidator;
+    private readonly LotUpdateRequestModelValidator updateValidator;
 
     public LotValidatorTests()
     {
-        _createValidator = new LotCreateRequestModelValidator();
-        _updateValidator = new LotUpdateRequestModelValidator();
+        createValidator = new LotCreateRequestModelValidator();
+        updateValidator = new LotUpdateRequestModelValidator();
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class LotValidatorTests
         };
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.CarId);
@@ -48,7 +48,7 @@ public class LotValidatorTests
         };
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.CarId);
@@ -68,7 +68,7 @@ public class LotValidatorTests
         };
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.DurationInDays);
@@ -88,7 +88,7 @@ public class LotValidatorTests
         };
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.DurationInDays);

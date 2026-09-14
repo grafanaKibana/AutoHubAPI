@@ -8,25 +8,25 @@ namespace AutoHub.Tests.ValidatorsTests;
 
 public class CarColorValidatorTests
 {
-    private readonly Fixture _fixture;
-    private readonly CarColorCreateRequestModelValidator _createValidator;
-    private readonly CarColorUpdateRequestModelValidator _updateValidator;
+    private readonly Fixture fixture;
+    private readonly CarColorCreateRequestModelValidator createValidator;
+    private readonly CarColorUpdateRequestModelValidator updateValidator;
 
     public CarColorValidatorTests()
     {
-        _fixture = new Fixture();
-        _createValidator = new CarColorCreateRequestModelValidator();
-        _updateValidator = new CarColorUpdateRequestModelValidator();
+        fixture = new Fixture();
+        createValidator = new CarColorCreateRequestModelValidator();
+        updateValidator = new CarColorUpdateRequestModelValidator();
     }
 
     [Fact]
     public void CreateColorTestValidate_ValidModel_ShouldNotHaveError()
     {
         //Arrange
-        var model = _fixture.Create<CarColorCreateRequest>();
+        var model = fixture.Create<CarColorCreateRequest>();
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.CarColorName);
@@ -39,7 +39,7 @@ public class CarColorValidatorTests
         var model = new CarColorCreateRequest { CarColorName = null };
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.CarColorName);
@@ -49,10 +49,10 @@ public class CarColorValidatorTests
     public void UpdateColorTestValidate_ValidModel_ShouldNotHaveError()
     {
         //Arrange
-        var model = _fixture.Create<CarColorUpdateRequest>();
+        var model = fixture.Create<CarColorUpdateRequest>();
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.CarColorName);
@@ -65,7 +65,7 @@ public class CarColorValidatorTests
         var model = new CarColorUpdateRequest { CarColorName = null };
 
         //Act
-        var result = _updateValidator.TestValidate(model);
+        var result = updateValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.CarColorName);

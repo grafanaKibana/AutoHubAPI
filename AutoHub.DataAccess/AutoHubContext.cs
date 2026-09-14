@@ -31,7 +31,7 @@ public class AutoHubContext : IdentityDbContext<ApplicationUser, ApplicationRole
     {
         optionsBuilder.UseSqlServer("Server=tcp:autohub-server.database.windows.net,1433;Initial Catalog=autohub-db;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=Active Directory Default;");
         optionsBuilder.UseLazyLoadingProxies();
-        optionsBuilder.LogTo(Console.WriteLine);
+        // optionsBuilder.LogTo(Console.WriteLine);
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

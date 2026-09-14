@@ -1,16 +1,16 @@
-﻿using AutoHub.API.Models.UserModels;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoHub.API.Models;
+using AutoHub.API.Models.UserModels;
 using AutoHub.BusinessLogic.DTOs.UserDTOs;
 using AutoHub.BusinessLogic.Interfaces;
+using AutoHub.BusinessLogic.Models;
 using AutoHub.Domain.Constants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoHub.API.Models;
-using AutoHub.BusinessLogic.Models;
 
 namespace AutoHub.API.Controllers;
 
@@ -20,7 +20,7 @@ namespace AutoHub.API.Controllers;
 [Produces("application/json")]
 public class UserController(IUserService userService, IMapper mapper) : ControllerBase
 {
-    private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    private readonly IUserService userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
     /// <summary>
     /// Gets all users.
@@ -36,11 +36,11 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllUsers([FromQuery] PaginationParameters paginationParameters)
     {
-        var users = (await _userService.GetAll(paginationParameters)).ToList();
+        var users = (await userService.GetAll(paginationParameters)).ToList();
         var result = new UserResponse
         {
             Users = users,
-            Paging = users.Any() ? new PagingInfo(users.Min(x => x.UserId), users.Max(x => x.UserId)) : null
+            Paging = users.Count != 0 ? new PagingInfo(users.Min(x => x.UserId), users.Max(x => x.UserId)) : null
         };
 
         return Ok(result);
@@ -54,7 +54,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     /// <response code="403">Admin access only.</response>
     /// <response code="404">User not found.</response>
     /// <returns>Returns user.</returns>
-    [HttpGet("{userId}")]
+    [HttpGet("{userId:int}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -62,7 +62,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetUserById(int userId)
     {
-        var user = await _userService.GetById(userId);
+        var user = await userService.GetById(userId);
 
         return Ok(user);
     }
@@ -78,7 +78,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     /// <response code="403">Admin access only.</response>
     /// <response code="404">User not found.</response>
     /// <response code="422">Invalid user role ID.</response>
-    [HttpPut("{userId}")]
+    [HttpPut("{userId:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -89,7 +89,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     public async Task<IActionResult> UpdateUser(int userId, [FromBody] UserUpdateRequest model)
     {
         var mappedUser = mapper.Map<UserUpdateRequestDTO>(model);
-        await _userService.Update(userId, mappedUser);
+        await userService.Update(userId, mappedUser);
 
         return NoContent();
     }
@@ -104,7 +104,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     /// <response code="404">User not found.</response>
     /// <response code="409">User already have specified role.</response>
     /// <response code="422">Invalid role ID.</response>
-    [HttpPatch("{userId}/AddToRole")]
+    [HttpPatch("{userId:int}/AddToRole")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -113,7 +113,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> AddRoleToUser(int userId, int roleId)
     {
-        await _userService.AddToRole(userId, roleId);
+        await userService.AddToRole(userId, roleId);
 
         return NoContent();
     }
@@ -127,7 +127,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="404">User not found or user not have specified role.</response>
     /// <response code="422">Invalid role ID.</response>
-    [HttpPatch("{userId}/RemoveFromRole")]
+    [HttpPatch("{userId:int}/RemoveFromRole")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -135,7 +135,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RemoveRoleFromUserUser(int userId, int roleId)
     {
-        await _userService.RemoveFromRole(userId, roleId);
+        await userService.RemoveFromRole(userId, roleId);
 
         return NoContent();
     }
@@ -148,7 +148,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     /// <response code="401">Unauthorized Access.</response>
     /// <response code="403">Admin access only.</response>
     /// <response code="404">User not found.</response>
-    [HttpDelete("{userId}")]
+    [HttpDelete("{userId:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -156,7 +156,7 @@ public class UserController(IUserService userService, IMapper mapper) : Controll
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteUser(int userId)
     {
-        await _userService.Delete(userId);
+        await userService.Delete(userId);
 
         return NoContent();
     }

@@ -7,11 +7,11 @@ namespace AutoHub.Tests.ValidatorsTests;
 
 public class BidValidatorTests
 {
-    private readonly BidCreateRequestModelValidator _createValidator;
+    private readonly BidCreateRequestModelValidator createValidator;
 
     public BidValidatorTests()
     {
-        _createValidator = new BidCreateRequestModelValidator();
+        createValidator = new BidCreateRequestModelValidator();
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class BidValidatorTests
         };
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.BidValue);
@@ -43,7 +43,7 @@ public class BidValidatorTests
         };
 
         //Act
-        var result = _createValidator.TestValidate(model);
+        var result = createValidator.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.BidValue);

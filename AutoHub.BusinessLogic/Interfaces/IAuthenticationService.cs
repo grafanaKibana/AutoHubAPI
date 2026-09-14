@@ -1,5 +1,5 @@
-using AutoHub.Domain.Entities.Identity;
 using System.Threading.Tasks;
+using AutoHub.Domain.Entities.Identity;
 
 namespace AutoHub.BusinessLogic.Interfaces;
 
